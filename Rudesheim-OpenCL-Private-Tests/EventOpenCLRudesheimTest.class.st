@@ -16,6 +16,18 @@ EventOpenCLRudesheimTest class >> targetClass [
 ]
 
 { #category : 'tests' }
+EventOpenCLRudesheimTest >> testBasicInstanceCreation [
+
+	self skip: 'Event handles are returned by native OpenCL calls; #new is intentionally unavailable.'.
+]
+
+{ #category : 'tests' }
+EventOpenCLRudesheimTest >> testBasicInstanceCreation0 [
+
+	self skip: 'Event handles are returned by native OpenCL calls; #new is intentionally unavailable.'.
+]
+
+{ #category : 'tests' }
 EventOpenCLRudesheimTest >> runWait0 [
 	|
 		cl
