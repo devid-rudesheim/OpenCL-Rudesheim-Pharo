@@ -1,0 +1,253 @@
+"
+A ProgramOpenCLRudesheimTest is a test class for testing the behavior of ProgramOpenCLRudesheim
+"
+Class {
+	#name : 'ProgramOpenCLRudesheimTest',
+	#superclass : 'BasicRudesheimTest',
+	#category : 'Rudesheim-OpenCL-Private-Tests-Objects',
+	#package : 'Rudesheim-OpenCL-Private-Tests',
+	#tag : 'Objects'
+}
+
+{ #category : 'accessing' }
+ProgramOpenCLRudesheimTest class >> targetClass [
+
+	^ ProgramOpenCLRudesheim.
+]
+
+{ #category : 'tests' }
+ProgramOpenCLRudesheimTest >> runNewCLKernelAtWithParameterTypes0 [
+	|
+		cl
+		program
+		devices
+	|
+
+	cl := Rudesheim OpenCL.
+	devices := cl Platform clPlatforms first clDevices. 
+
+	program :=
+		cl Program
+			buildCLProgramFor: devices
+			fromSources:
+			{
+				'
+kernel void One()
+{
+}
+
+kernel void Two()
+{
+}
+				'
+			}
+			withOptions:	'-cl-std=CL2.0'
+			of:
+			(
+				cl Context
+					clContextFor:	devices
+			).
+
+	program
+		newCLKernelAt:	self sourceValue
+		withParameterTypes:
+		{
+		}.	
+]
+
+{ #category : 'tests' }
+ProgramOpenCLRudesheimTest >> testBuildCLProgramForFromSourcesWithOptionsOfDetailedBuildLog [
+	|
+		cl
+		devices
+		context
+		caughtError
+	|
+
+	cl := Rudesheim OpenCL.
+	devices := cl Platform clPlatforms first clDevices.
+	context := cl Context clContextFor: devices.
+
+	caughtError :=
+		[
+			context
+				buildCLProgramFor:	devices
+				fromSources:
+				{
+					'kernel void Broken( global unsigned int *output ) { output[0] = ; }'
+				}
+				withOptions:	'-cl-std=CL2.0'.
+			nil.
+		]
+			on: ProgramBuildFailedOpenCLRudesheim
+			do:
+			[ :anError |
+				anError.
+			].
+
+	self
+		assert:	caughtError notNil.
+	self
+		assert:	( caughtError buildLog includesSubstring: 'expected expression' ).
+	self
+		assert:	( caughtError messageText includesSubstring: 'build log:' ).
+]
+
+{ #category : 'tests' }
+ProgramOpenCLRudesheimTest >> testCompileCLProgramForFromSourcesWithOptionsHeadersOfNotSupportedOnMac [
+	|
+		cl
+		devices
+		context
+		caughtError
+	|
+
+	cl := Rudesheim OpenCL.
+	devices := cl Platform clPlatforms first clDevices.
+	context := cl Context clContextFor: devices.
+
+	caughtError :=
+		[
+			context
+				compileCLProgramFor:	devices
+				fromSources:
+				{
+					'kernel void NeverCompiled() { }'
+				}
+				withOptions:	'-cl-std=CL2.0'
+				headers:		{ }.
+			nil.
+		]
+			on: ProgramCompileNotSupportedOpenCLRudesheim
+			do:
+			[ :anError |
+				anError.
+			].
+
+	self
+		assert:	caughtError notNil.
+	self
+		assert:	( caughtError messageText includesSubstring: 'not supported on this platform' ).
+]
+
+{ #category : 'tests' }
+ProgramOpenCLRudesheimTest >> testNewCLKernelAtWithParameterTypes [
+
+	self
+		testNewCLKernelAtWithParameterTypes0_0;
+		tearDown;
+		setUp;
+		testNewCLKernelAtWithParameterTypes0_1;
+		tearDown;
+		setUp;
+		testNewCLKernelAtWithParameterTypes0_2.
+]
+
+{ #category : 'tests' }
+ProgramOpenCLRudesheimTest >> testNewCLKernelAtWithParameterTypes0_0 [
+
+	self
+		should:
+		[
+			self
+				sourceValue:	'Three';
+				runNewCLKernelAtWithParameterTypes0.
+		]
+		raise: Rudesheim OpenCL Native Error Primitive.
+
+]
+
+{ #category : 'tests' }
+ProgramOpenCLRudesheimTest >> testNewCLKernelAtWithParameterTypes0_0Detailed [
+	|
+		caughtError
+	|
+
+	caughtError :=
+		[
+			self
+				sourceValue:	'Three';
+				runNewCLKernelAtWithParameterTypes0.
+
+			nil.
+		]
+			on: KernelCreationFailedOpenCLRudesheim
+			do:
+			[ :anError |
+				anError.
+			].
+
+	self
+		assert:	caughtError notNil.
+	self
+		assert:	caughtError kernelName
+		equals:	'Three'.
+	self
+		assert:	( caughtError messageText includesSubstring: 'Three' ).
+	self
+		assert:	( caughtError messageText includesSubstring: 'invalid_kernel_name' ).
+
+]
+
+{ #category : 'tests' }
+ProgramOpenCLRudesheimTest >> testNewCLKernelAtWithParameterTypes0_1 [
+
+	self
+		sourceValue:	'One';
+		runNewCLKernelAtWithParameterTypes0.
+
+]
+
+{ #category : 'tests' }
+ProgramOpenCLRudesheimTest >> testNewCLKernelAtWithParameterTypes0_2 [
+
+	self
+		sourceValue:	'Two';
+		runNewCLKernelAtWithParameterTypes0.
+]
+
+{ #category : 'tests' }
+ProgramOpenCLRudesheimTest >> testNewCLProgramByLinkingForWithOptionsNotSupportedOnMac [
+	|
+		cl
+		devices
+		context
+		program
+		caughtError
+	|
+
+	cl := Rudesheim OpenCL.
+	devices := cl Platform clPlatforms first clDevices.
+	context := cl Context clContextFor: devices.
+
+	program :=
+		context
+			buildCLProgramFor:	devices
+			fromSources:
+			{
+				'kernel void NeverLinked() { }'
+			}
+			withOptions:	'-cl-std=CL2.0'.
+
+	caughtError :=
+		[
+			context
+				newCLProgramByLinking:
+				{
+					program
+				}
+				for:				devices
+				withOptions:		''.
+			nil.
+		]
+			on: ProgramLinkNotSupportedOpenCLRudesheim
+			do:
+			[ :anError |
+				anError.
+			].
+
+	self
+		assert:	caughtError notNil.
+	self
+		assert:	( caughtError messageText includesSubstring: 'not supported on this platform' ).
+]
