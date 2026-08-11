@@ -17,13 +17,40 @@ Metacello new
 
 This also loads the required `RudesheimKernel` and `RudesheimUtility` dependencies from GitHub.
 
+## Requirements
+
+- Pharo with FFI support.
+- A native OpenCL runtime visible to the host process.
+- At least one OpenCL platform/device for code that creates contexts, command queues, buffers, programs, or kernels.
+
+On macOS, the package avoids OpenCL separate compile/link calls because the native implementation is not reliable there.
+Build complete programs from source with `buildCLProgramFor:fromSources:withOptions:` as shown below.
+
+## Dependencies
+
+The baseline loads these Rudesheim repositories:
+
+- `RudesheimKernel`: `github://devid-rudesheim/Kernel-Rudesheim-Pharo:main`
+- `RudesheimUtility`: `github://devid-rudesheim/Utility-Rudesheim-Pharo:main`
+
 ## Groups
 
 - `core`: runtime OpenCL packages.
 - `tests`: SUnit tests for the OpenCL packages.
 - `default`: aliases `core`.
 
-To load the tests:
+## Load Options
+
+Default runtime load:
+
+```smalltalk
+Metacello new
+	baseline: 'RudesheimOpenCL';
+	repository: 'github://devid-rudesheim/OpenCL-Rudesheim-Pharo:main';
+	load
+```
+
+Tests:
 
 ```smalltalk
 Metacello new
@@ -88,6 +115,14 @@ queue
 
 The result is `#( 3.0 5.0 7.0 9.0 )`.
 OpenCL behavior depends on the host system, drivers, and available devices.
+
+## Usage Constraints
+
+- Kernel source is OpenCL C. Function names and argument order must match the `newCLKernelAt:withParameterTypes:` declaration.
+- Buffer sizes and `TFBasicType` argument declarations are caller responsibility.
+- Long-running code should release native-backed objects such as buffers, command queues, programs, kernels, and events when ownership is clear.
+- `buildCLProgramFor:fromSources:withOptions:` is the normal source-build path. Separate compile/link is intentionally not the portable path on macOS.
+- Test execution requires a working OpenCL device; failures can be driver/platform specific.
 
 ## Run Tests
 
