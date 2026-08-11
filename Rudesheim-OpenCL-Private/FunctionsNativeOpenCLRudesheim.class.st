@@ -172,7 +172,7 @@ FunctionsNativeOpenCLRudesheim class >> initialize [
 		sizeT
 	|
 
-	moduleName := Rudesheim OpenCL Native Library uniqueInstance libraryName.
+	moduleName := LibraryNativeOpenCLRudesheim uniqueInstance libraryName.
 
 	pointer := TFBasicType pointer.
 	uint64 := TFBasicType uint64.
