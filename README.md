@@ -36,7 +36,6 @@ The baseline loads these Rudesheim repositories:
 ## Groups
 
 - `core`: runtime OpenCL packages.
-- `tests`: SUnit tests for the OpenCL packages.
 - `default`: aliases `core`.
 
 ## Load Options
@@ -48,15 +47,6 @@ Metacello new
 	baseline: 'RudesheimOpenCL';
 	repository: 'github://devid-rudesheim/OpenCL-Rudesheim-Pharo:main';
 	load
-```
-
-Tests:
-
-```smalltalk
-Metacello new
-	baseline: 'RudesheimOpenCL';
-	repository: 'github://devid-rudesheim/OpenCL-Rudesheim-Pharo:main';
-	load: #(tests)
 ```
 
 ## Basic Use
@@ -122,15 +112,3 @@ OpenCL behavior depends on the host system, drivers, and available devices.
 - Buffer sizes and `TFBasicType` argument declarations are caller responsibility.
 - Long-running code should release native-backed objects such as buffers, command queues, programs, kernels, and events when ownership is clear.
 - `buildCLProgramFor:fromSources:withOptions:` is the normal source-build path. Separate compile/link is intentionally not the portable path on macOS.
-- Test execution requires a working OpenCL device; failures can be driver/platform specific.
-
-## Run Tests
-
-After loading the test group, run:
-
-```smalltalk
-TestSuite new
-	addTest: (RPackageOrganizer default packageNamed: 'Rudesheim-OpenCL-Tests') asTestSuite;
-	addTest: (RPackageOrganizer default packageNamed: 'Rudesheim-OpenCL-Private-Tests') asTestSuite;
-	run
-```
