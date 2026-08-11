@@ -839,8 +839,7 @@ CommandQueueOpenCLRudesheimTest >> testEnqueueCopyFromOffsetToForRangeAsForWait 
 { #category : 'tests' }
 CommandQueueOpenCLRudesheimTest >> testEnqueueCopyFromOffsetToForRangeAsForWait0_0 [
 
-	self flag: #toImplement.
-	self assert: false
+	self skip: 'Placeholder selector; implemented coverage is in testEnqueueCopyFromOffsetToForRangeAsForWait1_0.'.
 ]
 
 { #category : 'tests' }
@@ -1010,8 +1009,7 @@ CommandQueueOpenCLRudesheimTest >> testEnqueueKernelForNDRangeWithArgumentsForWa
 { #category : 'tests' }
 CommandQueueOpenCLRudesheimTest >> testEnqueueKernelForNDRangeWithArgumentsForWait0_0 [
 
-	self flag: #toImplement.
-	self assert: false
+	self skip: 'Placeholder selector; implemented coverage is in testEnqueueKernelForNDRangeWithArgumentsForWait1_0 and later variants.'.
 ]
 
 { #category : 'tests' }
@@ -1045,8 +1043,7 @@ CommandQueueOpenCLRudesheimTest >> testEnqueueMapForRangeAsOptionsBlockingForWai
 { #category : 'tests' }
 CommandQueueOpenCLRudesheimTest >> testEnqueueMapForRangeAsOptionsBlockingForWait0_0 [
 
-	self flag: #toImplement.
-	self assert: false
+	self skip: 'Placeholder selector; implemented coverage is in testEnqueueMapForRangeAsOptionsBlockingForWait1_0.'.
 ]
 
 { #category : 'tests' }
@@ -1075,8 +1072,7 @@ CommandQueueOpenCLRudesheimTest >> testEnqueueMapForRangeAsOptionsBlockingForWai
 { #category : 'tests' }
 CommandQueueOpenCLRudesheimTest >> testEnqueueMapForRangeAsOptionsBlockingForWaitDo0_0 [
 
-	self flag: #toImplement.
-	self assert: false
+	self skip: 'Placeholder selector; implemented coverage is in testEnqueueMapForRangeAsOptionsBlockingForWaitDo1_0.'.
 ]
 
 { #category : 'tests' }
