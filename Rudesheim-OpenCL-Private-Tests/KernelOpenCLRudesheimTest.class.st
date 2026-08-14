@@ -42,6 +42,28 @@ KernelOpenCLRudesheimTest >> clDevices [
 ]
 
 { #category : 'accessing' }
+KernelOpenCLRudesheimTest >> defaultBasicTarget [
+
+	^ self targetClass
+		clKernelAt:				'Zero'
+		withParameterTypes:	{ }
+		of:
+		(
+			self clContext
+				buildCLProgramFor:	self clDevices
+				fromSources:
+				{
+					'
+kernel void Zero()
+{
+}
+					'
+				}
+				withOptions:	'-cl-std=CL2.0'
+		).
+]
+
+{ #category : 'accessing' }
 KernelOpenCLRudesheimTest >> defaultCLContext [
 
 	^ Rudesheim OpenCL Context

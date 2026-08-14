@@ -46,6 +46,17 @@ BufferOpenCLRudesheimReadStabilityTest >> clContext [
 ]
 
 { #category : 'accessing' }
+BufferOpenCLRudesheimReadStabilityTest >> defaultBasicTarget [
+
+	^ self clContext
+		newCLBufferForSize:	16r10
+		options:
+		{
+			Rudesheim OpenCL ReadWrite.
+		}.
+]
+
+{ #category : 'accessing' }
 BufferOpenCLRudesheimReadStabilityTest >> clQueue [
 
 	^ self clContext
