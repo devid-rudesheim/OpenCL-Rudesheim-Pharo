@@ -2,7 +2,7 @@ SmalltalkCISpec {
   #loading : [
     SCIMetacelloLoadSpec {
       #baseline : 'RudesheimOpenCL',
-      #groups : [ 'tests' ]
+      #load : [ 'tests' ]
     }
   ],
   #testing : {
