@@ -69,7 +69,6 @@ KernelOpenCLRudesheimTest >> defaultCLContext [
 	^ Rudesheim OpenCL Context
 		clContextFor:	self clDevices.
 
-
 ]
 
 { #category : 'accessing' }

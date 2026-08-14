@@ -15,8 +15,10 @@ LibraryNativeOpenCLRudesheim >> macLibraryName [
 { #category : 'accessing - platform' }
 LibraryNativeOpenCLRudesheim >> unix32LibraryName [
 
-	(#( '/usr/lib/i386-linux-gnu' '/usr/lib32' '/usr/lib' ),
-			((OSEnvironment current at: 'LD_LIBRARY_PATH' ifAbsent: [ '' ]) substrings: ':'))
+	(
+		#( '/usr/lib/i386-linux-gnu' '/usr/lib32' '/usr/lib' ),
+		( ( OSEnvironment current at: 'LD_LIBRARY_PATH' ifAbsent: [ '' ] ) substrings: ':' )
+	)
 		do:
 		[ :path |
 			#( 'libOpenCL.so.1' 'libOpenCL.so' )
@@ -34,8 +36,10 @@ LibraryNativeOpenCLRudesheim >> unix32LibraryName [
 { #category : 'accessing - platform' }
 LibraryNativeOpenCLRudesheim >> unix64LibraryName [
 
-	(#( '/usr/lib/x86_64-linux-gnu' '/lib/x86_64-linux-gnu' '/usr/lib64' '/usr/lib' ),
-			((OSEnvironment current at: 'LD_LIBRARY_PATH' ifAbsent: [ '' ]) substrings: ':'))
+	(
+		#( '/usr/lib/x86_64-linux-gnu' '/lib/x86_64-linux-gnu' '/usr/lib64' '/usr/lib' ),
+		( ( OSEnvironment current at: 'LD_LIBRARY_PATH' ifAbsent: [ '' ] ) substrings: ':' )
+	)
 		do:
 		[ :path |
 			#( 'libOpenCL.so.1' 'libOpenCL.so' )
