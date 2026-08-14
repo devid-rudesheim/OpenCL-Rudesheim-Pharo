@@ -54,6 +54,14 @@ CommandQueueOpenCLRudesheimTest >> clProgram [
 ]
 
 { #category : 'accessing' }
+CommandQueueOpenCLRudesheimTest >> defaultBasicTarget [
+
+	^ self targetClass
+		clCommandQueueFor:	self clDevices first
+		of:					self clContext.
+]
+
+{ #category : 'accessing' }
 CommandQueueOpenCLRudesheimTest >> defaultCLContext [
 
 	^ Rudesheim OpenCL Context

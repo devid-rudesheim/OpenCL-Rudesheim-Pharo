@@ -4,6 +4,10 @@ A ProgramOpenCLRudesheimTest is a test class for testing the behavior of Program
 Class {
 	#name : 'ProgramOpenCLRudesheimTest',
 	#superclass : 'BasicRudesheimTest',
+	#instVars : [
+		'clDevices',
+		'clContext'
+	],
 	#category : 'Rudesheim-OpenCL-Private-Tests-Objects',
 	#package : 'Rudesheim-OpenCL-Private-Tests',
 	#tag : 'Objects'
@@ -13,6 +17,59 @@ Class {
 ProgramOpenCLRudesheimTest class >> targetClass [
 
 	^ ProgramOpenCLRudesheim.
+]
+
+{ #category : 'accessing' }
+ProgramOpenCLRudesheimTest >> clContext [
+
+	^ clContext
+		ifNil:
+		[
+			clContext := self defaultCLContext.
+		].
+
+]
+
+{ #category : 'accessing' }
+ProgramOpenCLRudesheimTest >> clDevices [
+
+	^ clDevices
+		ifNil:
+		[
+			clDevices := self defaultCLDevices.
+		].
+
+]
+
+{ #category : 'accessing' }
+ProgramOpenCLRudesheimTest >> defaultBasicTarget [
+
+	^ self clContext
+		buildCLProgramFor:	self clDevices
+		fromSources:
+		{
+			'
+kernel void Zero()
+{
+}
+			'
+		}
+		withOptions:	'-cl-std=CL2.0'.
+]
+
+{ #category : 'accessing' }
+ProgramOpenCLRudesheimTest >> defaultCLContext [
+
+	^ Rudesheim OpenCL Context
+		clContextFor:	self clDevices.
+
+]
+
+{ #category : 'accessing' }
+ProgramOpenCLRudesheimTest >> defaultCLDevices [
+
+	^ Rudesheim OpenCL Platform clPlatforms first clDevices.
+
 ]
 
 { #category : 'tests' }
