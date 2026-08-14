@@ -1,0 +1,13 @@
+SmalltalkCISpec {
+  #loading : [
+    SCIMetacelloLoadSpec {
+      #baseline : 'RudesheimOpenCL',
+      #groups : [ 'tests' ]
+    }
+  ],
+  #testing : {
+    #include : {
+      #packages : [ 'Rudesheim-OpenCL-Tests', 'Rudesheim-OpenCL-Private-Tests' ]
+    }
+  }
+}

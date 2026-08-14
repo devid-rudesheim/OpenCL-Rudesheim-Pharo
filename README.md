@@ -1,5 +1,10 @@
 # Rudesheim OpenCL for Pharo
 
+[![GitHub release](https://img.shields.io/github/release/devid-rudesheim/OpenCL-Rudesheim-Pharo.svg)](https://github.com/devid-rudesheim/OpenCL-Rudesheim-Pharo/releases/latest)
+[![Unit Tests](https://github.com/devid-rudesheim/OpenCL-Rudesheim-Pharo/actions/workflows/tests.yml/badge.svg)](https://github.com/devid-rudesheim/OpenCL-Rudesheim-Pharo/actions/workflows/tests.yml)
+
+[![Pharo 13](https://img.shields.io/badge/Pharo-13-informational)](https://pharo.org)
+
 Rudesheim OpenCL is a Pharo wrapper around OpenCL used by Rudesheim projects that need GPU or accelerator execution.
 It provides platforms, devices, contexts, command queues, programs, kernels, buffers, events, and OpenCL error objects.
 The package is a low-level execution layer: higher-level packages can keep their domain code in Smalltalk while sending data-parallel kernels to an OpenCL device.
