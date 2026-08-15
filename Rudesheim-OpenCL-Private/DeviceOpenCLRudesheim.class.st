@@ -20,18 +20,38 @@ of:					aCLPlatform [
 		super
 			onDo:
 			[ :expectedAmount :actualIDs :actualAmount |
+				|
+					deviceTypeMask
+				|
+
+				deviceTypeMask :=
+					aCLTDeviceDefineCollection
+						inject: 0
+						into:
+						[ :value :each |
+							value | each  clDeviceType.
+						].
+
+				Transcript
+					showCr:
+						'DEBUG clGetDeviceIDs args: platform=',
+						aCLPlatform idPointer printString,
+						' deviceTypeMask=',
+						deviceTypeMask printString,
+						' expectedAmount=',
+						expectedAmount printString,
+						' actualIDs=',
+						actualIDs printString,
+						' actualAmount=',
+						actualAmount printString;
+					flush.
 
 				functions tfRunner
 					invokeFunction:	functions functionOfGetDeviceIDs
 					withArguments:
 					{
 						aCLPlatform idPointer.
-						aCLTDeviceDefineCollection
-							inject: 0
-							into:
-							[ :value :each |
-								value | each  clDeviceType.
-							].
+						deviceTypeMask.
 						expectedAmount.
 						actualIDs.
 						actualAmount.
