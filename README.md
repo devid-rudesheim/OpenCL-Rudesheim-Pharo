@@ -5,7 +5,7 @@
 
 [![Pharo 13](https://img.shields.io/badge/Pharo-13-informational)](https://pharo.org)
 
-> **CI status:** the Unit Tests workflow currently fails on GitHub Actions. The Linux CI runner has no OpenCL runtime/ICD installed, so `LibraryNativeOpenCLRudesheim` fails to resolve `libOpenCL.so` at load time (`Error: Module not found.`). This is an environment limitation of the CI runner, not a known code defect — the same test suite passes locally on a machine with a working OpenCL runtime (182 Tests, 0 Failures, 0 Errors).
+> **CI status:** the Unit Tests workflow installs `pocl` (a CPU-based OpenCL implementation) as the ICD before running the suite on the Ubuntu runner, so `LibraryNativeOpenCLRudesheim` can resolve `libOpenCL.so` and at least one OpenCL platform/device is available. Locally the suite passes against a real GPU/vendor OpenCL runtime (182 Tests, 0 Failures, 0 Errors); on `pocl` some tests may behave differently since it is a software CPU implementation rather than a GPU one — if that happens, treat divergence from `pocl` as a runtime characteristic to note, not necessarily a code defect.
 
 Rudesheim OpenCL is a Pharo wrapper around OpenCL used by Rudesheim projects that need GPU or accelerator execution.
 It provides platforms, devices, contexts, command queues, programs, kernels, buffers, events, and OpenCL error objects.
