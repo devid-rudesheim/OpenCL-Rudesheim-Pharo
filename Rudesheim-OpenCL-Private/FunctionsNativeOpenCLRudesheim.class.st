@@ -207,7 +207,7 @@ FunctionsNativeOpenCLRudesheim class >> initialize [
 					parameterTypes:
 					{
 						pointer.
-						uint32.
+						uint64.
 						uint32.
 						pointer.
 						pointer.
