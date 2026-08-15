@@ -33,7 +33,7 @@ of:					aCLPlatform [
 						].
 
 				Transcript
-					showCr:
+					show:
 						'DEBUG clGetDeviceIDs args: platform=',
 						aCLPlatform idPointer printString,
 						' deviceTypeMask=',
@@ -44,6 +44,7 @@ of:					aCLPlatform [
 						actualIDs printString,
 						' actualAmount=',
 						actualAmount printString;
+					cr;
 					flush.
 
 				functions tfRunner
