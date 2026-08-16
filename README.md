@@ -114,6 +114,101 @@ queue
 The result is `#( 3.0 5.0 7.0 9.0 )`.
 OpenCL behavior depends on the host system, drivers, and available devices.
 
+## Selecting a Device Type
+
+`clDevices` returns every device on a platform. To target a specific kind of device (GPU, CPU, accelerator), use `clDevicesForType:` with one of the `Rudesheim OpenCL` device-type markers:
+
+```smalltalk
+cl := Rudesheim OpenCL.
+platform := cl Platform clPlatforms first.
+
+gpuDevices := platform clDevicesForType: { cl Gpu }.
+cpuDevices := platform clDevicesForType: { cl Cpu }.
+anyDevice  := platform clDevicesForType: { cl Default }.
+```
+
+`Gpu`, `Cpu`, `Accelerator`, `Default`, `Custom`, and `All` are all available. `clDevicesForType:` takes a collection so multiple types can be requested at once (e.g. `{ cl Gpu. cl Cpu }`).
+
+## Buffer Element Types
+
+`newCLBufferWith:elementType:` and `newCLBufferForElementCount:elementType:` work with any of the `TFBasicType` numeric kinds Rudesheim OpenCL supports — the element type decides both the buffer's byte size and how each element is marshalled, so the same two selectors cover every case:
+
+```smalltalk
+floatBuffer  := context newCLBufferWith: #( 1.5 2.5 3.5 )     elementType: TFBasicType float.
+doubleBuffer := context newCLBufferWith: #( 1.25 2.75 )       elementType: TFBasicType double.
+uint8Buffer  := context newCLBufferWith: #( 1 2 255 )         elementType: TFBasicType uint8.
+sint32Buffer := context newCLBufferWith: #( 1 -2 3 )          elementType: TFBasicType sint32.
+
+"An empty buffer sized from element count instead of content to upload:"
+emptyUint16Buffer := context newCLBufferForElementCount: 8 elementType: TFBasicType uint16.
+```
+
+`float`, `double`, `uint8`/`16`/`32`/`64`, and `sint8`/`16`/`32`/`64` are all supported. Passing an unsupported `TFBasicType` (e.g. `TFBasicType pointer`) raises `ElementTypeNotSupportedOpenCLRudesheim`.
+
+## Downloading Buffer Content
+
+`readFrom:count:elementType:` is the counterpart to `newCLBufferWith:elementType:` — pass the same element type used to create the buffer:
+
+```smalltalk
+result := queue readFrom: uint8Buffer count: 3 elementType: TFBasicType uint8.
+"result = #( 1 2 255 )"
+```
+
+A buffer created with `asOpenCLBufferRudesheim:` or read back via `BufferOpenCLRudesheim>>asArray` is always treated as `TFBasicType float`, since a bare `BufferOpenCLRudesheim` does not carry its own element type.
+
+## Mapping a Buffer for Direct Host Access
+
+Uploading via `newCLBufferWith:elementType:` copies host data in. For writing (or reading) a buffer's memory directly without a separate upload/download step, map it instead — `enqueueMap:forRange:as:options:blocking:forWait:` returns `{ hostPointer. mapEvent }`, and the returned pointer understands the same `AtOffset:put:` primitives a `ByteArray` does:
+
+```smalltalk
+buffer := context newCLBufferForElementCount: 4 elementType: TFBasicType float.
+
+mapped := queue
+	enqueueMap: buffer
+	forRange: (1 to: 4)
+	as: TFBasicType float
+	options: { Rudesheim OpenCL WriteOnly }
+	blocking: true
+	forWait: {}.
+pointer := mapped first.
+
+"Any Rudesheim OpenCL ElementType class can write directly into the mapped pointer:"
+TFBasicType float openCLElementTypeRudesheim
+	writeElementsOf: #( 1.5 2.5 3.5 4.5 )
+	intoByteArray: pointer.
+
+(queue enqueueUnmap: pointer of: buffer forWait: { mapped last }) wait.
+mapped last release.
+```
+
+There's also a block-based convenience form, `enqueueMap:forRange:as:options:blocking:forWait:do:`, that maps, runs the block with the pointer, and enqueues the matching unmap automatically — it returns the unmap `Event` rather than the block's result.
+
+## Events
+
+`newCLEvent` creates a user-triggered event, useful for gating a batch of enqueued work until some external condition is ready:
+
+```smalltalk
+event := context newCLEvent.
+
+queue
+	enqueueKernel: kernel
+	forNDRange: { { 4. 1. 1. } }
+	withArguments: { inputBuffer. outputBuffer }
+	forWait: { event }.
+
+"...later, once whatever the kernel should wait for is ready:"
+event status: 0.
+
+queue finish.
+event release.
+```
+
+Every `enqueue*` operation that isn't `...AndWait:` returns (or is passed) `Event`s the same way — `wait` blocks until complete, and `release` frees the native handle once nothing still needs it.
+
+## Releasing Resources
+
+`release` is available on buffers, command queues, programs, kernels, contexts, and events. Long-running code should release them once ownership is clear, same as any other native-backed resource — see `Usage Constraints` below.
+
 ## Usage Constraints
 
 - Kernel source is OpenCL C. Function names and argument order must match the `newCLKernelAt:withParameterTypes:` declaration.
