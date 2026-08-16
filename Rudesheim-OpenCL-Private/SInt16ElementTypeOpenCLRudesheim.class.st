@@ -20,6 +20,14 @@ SInt16ElementTypeOpenCLRudesheim class >> signed [
 	^ true.
 ]
 
+{ #category : 'reading' }
+SInt16ElementTypeOpenCLRudesheim class >> readValue:	aByteArrayOrExternalAddress
+atOffset:	anInteger [
+
+	^ aByteArrayOrExternalAddress
+		int16AtOffset:	anInteger.
+]
+
 { #category : 'writing' }
 SInt16ElementTypeOpenCLRudesheim class >> writeValue:	aNumber
 intoByteArray:	aByteArray

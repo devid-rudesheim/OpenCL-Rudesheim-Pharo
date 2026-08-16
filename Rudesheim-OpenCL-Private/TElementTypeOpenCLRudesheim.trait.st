@@ -11,6 +11,41 @@ TElementTypeOpenCLRudesheim classSide >> byteSize [
 	^ self subclassResponsibility.
 ]
 
+{ #category : 'reading' }
+TElementTypeOpenCLRudesheim classSide >> readElementsFrom:	aByteArrayOrExternalAddress
+count:	aCountInteger [
+
+	|
+		result
+	|
+
+	result := Array new: aCountInteger.
+	1
+		to: aCountInteger
+		do:
+		[ :index |
+			result
+				at:	index
+				put:
+				(
+					self
+						readValue:	aByteArrayOrExternalAddress
+						atOffset:
+						index
+							- 1
+							* self byteSize
+				).
+		].
+	^ result.
+]
+
+{ #category : 'reading' }
+TElementTypeOpenCLRudesheim classSide >> readValue:	aByteArrayOrExternalAddress
+atOffset:	anInteger [
+
+	^ self subclassResponsibility.
+]
+
 { #category : 'writing' }
 TElementTypeOpenCLRudesheim classSide >> writeElementsOf:	aCollection
 intoByteArray:	aByteArray [

@@ -106,8 +106,9 @@ queue
 	}.
 
 queue
-	readFloatsFrom: outputBuffer
+	readFrom: outputBuffer
 	count: 4
+	elementType: TFBasicType float
 ```
 
 The result is `#( 3.0 5.0 7.0 9.0 )`.

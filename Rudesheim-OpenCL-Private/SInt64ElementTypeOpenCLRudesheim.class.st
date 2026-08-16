@@ -20,6 +20,14 @@ SInt64ElementTypeOpenCLRudesheim class >> signed [
 	^ true.
 ]
 
+{ #category : 'reading' }
+SInt64ElementTypeOpenCLRudesheim class >> readValue:	aByteArrayOrExternalAddress
+atOffset:	anInteger [
+
+	^ aByteArrayOrExternalAddress
+		int64AtOffset:	anInteger.
+]
+
 { #category : 'writing' }
 SInt64ElementTypeOpenCLRudesheim class >> writeValue:	aNumber
 intoByteArray:	aByteArray

@@ -14,6 +14,14 @@ DoubleElementTypeOpenCLRudesheim class >> byteSize [
 	^ 8.
 ]
 
+{ #category : 'reading' }
+DoubleElementTypeOpenCLRudesheim class >> readValue:	aByteArrayOrExternalAddress
+atOffset:	anInteger [
+
+	^ aByteArrayOrExternalAddress
+		float64AtOffset:	anInteger.
+]
+
 { #category : 'writing' }
 DoubleElementTypeOpenCLRudesheim class >> writeValue:	aNumber
 intoByteArray:	aByteArray

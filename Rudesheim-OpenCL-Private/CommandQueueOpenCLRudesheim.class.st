@@ -566,48 +566,9 @@ CommandQueueOpenCLRudesheim >> flush [
 ]
 
 { #category : 'accessing' }
-CommandQueueOpenCLRudesheim >> readDoublesFrom:	aCLBuffer
-count:				aCountInteger [
-	"See readFloatsFrom:count: for why the returned unmap Event is waited on
-	and then explicitly released, not just waited on."
-	|
-		cl
-		result
-		unmapEvent
-	|
-
-	cl := Rudesheim OpenCL.
-	result := Array new: aCountInteger.
-
-	unmapEvent :=
-		self
-			enqueueMap:		aCLBuffer
-			forRange:		( 1 to: aCountInteger )
-			as:				TFBasicType double
-			options:		{ cl ReadOnly }
-			blocking:		true
-			forWait:		{}
-			do:
-			[ :rawPointer |
-				1
-					to:	aCountInteger
-					do:
-					[ :index |
-						result
-							at:		index
-							put:	( rawPointer float64AtOffset: ( index - 1 ) * TFBasicType double byteSize ).
-					].
-			].
-
-	unmapEvent wait.
-	unmapEvent release.
-
-	^ result.
-]
-
-{ #category : 'accessing' }
-CommandQueueOpenCLRudesheim >> readFloatsFrom:	aCLBuffer
-count:				aCountInteger [
+CommandQueueOpenCLRudesheim >> readFrom:	aCLBuffer
+count:	aCountInteger
+elementType:	aTFBasicType [
 	"enqueueMap:...do: returns the unmap Event (its own map Event is already
 	released internally). Waiting on it without releasing it afterward would
 	leak one native cl_event per download -- across a resnet50 forward:
@@ -616,31 +577,29 @@ count:				aCountInteger [
 	content (see note/pharo-ops.md 34節)."
 	|
 		cl
+		elementTypeClass
 		result
 		unmapEvent
 	|
 
 	cl := Rudesheim OpenCL.
-	result := Array new: aCountInteger.
+	elementTypeClass := aTFBasicType openCLElementTypeRudesheim.
+	result := nil.
 
 	unmapEvent :=
 		self
 			enqueueMap:		aCLBuffer
 			forRange:		( 1 to: aCountInteger )
-			as:				TFBasicType float
+			as:				aTFBasicType
 			options:		{ cl ReadOnly }
 			blocking:		true
 			forWait:		{}
 			do:
 			[ :rawPointer |
-				1
-					to:	aCountInteger
-					do:
-					[ :index |
-						result
-							at:		index
-							put:	( rawPointer float32AtOffset: ( index - 1 ) * TFBasicType float byteSize ).
-					].
+				result :=
+					elementTypeClass
+						readElementsFrom:	rawPointer
+						count:	aCountInteger.
 			].
 
 	unmapEvent wait.

@@ -20,6 +20,14 @@ UInt8ElementTypeOpenCLRudesheim class >> signed [
 	^ false.
 ]
 
+{ #category : 'reading' }
+UInt8ElementTypeOpenCLRudesheim class >> readValue:	aByteArrayOrExternalAddress
+atOffset:	anInteger [
+
+	^ aByteArrayOrExternalAddress
+		uint8AtOffset:	anInteger.
+]
+
 { #category : 'writing' }
 UInt8ElementTypeOpenCLRudesheim class >> writeValue:	aNumber
 intoByteArray:	aByteArray

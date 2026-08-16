@@ -119,7 +119,13 @@ BufferOpenCLRudesheimReadStabilityTest >> testPureHostReadsOfPersistentBufferAre
 	50 timesRepeat:
 	[
 		self
-			assert:	( queue readFloatsFrom: buffer count: 8 )
+			assert:
+			(
+				queue
+					readFrom:	buffer
+					count:	8
+					elementType:	TFBasicType float
+			)
 			equals:	expectedValues.
 	].
 
@@ -174,7 +180,15 @@ BufferOpenCLRudesheimReadStabilityTest >> testFreshBuffersRoundTripThroughIdenti
 		kernelEvent wait.
 		kernelEvent release.
 
-		( ( queue readFloatsFrom: outputBuffer count: 8 ) = expectedValues )
+		(
+			(
+				queue
+					readFrom:	outputBuffer
+					count:	8
+					elementType:	TFBasicType float
+			)
+				= expectedValues
+		)
 			ifFalse: [ failureCount := failureCount + 1 ].
 
 		inputBuffer release.
@@ -253,7 +267,15 @@ BufferOpenCLRudesheimReadStabilityTest >> runRepeatedKernelReadsOfPersistentBuff
 		kernelEvent wait.
 		kernelEvent release.
 
-		( ( queue readFloatsFrom: outputBuffer count: 8 ) = expectedValues )
+		(
+			(
+				queue
+					readFrom:	outputBuffer
+					count:	8
+					elementType:	TFBasicType float
+			)
+				= expectedValues
+		)
 			ifFalse: [ failureCount := failureCount + 1 ].
 
 		outputBuffer release.

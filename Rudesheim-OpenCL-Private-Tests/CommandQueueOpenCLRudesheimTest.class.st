@@ -1100,7 +1100,7 @@ CommandQueueOpenCLRudesheimTest >> testEnqueueMapForRangeAsOptionsBlockingForWai
 ]
 
 { #category : 'tests' }
-CommandQueueOpenCLRudesheimTest >> testNewCLBufferWithDoublesReadDoublesFrom0_0 [
+CommandQueueOpenCLRudesheimTest >> testReadFromCountElementTypeRoundTripsDouble0_0 [
 	|
 		target
 		buffer
@@ -1122,8 +1122,9 @@ CommandQueueOpenCLRudesheimTest >> testNewCLBufferWithDoublesReadDoublesFrom0_0 
 
 	result :=
 		target
-			readDoublesFrom:	buffer
-			count:				4.
+			readFrom:	buffer
+			count:	4
+			elementType:	TFBasicType double.
 
 	self
 		assertCollection:	result
@@ -1134,7 +1135,7 @@ CommandQueueOpenCLRudesheimTest >> testNewCLBufferWithDoublesReadDoublesFrom0_0 
 ]
 
 { #category : 'tests' }
-CommandQueueOpenCLRudesheimTest >> testNewCLBufferWithFloatsReadFloatsFrom0_0 [
+CommandQueueOpenCLRudesheimTest >> testReadFromCountElementTypeRoundTripsFloat0_0 [
 	|
 		target
 		buffer
@@ -1156,8 +1157,9 @@ CommandQueueOpenCLRudesheimTest >> testNewCLBufferWithFloatsReadFloatsFrom0_0 [
 
 	result :=
 		target
-			readFloatsFrom:	buffer
-			count:				4.
+			readFrom:	buffer
+			count:	4
+			elementType:	TFBasicType float.
 
 	self
 		assertCollection:	result
