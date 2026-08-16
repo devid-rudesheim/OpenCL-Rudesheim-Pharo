@@ -114,6 +114,18 @@ queue
 The result is `#( 3.0 5.0 7.0 9.0 )`.
 OpenCL behavior depends on the host system, drivers, and available devices.
 
+The outer `forNDRange:` array mirrors the three optional NDRange pointers passed to `clEnqueueNDRangeKernel`, in this order:
+
+```smalltalk
+{
+	globalWorkSize.
+	localWorkSize.
+	globalWorkOffset.
+}
+```
+
+Only `globalWorkSize` is required, so `forNDRange: { { 4. 1. 1. } }` launches a three-dimensional NDRange with global size `4 x 1 x 1`, while leaving local size and global offset unspecified. To choose a local work-group size, include the second entry, for example `forNDRange: { { 1024 }. { 64 } }`. To also set the offset, include the third entry, for example `forNDRange: { { 1024 }. { 64 }. { 0 } }`.
+
 ## Selecting a Device Type
 
 `clDevices` returns every device on a platform. To target a specific kind of device (GPU, CPU, accelerator), use `clDevicesForType:` with one of the `Rudesheim OpenCL` device-type markers:
