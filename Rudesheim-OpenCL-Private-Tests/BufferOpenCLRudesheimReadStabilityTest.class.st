@@ -7,8 +7,8 @@ over time used to unreliably return stale/garbage content on a later host-side r
 observed rate of roughly 40-57% over 300 trials, while the same buffer read purely host-side (no
 kernel involved) or a buffer pattern where every buffer is freshly created and released within its
 own trial were both overwhelmingly reliable. The root cause turned out to be a genuine
-use-after-free in this codebase, not a native/driver defect: ContextOpenCLRudesheim>>
-newCLBufferWith:elementType: created the CL_MEM_USE_HOST_PTR-backing host memory
+use-after-free in this codebase, not a native/driver defect:	ContextOpenCLRudesheim>>
+newCLBufferWith:elementType:	created the CL_MEM_USE_HOST_PTR-backing host memory
 via ExternalAddress class>>gcallocate: (freed as soon as its wrapper is unreachable) without
 retaining any Smalltalk-side reference to it past buffer creation. Fixed by backing these buffers
 with a ByteArray retained on the buffer object itself for the buffer's lifetime (see
@@ -111,7 +111,10 @@ BufferOpenCLRudesheimReadStabilityTest >> testPureHostReadsOfPersistentBufferAre
 
 	queue := self clQueue.
 	expectedValues := #( 1.0 2.0 3.0 4.0 5.0 6.0 7.0 8.0 ).
-	buffer := self clContext newCLBufferWith: expectedValues elementType: TFBasicType float.
+	buffer :=
+		self clContext
+			newCLBufferWith:	expectedValues
+			elementType:	TFBasicType float.
 
 	50 timesRepeat:
 	[
@@ -154,8 +157,14 @@ BufferOpenCLRudesheimReadStabilityTest >> testFreshBuffersRoundTripThroughIdenti
 			kernelEvent
 		|
 
-		inputBuffer := self clContext newCLBufferWith: expectedValues elementType: TFBasicType float.
-		outputBuffer := self clContext newCLBufferForElementCount: 8 elementType: TFBasicType float.
+		inputBuffer :=
+			self clContext
+				newCLBufferWith:	expectedValues
+				elementType:	TFBasicType float.
+		outputBuffer :=
+			self clContext
+				newCLBufferForElementCount:	8
+				elementType:	TFBasicType float.
 
 		kernelEvent :=
 			queue
@@ -218,7 +227,10 @@ BufferOpenCLRudesheimReadStabilityTest >> runRepeatedKernelReadsOfPersistentBuff
 	queue := self clQueue.
 	expectedValues := #( 1.0 2.0 3.0 4.0 5.0 6.0 7.0 8.0 ).
 	kernel := self identityKernel.
-	inputBuffer := self clContext newCLBufferWith: expectedValues elementType: TFBasicType float.
+	inputBuffer :=
+		self clContext
+			newCLBufferWith:	expectedValues
+			elementType:	TFBasicType float.
 	trialCount := 300.
 	failureCount := 0.
 
@@ -229,7 +241,10 @@ BufferOpenCLRudesheimReadStabilityTest >> runRepeatedKernelReadsOfPersistentBuff
 			kernelEvent
 		|
 
-		outputBuffer := self clContext newCLBufferForElementCount: 8 elementType: TFBasicType float.
+		outputBuffer :=
+			self clContext
+				newCLBufferForElementCount:	8
+				elementType:	TFBasicType float.
 		kernelEvent :=
 			queue
 				enqueueKernel:	kernel

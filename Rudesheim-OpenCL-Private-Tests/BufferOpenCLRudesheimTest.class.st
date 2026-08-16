@@ -101,7 +101,10 @@ BufferOpenCLRudesheimTest >> testAsArrayRoundTripsThroughUpload [
 	|
 
 	queue := self clQueue.
-	uploaded := self clContext newCLBufferWith: #( 1.0 -2.0 3.5 ) elementType: TFBasicType float.
+	uploaded :=
+		self clContext
+			newCLBufferWith:	#( 1.0 -2.0 3.5 )
+			elementType:	TFBasicType float.
 	uploaded
 		count:	3;
 		queue:	queue.
@@ -140,12 +143,18 @@ BufferOpenCLRudesheimTest >> testRudesheimConcatenatedWithMergesTwoBuffersOnGPUW
 	|
 
 	queue := self clQueue.
-	bufferA := self clContext newCLBufferWith: #( 1.0 2.0 ) elementType: TFBasicType float.
+	bufferA :=
+		self clContext
+			newCLBufferWith:	#( 1.0 2.0 )
+			elementType:	TFBasicType float.
 	bufferA
 		count:		2;
 		queue:		queue;
 		context:	self clContext.
-	bufferB := self clContext newCLBufferWith: #( 3.0 4.0 5.0 ) elementType: TFBasicType float.
+	bufferB :=
+		self clContext
+			newCLBufferWith:	#( 3.0 4.0 5.0 )
+			elementType:	TFBasicType float.
 	bufferB
 		count:		3;
 		queue:		queue;
@@ -172,7 +181,10 @@ BufferOpenCLRudesheimTest >> testRudesheimConcatenatedWithUploadsAndReleasesPlai
 	|
 
 	queue := self clQueue.
-	bufferA := self clContext newCLBufferWith: #( 1.0 2.0 ) elementType: TFBasicType float.
+	bufferA :=
+		self clContext
+			newCLBufferWith:	#( 1.0 2.0 )
+			elementType:	TFBasicType float.
 	bufferA
 		count:		2;
 		queue:		queue;
@@ -196,7 +208,10 @@ BufferOpenCLRudesheimTest >> testSequenceableCollectionRudesheimConcatenatedWith
 	|
 
 	queue := self clQueue.
-	bufferB := self clContext newCLBufferWith: #( 3.0 4.0 ) elementType: TFBasicType float.
+	bufferB :=
+		self clContext
+			newCLBufferWith:	#( 3.0 4.0 )
+			elementType:	TFBasicType float.
 	bufferB
 		count:	2;
 		queue:	queue.
@@ -231,12 +246,23 @@ BufferOpenCLRudesheimTest >> testNewCLBufferWithElementTypeRoundTripsSInt32Bytes
 		expectedBytes
 	|
 
-	buffer := self clContext newCLBufferWith: #( 1 -2 3 ) elementType: TFBasicType sint32.
+	buffer :=
+		self clContext
+			newCLBufferWith:	#( 1 -2 3 )
+			elementType:	TFBasicType sint32.
 
-	expectedBytes := ByteArray new: 12.
-	expectedBytes int32AtOffset: 0 put: 1.
-	expectedBytes int32AtOffset: 4 put: -2.
-	expectedBytes int32AtOffset: 8 put: 3.
+	expectedBytes :=
+		ByteArray
+			new:	12.
+	expectedBytes
+		int32AtOffset:	0
+		put:	1.
+	expectedBytes
+		int32AtOffset:	4
+		put:	-2.
+	expectedBytes
+		int32AtOffset:	8
+		put:	3.
 
 	self
 		assert:	buffer hostByteArray
@@ -251,7 +277,10 @@ BufferOpenCLRudesheimTest >> testNewCLBufferWithElementTypeRoundTripsUInt8Bytes 
 		buffer
 	|
 
-	buffer := self clContext newCLBufferWith: #( 1 2 255 ) elementType: TFBasicType uint8.
+	buffer :=
+		self clContext
+			newCLBufferWith:	#( 1 2 255 )
+			elementType:	TFBasicType uint8.
 
 	self
 		assert:	buffer hostByteArray

@@ -73,7 +73,7 @@ ElementTypeOpenCLRudesheim class >> UInt8 [
 ]
 
 { #category : 'accessing' }
-ElementTypeOpenCLRudesheim class >> forInteger: aTFIntType [
+ElementTypeOpenCLRudesheim class >> forInteger:	aTFIntType [
 
 	^ self integerElementTypes
 		detect:
@@ -98,5 +98,14 @@ ElementTypeOpenCLRudesheim class >> forInteger: aTFIntType [
 { #category : 'accessing' }
 ElementTypeOpenCLRudesheim class >> integerElementTypes [
 
-	^ {self UInt8 .  self UInt16 .  self UInt32 .  self UInt64 .  self SInt8 .  self SInt16 .  self SInt32 .  self SInt64}.
+	^ {
+		self UInt8.
+		self UInt16.
+		self UInt32.
+		self UInt64.
+		self SInt8.
+		self SInt16.
+		self SInt32.
+		self SInt64.
+	}.
 ]

@@ -144,15 +144,17 @@ ContextOpenCLRudesheim >> kernelCache [
 ]
 
 { #category : 'instance creation' }
-ContextOpenCLRudesheim >> newCLBufferForElementCount: anElementCountInteger elementType: aTFBasicType [
+ContextOpenCLRudesheim >> newCLBufferForElementCount:	anElementCountInteger
+elementType:	aTFBasicType [
 
 	^ self
 		newCLBufferForSize:	anElementCountInteger * aTFBasicType openCLElementTypeRudesheim byteSize
 ]
 
 { #category : 'instance creation' }
-ContextOpenCLRudesheim >> newCLBufferForElementCount: anElementCountInteger elementType: aTFBasicType
-options: aCLTBufferDefineCollection [
+ContextOpenCLRudesheim >> newCLBufferForElementCount:	anElementCountInteger
+elementType:	aTFBasicType
+options:	aCLTBufferDefineCollection [
 
 	^ self
 		newCLBufferForSize:	anElementCountInteger * aTFBasicType openCLElementTypeRudesheim byteSize
@@ -205,7 +207,8 @@ ContextOpenCLRudesheim >> newCLBufferWith:	aByteArray [
 ]
 
 { #category : 'instance creation' }
-ContextOpenCLRudesheim >> newCLBufferWith: aCollection elementType: aTFBasicType [
+ContextOpenCLRudesheim >> newCLBufferWith:	aCollection
+elementType:	aTFBasicType [
 	"See the comment on newCLBufferWith:elementType:options: -- CL_MEM_USE_HOST_PTR is safe here
 	only because the host pointer comes from a permanently-pinned ByteArray, not from
 	ExternalAddress class>>gcallocate: -- see note/pharo-ops.md 34節."
@@ -221,8 +224,9 @@ ContextOpenCLRudesheim >> newCLBufferWith: aCollection elementType: aTFBasicType
 ]
 
 { #category : 'instance creation' }
-ContextOpenCLRudesheim >> newCLBufferWith: aCollection elementType: aTFBasicType
-options: aCLTBufferDefineCollection [
+ContextOpenCLRudesheim >> newCLBufferWith:	aCollection
+elementType:	aTFBasicType
+options:	aCLTBufferDefineCollection [
 	"Builds the host-side ByteArray via #tfPointerAddress (BufferOpenCLRudesheim class>>
 	clBufferWith:options:of:), which permanently pins it (Object>>pinInMemory, never unpinned),
 	rather than handing the driver a raw pointer backed by ExternalAddress class>>gcallocate:.
@@ -241,7 +245,9 @@ options: aCLTBufferDefineCollection [
 	|
 
 	elementTypeClass := aTFBasicType openCLElementTypeRudesheim.
-	byteArray := ByteArray new: aCollection size * elementTypeClass byteSize.
+	byteArray :=
+		ByteArray
+			new:	aCollection size * elementTypeClass byteSize.
 
 	elementTypeClass
 		writeElementsOf:	aCollection

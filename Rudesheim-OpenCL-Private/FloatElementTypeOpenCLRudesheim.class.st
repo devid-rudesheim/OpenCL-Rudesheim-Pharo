@@ -15,9 +15,9 @@ FloatElementTypeOpenCLRudesheim class >> byteSize [
 ]
 
 { #category : 'writing' }
-FloatElementTypeOpenCLRudesheim class >> writeValue: aNumber
-intoByteArray: aByteArray
-atOffset: anInteger [
+FloatElementTypeOpenCLRudesheim class >> writeValue:	aNumber
+intoByteArray:	aByteArray
+atOffset:	anInteger [
 
 	^ aByteArray
 		float32AtOffset:	anInteger

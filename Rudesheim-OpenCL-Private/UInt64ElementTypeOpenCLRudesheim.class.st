@@ -21,9 +21,9 @@ UInt64ElementTypeOpenCLRudesheim class >> signed [
 ]
 
 { #category : 'writing' }
-UInt64ElementTypeOpenCLRudesheim class >> writeValue: aNumber
-intoByteArray: aByteArray
-atOffset: anInteger [
+UInt64ElementTypeOpenCLRudesheim class >> writeValue:	aNumber
+intoByteArray:	aByteArray
+atOffset:	anInteger [
 
 	^ aByteArray
 		uint64AtOffset:	anInteger

@@ -12,8 +12,8 @@ TElementTypeOpenCLRudesheim classSide >> byteSize [
 ]
 
 { #category : 'writing' }
-TElementTypeOpenCLRudesheim classSide >> writeElementsOf: aCollection
-intoByteArray: aByteArray [
+TElementTypeOpenCLRudesheim classSide >> writeElementsOf:	aCollection
+intoByteArray:	aByteArray [
 
 	aCollection
 		withIndexDo:
@@ -29,9 +29,9 @@ intoByteArray: aByteArray [
 ]
 
 { #category : 'writing' }
-TElementTypeOpenCLRudesheim classSide >> writeValue: aNumber
-intoByteArray: aByteArray
-atOffset: anInteger [
+TElementTypeOpenCLRudesheim classSide >> writeValue:	aNumber
+intoByteArray:	aByteArray
+atOffset:	anInteger [
 
 	^ self subclassResponsibility.
 ]

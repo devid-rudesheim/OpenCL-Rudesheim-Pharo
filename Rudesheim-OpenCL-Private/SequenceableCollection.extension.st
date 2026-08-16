@@ -1,15 +1,20 @@
 Extension { #name : 'SequenceableCollection' }
 
 { #category : '*Rudesheim-OpenCL-Private' }
-SequenceableCollection >> asOpenCLBufferRudesheim: aContextOpenCLRudesheim [
+SequenceableCollection >> asOpenCLBufferRudesheim:	aContextOpenCLRudesheim [
 	"Uploads this collection as a fresh OpenCL buffer. Counterpart to
 	BufferOpenCLRudesheim>>asOpenCLBufferRudesheim:, which is a same-context
 	no-op -- together they let a Layer forward: upload only when its input
 	isn't already an OpenCL buffer. See
 	note/opencl-layer-buffer-passthrough-design.md."
 
-	^ (aContextOpenCLRudesheim newCLBufferWith: self elementType: TFBasicType float)
-		count: self size;
+	^
+	(
+		aContextOpenCLRudesheim
+			newCLBufferWith:	self
+			elementType:	TFBasicType float
+	)
+		count:	self size;
 		yourself
 ]
 

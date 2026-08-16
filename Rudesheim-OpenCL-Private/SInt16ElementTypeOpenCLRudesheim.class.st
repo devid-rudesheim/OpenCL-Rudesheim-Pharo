@@ -21,9 +21,9 @@ SInt16ElementTypeOpenCLRudesheim class >> signed [
 ]
 
 { #category : 'writing' }
-SInt16ElementTypeOpenCLRudesheim class >> writeValue: aNumber
-intoByteArray: aByteArray
-atOffset: anInteger [
+SInt16ElementTypeOpenCLRudesheim class >> writeValue:	aNumber
+intoByteArray:	aByteArray
+atOffset:	anInteger [
 
 	^ aByteArray
 		int16AtOffset:	anInteger

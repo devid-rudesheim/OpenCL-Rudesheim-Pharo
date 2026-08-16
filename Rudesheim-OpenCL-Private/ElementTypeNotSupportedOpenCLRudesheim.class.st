@@ -10,7 +10,7 @@ Class {
 }
 
 { #category : 'instance creation' }
-ElementTypeNotSupportedOpenCLRudesheim class >> signalForElementType: aTFBasicType [
+ElementTypeNotSupportedOpenCLRudesheim class >> signalForElementType:	aTFBasicType [
 
 	^ self basicNew
 		signalForElementType:	aTFBasicType.
@@ -23,7 +23,7 @@ ElementTypeNotSupportedOpenCLRudesheim >> elementType [
 ]
 
 { #category : 'accessing' }
-ElementTypeNotSupportedOpenCLRudesheim >> elementType: aTFBasicType [
+ElementTypeNotSupportedOpenCLRudesheim >> elementType:	aTFBasicType [
 
 	elementType := aTFBasicType.
 ]
@@ -38,7 +38,7 @@ ElementTypeNotSupportedOpenCLRudesheim >> messageText [
 ]
 
 { #category : 'signaling' }
-ElementTypeNotSupportedOpenCLRudesheim >> signalForElementType: aTFBasicType [
+ElementTypeNotSupportedOpenCLRudesheim >> signalForElementType:	aTFBasicType [
 
 	self
 		elementType:	aTFBasicType.
