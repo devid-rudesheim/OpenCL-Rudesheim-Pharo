@@ -3,7 +3,7 @@ A PlatformOpenCLRudesheimTest is a test class for testing the behavior of Platfo
 "
 Class {
 	#name : 'PlatformOpenCLRudesheimTest',
-	#superclass : 'BasicRudesheimTest',
+	#superclass : 'BasicOpenCLRudesheimTest',
 	#category : 'Rudesheim-OpenCL-Private-Tests-Objects',
 	#package : 'Rudesheim-OpenCL-Private-Tests',
 	#tag : 'Objects'
@@ -89,7 +89,7 @@ kernel void Fill( global unsigned int *output )
 }
 						'
 					}
-					withOptions:	'-cl-std=CL2.0'.
+					withOptions:	self defaultCLStdOption.
 
 			increment :=	
 				program

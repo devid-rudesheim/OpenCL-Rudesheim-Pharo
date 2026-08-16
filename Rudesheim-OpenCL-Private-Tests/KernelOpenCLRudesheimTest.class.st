@@ -3,7 +3,7 @@ A KernelOpenCLRudesheimTest is a test class for testing the behavior of KernelOp
 "
 Class {
 	#name : 'KernelOpenCLRudesheimTest',
-	#superclass : 'BasicRudesheimTest',
+	#superclass : 'BasicOpenCLRudesheimTest',
 	#instVars : [
 		'clDevices',
 		'clContext'
@@ -59,7 +59,7 @@ kernel void Zero()
 }
 					'
 				}
-				withOptions:	'-cl-std=CL2.0'
+				withOptions:	self defaultCLStdOption
 		).
 ]
 
@@ -103,7 +103,7 @@ kernel void Two( global unsigned int *one, unsigned int two )
 }
 						'
 					}
-					withOptions:	'-cl-std=CL2.0'
+					withOptions:	self defaultCLStdOption
 			).
 
 	self sourceValue last

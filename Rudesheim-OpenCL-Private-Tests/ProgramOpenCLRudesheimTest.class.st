@@ -3,7 +3,7 @@ A ProgramOpenCLRudesheimTest is a test class for testing the behavior of Program
 "
 Class {
 	#name : 'ProgramOpenCLRudesheimTest',
-	#superclass : 'BasicRudesheimTest',
+	#superclass : 'BasicOpenCLRudesheimTest',
 	#instVars : [
 		'clDevices',
 		'clContext'
@@ -54,7 +54,7 @@ kernel void Zero()
 }
 			'
 		}
-		withOptions:	'-cl-std=CL2.0'.
+		withOptions:	self defaultCLStdOption.
 ]
 
 { #category : 'accessing' }
@@ -98,7 +98,7 @@ kernel void Two()
 }
 				'
 			}
-			withOptions:	'-cl-std=CL2.0'
+			withOptions:	self defaultCLStdOption
 			of:
 			(
 				cl Context
@@ -133,7 +133,7 @@ ProgramOpenCLRudesheimTest >> testBuildCLProgramForFromSourcesWithOptionsOfDetai
 				{
 					'kernel void Broken( global unsigned int *output ) { output[0] = ; }'
 				}
-				withOptions:	'-cl-std=CL2.0'.
+				withOptions:	self defaultCLStdOption.
 			nil.
 		]
 			on: ProgramBuildFailedOpenCLRudesheim
@@ -171,7 +171,7 @@ ProgramOpenCLRudesheimTest >> testCompileCLProgramForFromSourcesWithOptionsHeade
 				{
 					'kernel void NeverCompiled() { }'
 				}
-				withOptions:	'-cl-std=CL2.0'
+				withOptions:	self defaultCLStdOption
 				headers:		{ }.
 			nil.
 		]
@@ -284,7 +284,7 @@ ProgramOpenCLRudesheimTest >> testNewCLProgramByLinkingForWithOptionsNotSupporte
 			{
 				'kernel void NeverLinked() { }'
 			}
-			withOptions:	'-cl-std=CL2.0'.
+			withOptions:	self defaultCLStdOption.
 
 	caughtError :=
 		[

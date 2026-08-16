@@ -3,7 +3,7 @@ A CommandQueueOpenCLRudesheimTest is a test class for testing the behavior of Co
 "
 Class {
 	#name : 'CommandQueueOpenCLRudesheimTest',
-	#superclass : 'BasicRudesheimTest',
+	#superclass : 'BasicOpenCLRudesheimTest',
 	#instVars : [
 		'clDevices',
 		'clContext',
@@ -151,7 +151,7 @@ kernel void SlowLoopRudesheim( global unsigned int *output, unsigned int iterati
 }
 			'
 		}
-		withOptions:		'-cl-std=CL2.0'.
+		withOptions:		self defaultCLStdOption.
 
 ]
 
