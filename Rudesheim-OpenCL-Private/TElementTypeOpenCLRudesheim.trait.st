@@ -19,9 +19,11 @@ count:	aCountInteger [
 		result
 	|
 
-	result := Array new: aCountInteger.
+	result :=
+		Array
+			new:	aCountInteger.
 	1
-		to: aCountInteger
+		to:	aCountInteger
 		do:
 		[ :index |
 			result
@@ -30,10 +32,7 @@ count:	aCountInteger [
 				(
 					self
 						readValue:	aByteArrayOrExternalAddress
-						atOffset:
-						index
-							- 1
-							* self byteSize
+						atOffset:	( index - 1 ) * self byteSize
 				).
 		].
 	^ result.
@@ -56,10 +55,7 @@ intoByteArray:	aByteArray [
 			self
 				writeValue:	each
 				intoByteArray:	aByteArray
-				atOffset:
-				index
-					- 1
-					* self byteSize.
+				atOffset:	( index - 1 ) * self byteSize.
 		].
 ]
 

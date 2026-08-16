@@ -78,15 +78,8 @@ ElementTypeOpenCLRudesheim class >> forInteger:	aTFIntType [
 	^ self integerElementTypes
 		detect:
 		[ :eachElementTypeClass |
-			eachElementTypeClass
-				byteSize
-				= aTFIntType byteSize
-				and:
-				[
-					eachElementTypeClass
-						signed
-						= aTFIntType signed.
-				].
+			eachElementTypeClass byteSize = aTFIntType byteSize
+				and: [ eachElementTypeClass signed = aTFIntType signed ].
 		]
 		ifNone:
 		[

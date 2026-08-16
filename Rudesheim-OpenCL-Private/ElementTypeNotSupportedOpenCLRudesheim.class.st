@@ -31,10 +31,7 @@ ElementTypeNotSupportedOpenCLRudesheim >> elementType:	aTFBasicType [
 { #category : 'accessing' }
 ElementTypeNotSupportedOpenCLRudesheim >> messageText [
 
-	^ self
-		elementType
-		printString
-		, ' is not a supported OpenCL buffer element type.'.
+	^ self elementType printString , ' is not a supported OpenCL buffer element type.'.
 ]
 
 { #category : 'signaling' }

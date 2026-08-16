@@ -3,8 +3,5 @@ Extension { #name : 'TFDoubleType' }
 { #category : '*Rudesheim-OpenCL-Private' }
 TFDoubleType >> openCLElementTypeRudesheim [
 
-	^ Rudesheim
-		OpenCL
-		ElementType
-		Double.
+	^ Rudesheim OpenCL ElementType Double.
 ]
