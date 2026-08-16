@@ -3,7 +3,7 @@ An EventOpenCLRudesheimTest is a test class for testing the behavior of EventOpe
 "
 Class {
 	#name : 'EventOpenCLRudesheimTest',
-	#superclass : 'BasicRudesheimTest',
+	#superclass : 'BasicOpenCLRudesheimTest',
 	#category : 'Rudesheim-OpenCL-Private-Tests-Objects',
 	#package : 'Rudesheim-OpenCL-Private-Tests',
 	#tag : 'Objects'
@@ -67,7 +67,7 @@ kernel void SlowLoopRudesheim( global unsigned int *output, unsigned int iterati
 }
 				'
 			}
-			withOptions:	'-cl-std=CL2.0'.
+			withOptions:	self defaultCLStdOption.
 
 	queue :=
 		cl CommandQueue
