@@ -156,14 +156,15 @@ ProgramOpenCLRudesheimTest >> testCompileCLProgramForFromSourcesWithOptionsHeade
 		cl
 		devices
 		context
-		caughtError
 	|
 
 	cl := Rudesheim OpenCL.
 	devices := cl Platform clPlatforms first clDevices.
 	context := cl Context clContextFor: devices.
 
-	caughtError :=
+	( Smalltalk os rudesheim openCLTestAsserter )
+		for:	self
+		should:
 		[
 			context
 				compileCLProgramFor:	devices
@@ -173,18 +174,8 @@ ProgramOpenCLRudesheimTest >> testCompileCLProgramForFromSourcesWithOptionsHeade
 				}
 				withOptions:	self defaultCLStdOption
 				headers:		{ }.
-			nil.
 		]
-			on: ProgramCompileNotSupportedOpenCLRudesheim
-			do:
-			[ :anError |
-				anError.
-			].
-
-	self
-		assert:	caughtError notNil.
-	self
-		assert:	( caughtError messageText includesSubstring: 'not supported on this platform' ).
+		raiseCompileOrLinkError:	Rudesheim OpenCL Native Error ProgramCompileNotSupported.
 ]
 
 { #category : 'tests' }
@@ -270,7 +261,6 @@ ProgramOpenCLRudesheimTest >> testNewCLProgramByLinkingForWithOptionsNotSupporte
 		devices
 		context
 		program
-		caughtError
 	|
 
 	cl := Rudesheim OpenCL.
@@ -286,7 +276,9 @@ ProgramOpenCLRudesheimTest >> testNewCLProgramByLinkingForWithOptionsNotSupporte
 			}
 			withOptions:	self defaultCLStdOption.
 
-	caughtError :=
+	( Smalltalk os rudesheim openCLTestAsserter )
+		for:	self
+		should:
 		[
 			context
 				newCLProgramByLinking:
@@ -295,16 +287,6 @@ ProgramOpenCLRudesheimTest >> testNewCLProgramByLinkingForWithOptionsNotSupporte
 				}
 				for:				devices
 				withOptions:		''.
-			nil.
 		]
-			on: ProgramLinkNotSupportedOpenCLRudesheim
-			do:
-			[ :anError |
-				anError.
-			].
-
-	self
-		assert:	caughtError notNil.
-	self
-		assert:	( caughtError messageText includesSubstring: 'not supported on this platform' ).
+		raiseCompileOrLinkError:	Rudesheim OpenCL Native Error ProgramLinkNotSupported.
 ]
