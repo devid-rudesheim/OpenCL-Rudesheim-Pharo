@@ -141,11 +141,14 @@ BufferOpenCLRudesheim >> asArray [
 	"Downloads this buffer's content into a plain Array. Requires count/queue to
 	already be set -- see the comments on the count:/queue: setters. Does not
 	release the buffer; see class comment / note/opencl-layer-buffer-passthrough-design.md
-	for the ownership rules that decide who does."
+	for the ownership rules that decide who does. This buffer does not itself carry an
+	elementType (only count/queue/context) -- asArray has always assumed float content,
+	same as before newCLBufferWith:elementType: existed."
 
 	^ self queue
-		readFloatsFrom:	self
-		count:				self count.
+		readFrom:	self
+		count:	self count
+		elementType:	TFBasicType float.
 ]
 
 { #category : 'converting' }
@@ -184,7 +187,10 @@ BufferOpenCLRudesheim >> rudesheimConcatenatedWith: anotherValue [
 
 	anotherBuffer := anotherValue asOpenCLBufferRudesheim: self context.
 	combinedCount := self count + anotherBuffer count.
-	combinedBuffer := self context newCLBufferForSize: combinedCount * TFBasicType float byteSize.
+	combinedBuffer :=
+		self context
+			newCLBufferForElementCount:	combinedCount
+			elementType:	TFBasicType float.
 	combinedBuffer
 		count:		combinedCount;
 		queue:		self queue;
