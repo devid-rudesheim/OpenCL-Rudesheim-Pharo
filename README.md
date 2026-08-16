@@ -244,7 +244,7 @@ gate release.
 
 ## Releasing Resources
 
-`release` is available on buffers, command queues, programs, kernels, contexts, and events. Long-running code should release them once ownership is clear, same as any other native-backed resource — see `Usage Constraints` below.
+`release` is available on buffers, command queues, programs, kernels, contexts, and events — every one of them is a `HandleNativeOpenCLRudesheim` subclass, and all of them register with Pharo's `FFIExternalResourceManager` at creation time, so an unreleased instance *does* eventually get its native handle cleaned up when the Smalltalk object is garbage collected. That auto-release is a safety net, not a substitute for calling `release` promptly: the GC finalizer that drives it doesn't run between iterations of a tight loop, so code that creates many buffers/events without releasing them can exhaust the native external-object table before the finalizer ever gets a chance to run (`Error: Not enough space for external objects`). Release explicitly once ownership is clear, same as any other native-backed resource — see `Usage Constraints` below.
 
 ## Usage Constraints
 
