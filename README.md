@@ -5,7 +5,7 @@
 
 [![Pharo 13](https://img.shields.io/badge/Pharo-13-informational)](https://pharo.org)
 
-> **CI status:** the Unit Tests workflow installs `pocl` (a CPU-based OpenCL implementation) as the ICD before running the suite on the Ubuntu runner. The `clGetDeviceIDs`/`clGetPlatformIDs` segfault previously reported here was **not** a `pocl`/threaded-FFI-worker incompatibility as first suspected — it was a bug in this package's own ID-array readback code (`IDNativeOpenCLRudesheim class>>onDo:`): the native call writes an array of pointer-sized (8-byte) IDs, but the Smalltalk side read them back as 4-byte `uint32` values at the wrong byte offset, silently truncating every ID to its lower 32 bits. With exactly one platform/device (as under `pocl`), the first element's offset happened to be correct, so `clGetPlatformIDs` looked fine while the truncated pointer it produced then crashed the very next `clGetDeviceIDs` call inside the ICD loader. Fixed by reading each ID as a full pointer-sized value at the correct stride. Verified against `pocl` in a Podman container (Ubuntu 24.04, amd64) and against a real GPU/vendor OpenCL runtime on macOS (cl2Metal) — both pass with no crash. Once that crash was out of the way, most remaining test failures under `pocl` turned out to be a second, unrelated issue: the test suite built every kernel with `-cl-std=CL2.0`, which `pocl`'s CPU device rejects outright ("Build option -cl-std specified OpenCL C version 2.0, but device cpu doesn't support that OpenCL C version"), even though none of the test kernels use any OpenCL C 2.0-specific language feature. `-cl-std=CL3.0` builds successfully on both `pocl` and a real GPU/vendor runtime (macOS cl2Metal), so the test suite now targets CL3.0 via a single shared `BasicOpenCLRudesheimTest>>defaultCLStdOption` accessor instead of a literal repeated across every test. Locally the suite passes against a real GPU/vendor OpenCL runtime (182 Tests, 0 Failures, 0 Errors).
+> **Note:** OpenCL behavior can vary across ICD/runtime implementations (e.g. `pocl`'s CPU device vs. vendor GPU drivers) — differences in ID/pointer width and supported `-cl-std` versions have caused platform-specific bugs here before. Kernels are built with `-cl-std=CL3.0` for portability across `pocl` and vendor GPU runtimes (see `BasicOpenCLRudesheimTest>>defaultCLStdOption`).
 
 Rudesheim OpenCL is a Pharo wrapper around OpenCL used by Rudesheim projects that need GPU or accelerator execution.
 It provides platforms, devices, contexts, command queues, programs, kernels, buffers, events, and OpenCL error objects.
@@ -113,6 +113,138 @@ queue
 
 The result is `#( 3.0 5.0 7.0 9.0 )`.
 OpenCL behavior depends on the host system, drivers, and available devices.
+
+## Selecting a Device Type
+
+`clDevices` returns every device on a platform. To target a specific kind of device (GPU, CPU, accelerator), use `clDevicesForType:` with one of the `Rudesheim OpenCL` device-type markers:
+
+```smalltalk
+cl := Rudesheim OpenCL.
+platform := cl Platform clPlatforms first.
+
+gpuDevices := platform clDevicesForType: { cl Gpu }.
+cpuDevices := platform clDevicesForType: { cl Cpu }.
+anyDevice  := platform clDevicesForType: { cl Default }.
+```
+
+`Gpu`, `Cpu`, `Accelerator`, `Default`, `Custom`, and `All` are all available. `clDevicesForType:` takes a collection so multiple types can be requested at once (e.g. `{ cl Gpu. cl Cpu }`).
+
+## Buffer Element Types
+
+`newCLBufferWith:elementType:` and `newCLBufferForElementCount:elementType:` work with any of the `TFBasicType` numeric kinds Rudesheim OpenCL supports — the element type decides both the buffer's byte size and how each element is marshalled, so the same two selectors cover every case:
+
+```smalltalk
+floatBuffer  := context newCLBufferWith: #( 1.5 2.5 3.5 )     elementType: TFBasicType float.
+doubleBuffer := context newCLBufferWith: #( 1.25 2.75 )       elementType: TFBasicType double.
+uint8Buffer  := context newCLBufferWith: #( 1 2 255 )         elementType: TFBasicType uint8.
+sint32Buffer := context newCLBufferWith: #( 1 -2 3 )          elementType: TFBasicType sint32.
+
+"An empty buffer sized from element count instead of content to upload:"
+emptyUint16Buffer := context newCLBufferForElementCount: 8 elementType: TFBasicType uint16.
+```
+
+`float`, `double`, `uint8`/`16`/`32`/`64`, and `sint8`/`16`/`32`/`64` are all supported. Passing an unsupported `TFBasicType` (e.g. `TFBasicType pointer`) raises `ElementTypeNotSupportedOpenCLRudesheim`.
+
+## Downloading Buffer Content
+
+`readFrom:count:elementType:` is the counterpart to `newCLBufferWith:elementType:` — pass the same element type used to create the buffer:
+
+```smalltalk
+result := queue readFrom: uint8Buffer count: 3 elementType: TFBasicType uint8.
+"result = #( 1 2 255 )"
+```
+
+A buffer created with `asOpenCLBufferRudesheim:` or read back via `BufferOpenCLRudesheim>>asArray` is always treated as `TFBasicType float`, since a bare `BufferOpenCLRudesheim` does not carry its own element type.
+
+## Mapping a Buffer for Direct Host Access
+
+Uploading via `newCLBufferWith:elementType:` copies host data in. For writing (or reading) a buffer's memory directly without a separate upload/download step, map it instead — `enqueueMap:forRange:as:options:blocking:forWait:` returns `{ hostPointer. mapEvent }`, and the returned pointer understands the same `AtOffset:put:` primitives a `ByteArray` does:
+
+```smalltalk
+buffer := context newCLBufferForElementCount: 4 elementType: TFBasicType float.
+
+mapped := queue
+	enqueueMap: buffer
+	forRange: (1 to: 4)
+	as: TFBasicType float
+	options: { Rudesheim OpenCL WriteOnly }
+	blocking: true
+	forWait: {}.
+pointer := mapped first.
+
+"Any Rudesheim OpenCL ElementType class can write directly into the mapped pointer:"
+TFBasicType float openCLElementTypeRudesheim
+	writeElementsOf: #( 1.5 2.5 3.5 4.5 )
+	intoByteArray: pointer.
+
+(queue enqueueUnmap: pointer of: buffer forWait: { mapped last }) wait.
+mapped last release.
+```
+
+There's also a block-based convenience form, `enqueueMap:forRange:as:options:blocking:forWait:do:`, that maps, runs the block with the pointer, and enqueues the matching unmap automatically — it returns the unmap `Event` rather than the block's result.
+
+## Events, Return-Value Waiting, and Chaining Enqueues
+
+Every `enqueue*` selector that isn't the `...AndWait:` convenience form returns a fresh `Event` for the operation it just queued, and every `enqueue*` selector also takes a `forWait:` collection of `Event`s the operation must wait on before it starts. `enqueueKernelAndWait:forNDRange:withArguments:` is built from exactly these two pieces:
+
+```smalltalk
+event := queue
+	enqueueKernel: kernel
+	forNDRange: { { 4. 1. 1. } }
+	withArguments: { inputBuffer. outputBuffer }
+	forWait: {}.
+event wait.
+event release.
+```
+
+The returned `Event` is the hook for chaining: pass one operation's `Event` into the next operation's `forWait:` and the *driver* serializes them on the device — the host never blocks in between. Only the final result actually needs a host-side `wait`:
+
+```smalltalk
+"input -> mid (kernel A), then mid -> output (kernel B), chained on the device:"
+firstEvent := queue
+	enqueueKernel: kernel
+	forNDRange: { { 4. 1. 1. } }
+	withArguments: { inputBuffer. midBuffer }
+	forWait: {}.
+
+secondEvent := queue
+	enqueueKernel: kernel
+	forNDRange: { { 4. 1. 1. } }
+	withArguments: { midBuffer. outputBuffer }
+	forWait: { firstEvent }.
+
+"Only secondEvent needs waiting on -- the host was never blocked between A and B:"
+secondEvent wait.
+firstEvent release.
+secondEvent release.
+
+result := queue readFrom: outputBuffer count: 4 elementType: TFBasicType float.
+"input #( 1.0 2.0 3.0 4.0 ) scaled by 2 twice -> result = #( 4.0 8.0 12.0 16.0 )"
+```
+
+Any mix of `enqueueKernel:...`, `enqueueCopyFrom:...`, and `enqueueMap:...`/`enqueueUnmap:...` can be chained the same way, since they all share this returns-an-Event/takes-a-forWait:-collection shape (`BufferOpenCLRudesheim>>rudesheimConcatenatedWith:` is a good example already in this codebase, chaining two `enqueueCopyFrom:` calls into one merged buffer).
+
+`newCLEvent` creates a separate, user-triggered `Event` not tied to any enqueue — useful for gating a batch of enqueued work on some external condition:
+
+```smalltalk
+gate := context newCLEvent.
+
+queue
+	enqueueKernel: kernel
+	forNDRange: { { 4. 1. 1. } }
+	withArguments: { inputBuffer. outputBuffer }
+	forWait: { gate }.
+
+"...later, once whatever the kernel should wait for is ready:"
+gate status: 0.
+
+queue finish.
+gate release.
+```
+
+## Releasing Resources
+
+`release` is available on buffers, command queues, programs, kernels, contexts, and events — every one of them is a `HandleNativeOpenCLRudesheim` subclass, and all of them register with Pharo's `FFIExternalResourceManager` at creation time, so an unreleased instance *does* eventually get its native handle cleaned up when the Smalltalk object is garbage collected. That auto-release is a safety net, not a substitute for calling `release` promptly: the GC finalizer that drives it doesn't run between iterations of a tight loop, so code that creates many buffers/events without releasing them can exhaust the native external-object table before the finalizer ever gets a chance to run (`Error: Not enough space for external objects`). Release explicitly once ownership is clear, same as any other native-backed resource — see `Usage Constraints` below.
 
 ## Usage Constraints
 
