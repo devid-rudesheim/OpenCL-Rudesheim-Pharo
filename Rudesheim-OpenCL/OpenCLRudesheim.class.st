@@ -66,6 +66,12 @@ OpenCLRudesheim class >> Device [
 ]
 
 { #category : 'namespace' }
+OpenCLRudesheim class >> ElementType [
+
+	^ ElementTypeOpenCLRudesheim
+]
+
+{ #category : 'namespace' }
 OpenCLRudesheim class >> Event [
 
 	^ EventOpenCLRudesheim.

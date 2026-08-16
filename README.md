@@ -90,8 +90,8 @@ kernel :=
 			TFBasicType pointer.
 		}.
 
-inputBuffer := context newCLBufferWithFloats: #( 1.5 2.5 3.5 4.5 ).
-outputBuffer := context newCLBufferForSize: 4 * TFBasicType float byteSize.
+inputBuffer := context newCLBufferWith: #( 1.5 2.5 3.5 4.5 ) elementType: TFBasicType float.
+outputBuffer := context newCLBufferForElementCount: 4 elementType: TFBasicType float.
 
 queue
 	enqueueKernelAndWait: kernel
@@ -106,8 +106,9 @@ queue
 	}.
 
 queue
-	readFloatsFrom: outputBuffer
+	readFrom: outputBuffer
 	count: 4
+	elementType: TFBasicType float
 ```
 
 The result is `#( 3.0 5.0 7.0 9.0 )`.
