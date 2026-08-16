@@ -3,7 +3,7 @@ A ProgramOpenCLRudesheimTest is a test class for testing the behavior of Program
 "
 Class {
 	#name : 'ProgramOpenCLRudesheimTest',
-	#superclass : 'BasicRudesheimTest',
+	#superclass : 'BasicOpenCLRudesheimTest',
 	#instVars : [
 		'clDevices',
 		'clContext'
@@ -54,7 +54,7 @@ kernel void Zero()
 }
 			'
 		}
-		withOptions:	'-cl-std=CL2.0'.
+		withOptions:	self defaultCLStdOption.
 ]
 
 { #category : 'accessing' }
@@ -98,7 +98,7 @@ kernel void Two()
 }
 				'
 			}
-			withOptions:	'-cl-std=CL2.0'
+			withOptions:	self defaultCLStdOption
 			of:
 			(
 				cl Context
@@ -133,7 +133,7 @@ ProgramOpenCLRudesheimTest >> testBuildCLProgramForFromSourcesWithOptionsOfDetai
 				{
 					'kernel void Broken( global unsigned int *output ) { output[0] = ; }'
 				}
-				withOptions:	'-cl-std=CL2.0'.
+				withOptions:	self defaultCLStdOption.
 			nil.
 		]
 			on: ProgramBuildFailedOpenCLRudesheim
@@ -156,14 +156,15 @@ ProgramOpenCLRudesheimTest >> testCompileCLProgramForFromSourcesWithOptionsHeade
 		cl
 		devices
 		context
-		caughtError
 	|
 
 	cl := Rudesheim OpenCL.
 	devices := cl Platform clPlatforms first clDevices.
 	context := cl Context clContextFor: devices.
 
-	caughtError :=
+	( Smalltalk os rudesheim openCLTestAsserter )
+		for:	self
+		should:
 		[
 			context
 				compileCLProgramFor:	devices
@@ -171,20 +172,10 @@ ProgramOpenCLRudesheimTest >> testCompileCLProgramForFromSourcesWithOptionsHeade
 				{
 					'kernel void NeverCompiled() { }'
 				}
-				withOptions:	'-cl-std=CL2.0'
+				withOptions:	self defaultCLStdOption
 				headers:		{ }.
-			nil.
 		]
-			on: ProgramCompileNotSupportedOpenCLRudesheim
-			do:
-			[ :anError |
-				anError.
-			].
-
-	self
-		assert:	caughtError notNil.
-	self
-		assert:	( caughtError messageText includesSubstring: 'not supported on this platform' ).
+		raiseCompileOrLinkError:	Rudesheim OpenCL Native Error ProgramCompileNotSupported.
 ]
 
 { #category : 'tests' }
@@ -270,7 +261,6 @@ ProgramOpenCLRudesheimTest >> testNewCLProgramByLinkingForWithOptionsNotSupporte
 		devices
 		context
 		program
-		caughtError
 	|
 
 	cl := Rudesheim OpenCL.
@@ -284,9 +274,11 @@ ProgramOpenCLRudesheimTest >> testNewCLProgramByLinkingForWithOptionsNotSupporte
 			{
 				'kernel void NeverLinked() { }'
 			}
-			withOptions:	'-cl-std=CL2.0'.
+			withOptions:	self defaultCLStdOption.
 
-	caughtError :=
+	( Smalltalk os rudesheim openCLTestAsserter )
+		for:	self
+		should:
 		[
 			context
 				newCLProgramByLinking:
@@ -295,16 +287,6 @@ ProgramOpenCLRudesheimTest >> testNewCLProgramByLinkingForWithOptionsNotSupporte
 				}
 				for:				devices
 				withOptions:		''.
-			nil.
 		]
-			on: ProgramLinkNotSupportedOpenCLRudesheim
-			do:
-			[ :anError |
-				anError.
-			].
-
-	self
-		assert:	caughtError notNil.
-	self
-		assert:	( caughtError messageText includesSubstring: 'not supported on this platform' ).
+		raiseCompileOrLinkError:	Rudesheim OpenCL Native Error ProgramLinkNotSupported.
 ]

@@ -3,7 +3,7 @@ A ContextOpenCLRudesheimTest is a test class for testing the behavior of Context
 "
 Class {
 	#name : 'ContextOpenCLRudesheimTest',
-	#superclass : 'BasicRudesheimTest',
+	#superclass : 'BasicOpenCLRudesheimTest',
 	#instVars : [
 		'clDevices'
 	],
@@ -60,7 +60,7 @@ kernel void Example()
 }
 				'
 			}
-			withOptions:		'-cl-std=CL2.0'.
+			withOptions:		self defaultCLStdOption.
 
 	program
 		newCLKernelAt:	self sourceValue
@@ -159,7 +159,7 @@ ContextOpenCLRudesheimTest >> testCachedCLKernelAtOfProgramWithParameterTypes0_0
 			{
 				'kernel void CacheMeKernel() { }'
 			}
-			withOptions:	'-cl-std=CL2.0'.
+			withOptions:	self defaultCLStdOption.
 
 	kernel1 :=
 		self basicTarget
@@ -196,7 +196,7 @@ ContextOpenCLRudesheimTest >> testCachedCLProgramForFromSourcesWithOptions0_0 [
 			{
 				'kernel void CacheMe() { }'
 			}
-			withOptions:	'-cl-std=CL2.0'.
+			withOptions:	self defaultCLStdOption.
 
 	program2 :=
 		self basicTarget
@@ -205,7 +205,7 @@ ContextOpenCLRudesheimTest >> testCachedCLProgramForFromSourcesWithOptions0_0 [
 			{
 				'kernel void CacheMe() { }'
 			}
-			withOptions:	'-cl-std=CL2.0'.
+			withOptions:	self defaultCLStdOption.
 
 	program3 :=
 		self basicTarget
@@ -214,7 +214,7 @@ ContextOpenCLRudesheimTest >> testCachedCLProgramForFromSourcesWithOptions0_0 [
 			{
 				'kernel void CacheMeDifferently() { }'
 			}
-			withOptions:	'-cl-std=CL2.0'.
+			withOptions:	self defaultCLStdOption.
 
 	self
 		assert:	program1 == program2.

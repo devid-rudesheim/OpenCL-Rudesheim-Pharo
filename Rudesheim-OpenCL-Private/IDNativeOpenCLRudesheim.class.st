@@ -52,17 +52,13 @@ IDNativeOpenCLRudesheim class >> onDo:	aBlock [
 	)
 		collect:
 		[ :each |
-		
+
 			super new
 				setID:
 				(
-					ExternalAddress
-						fromAddress:
-						(					
-							uint32
-								readValue:	actualIDs
-								offset:		each
-						)
+					pointer
+						readValue:	actualIDs
+						offset:		1 + ( ( each - 1 ) * pointer byteSize )
 				);
 				yourself.
 
