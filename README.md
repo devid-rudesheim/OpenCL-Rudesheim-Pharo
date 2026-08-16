@@ -183,27 +183,64 @@ mapped last release.
 
 There's also a block-based convenience form, `enqueueMap:forRange:as:options:blocking:forWait:do:`, that maps, runs the block with the pointer, and enqueues the matching unmap automatically — it returns the unmap `Event` rather than the block's result.
 
-## Events
+## Events, Return-Value Waiting, and Chaining Enqueues
 
-`newCLEvent` creates a user-triggered event, useful for gating a batch of enqueued work until some external condition is ready:
+Every `enqueue*` selector that isn't the `...AndWait:` convenience form returns a fresh `Event` for the operation it just queued, and every `enqueue*` selector also takes a `forWait:` collection of `Event`s the operation must wait on before it starts. `enqueueKernelAndWait:forNDRange:withArguments:` is built from exactly these two pieces:
 
 ```smalltalk
-event := context newCLEvent.
+event := queue
+	enqueueKernel: kernel
+	forNDRange: { { 4. 1. 1. } }
+	withArguments: { inputBuffer. outputBuffer }
+	forWait: {}.
+event wait.
+event release.
+```
+
+The returned `Event` is the hook for chaining: pass one operation's `Event` into the next operation's `forWait:` and the *driver* serializes them on the device — the host never blocks in between. Only the final result actually needs a host-side `wait`:
+
+```smalltalk
+"input -> mid (kernel A), then mid -> output (kernel B), chained on the device:"
+firstEvent := queue
+	enqueueKernel: kernel
+	forNDRange: { { 4. 1. 1. } }
+	withArguments: { inputBuffer. midBuffer }
+	forWait: {}.
+
+secondEvent := queue
+	enqueueKernel: kernel
+	forNDRange: { { 4. 1. 1. } }
+	withArguments: { midBuffer. outputBuffer }
+	forWait: { firstEvent }.
+
+"Only secondEvent needs waiting on -- the host was never blocked between A and B:"
+secondEvent wait.
+firstEvent release.
+secondEvent release.
+
+result := queue readFrom: outputBuffer count: 4 elementType: TFBasicType float.
+"input #( 1.0 2.0 3.0 4.0 ) scaled by 2 twice -> result = #( 4.0 8.0 12.0 16.0 )"
+```
+
+Any mix of `enqueueKernel:...`, `enqueueCopyFrom:...`, and `enqueueMap:...`/`enqueueUnmap:...` can be chained the same way, since they all share this returns-an-Event/takes-a-forWait:-collection shape (`BufferOpenCLRudesheim>>rudesheimConcatenatedWith:` is a good example already in this codebase, chaining two `enqueueCopyFrom:` calls into one merged buffer).
+
+`newCLEvent` creates a separate, user-triggered `Event` not tied to any enqueue — useful for gating a batch of enqueued work on some external condition:
+
+```smalltalk
+gate := context newCLEvent.
 
 queue
 	enqueueKernel: kernel
 	forNDRange: { { 4. 1. 1. } }
 	withArguments: { inputBuffer. outputBuffer }
-	forWait: { event }.
+	forWait: { gate }.
 
 "...later, once whatever the kernel should wait for is ready:"
-event status: 0.
+gate status: 0.
 
 queue finish.
-event release.
+gate release.
 ```
-
-Every `enqueue*` operation that isn't `...AndWait:` returns (or is passed) `Event`s the same way — `wait` blocks until complete, and `release` frees the native handle once nothing still needs it.
 
 ## Releasing Resources
 
