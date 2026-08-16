@@ -8,7 +8,7 @@ observed rate of roughly 40-57% over 300 trials, while the same buffer read pure
 kernel involved) or a buffer pattern where every buffer is freshly created and released within its
 own trial were both overwhelmingly reliable. The root cause turned out to be a genuine
 use-after-free in this codebase, not a native/driver defect: ContextOpenCLRudesheim>>
-newCLBufferWithFloats:/newCLBufferWithDoubles: created the CL_MEM_USE_HOST_PTR-backing host memory
+newCLBufferWith:elementType: created the CL_MEM_USE_HOST_PTR-backing host memory
 via ExternalAddress class>>gcallocate: (freed as soon as its wrapper is unreachable) without
 retaining any Smalltalk-side reference to it past buffer creation. Fixed by backing these buffers
 with a ByteArray retained on the buffer object itself for the buffer's lifetime (see
@@ -111,7 +111,7 @@ BufferOpenCLRudesheimReadStabilityTest >> testPureHostReadsOfPersistentBufferAre
 
 	queue := self clQueue.
 	expectedValues := #( 1.0 2.0 3.0 4.0 5.0 6.0 7.0 8.0 ).
-	buffer := self clContext newCLBufferWithFloats: expectedValues.
+	buffer := self clContext newCLBufferWith: expectedValues elementType: TFBasicType float.
 
 	50 timesRepeat:
 	[
@@ -154,8 +154,8 @@ BufferOpenCLRudesheimReadStabilityTest >> testFreshBuffersRoundTripThroughIdenti
 			kernelEvent
 		|
 
-		inputBuffer := self clContext newCLBufferWithFloats: expectedValues.
-		outputBuffer := self clContext newCLBufferForSize: 8 * TFBasicType float byteSize.
+		inputBuffer := self clContext newCLBufferWith: expectedValues elementType: TFBasicType float.
+		outputBuffer := self clContext newCLBufferForElementCount: 8 elementType: TFBasicType float.
 
 		kernelEvent :=
 			queue
@@ -189,7 +189,7 @@ BufferOpenCLRudesheimReadStabilityTest >> testFreshBuffersRoundTripThroughIdenti
 { #category : 'tests' }
 BufferOpenCLRudesheimReadStabilityTest >> testRepeatedKernelReadsOfPersistentBufferAreReliable [
 	"Regression test for the use-after-free fixed in ContextOpenCLRudesheim>>
-	newCLBufferWithFloats:/newCLBufferWithDoubles: and BufferOpenCLRudesheim>>hostByteArray: --
+	newCLBufferWith:elementType: and BufferOpenCLRudesheim>>hostByteArray: --
 	see note/pharo-ops.md 34節. Before the fix this failed at roughly 40-57% over 300 trials
 	(and this specific reproduction was verified at 0/300, including under an explicit
 	Smalltalk garbageCollect forced on every single trial, once fixed); before that, an
@@ -218,7 +218,7 @@ BufferOpenCLRudesheimReadStabilityTest >> runRepeatedKernelReadsOfPersistentBuff
 	queue := self clQueue.
 	expectedValues := #( 1.0 2.0 3.0 4.0 5.0 6.0 7.0 8.0 ).
 	kernel := self identityKernel.
-	inputBuffer := self clContext newCLBufferWithFloats: expectedValues.
+	inputBuffer := self clContext newCLBufferWith: expectedValues elementType: TFBasicType float.
 	trialCount := 300.
 	failureCount := 0.
 
@@ -229,7 +229,7 @@ BufferOpenCLRudesheimReadStabilityTest >> runRepeatedKernelReadsOfPersistentBuff
 			kernelEvent
 		|
 
-		outputBuffer := self clContext newCLBufferForSize: 8 * TFBasicType float byteSize.
+		outputBuffer := self clContext newCLBufferForElementCount: 8 elementType: TFBasicType float.
 		kernelEvent :=
 			queue
 				enqueueKernel:	kernel

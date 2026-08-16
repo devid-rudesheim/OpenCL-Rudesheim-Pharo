@@ -184,7 +184,7 @@ BufferOpenCLRudesheim >> rudesheimConcatenatedWith: anotherValue [
 
 	anotherBuffer := anotherValue asOpenCLBufferRudesheim: self context.
 	combinedCount := self count + anotherBuffer count.
-	combinedBuffer := self context newCLBufferForSize: combinedCount * TFBasicType float byteSize.
+	combinedBuffer := self context newCLBufferForElementCount: combinedCount elementType: TFBasicType float.
 	combinedBuffer
 		count:		combinedCount;
 		queue:		self queue;

@@ -8,7 +8,7 @@ SequenceableCollection >> asOpenCLBufferRudesheim: aContextOpenCLRudesheim [
 	isn't already an OpenCL buffer. See
 	note/opencl-layer-buffer-passthrough-design.md."
 
-	^ (aContextOpenCLRudesheim newCLBufferWithFloats: self)
+	^ (aContextOpenCLRudesheim newCLBufferWith: self elementType: TFBasicType float)
 		count: self size;
 		yourself
 ]

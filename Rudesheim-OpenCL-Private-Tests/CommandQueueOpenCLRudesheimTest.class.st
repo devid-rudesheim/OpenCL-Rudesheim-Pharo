@@ -1114,10 +1114,11 @@ CommandQueueOpenCLRudesheimTest >> testNewCLBufferWithDoublesReadDoublesFrom0_0 
 
 	buffer :=
 		self clContext
-			newCLBufferWithDoubles:
+			newCLBufferWith:
 			{
 				1.25. 2.75. 3.125. 4.0625.
-			}.
+			}
+			elementType:	TFBasicType double.
 
 	result :=
 		target
@@ -1147,10 +1148,11 @@ CommandQueueOpenCLRudesheimTest >> testNewCLBufferWithFloatsReadFloatsFrom0_0 [
 
 	buffer :=
 		self clContext
-			newCLBufferWithFloats:
+			newCLBufferWith:
 			{
 				1.5. 2.5. 3.5. 4.5.
-			}.
+			}
+			elementType:	TFBasicType float.
 
 	result :=
 		target
