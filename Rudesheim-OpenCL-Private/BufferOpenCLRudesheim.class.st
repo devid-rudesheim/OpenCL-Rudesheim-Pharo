@@ -1,6 +1,8 @@
 Class {
 	#name : 'BufferOpenCLRudesheim',
 	#superclass : 'HandleNativeOpenCLRudesheim',
+	#traits : 'TReleasableRudesheim',
+	#classTraits : 'TReleasableRudesheim classTrait',
 	#instVars : [
 		'count',
 		'queue',
