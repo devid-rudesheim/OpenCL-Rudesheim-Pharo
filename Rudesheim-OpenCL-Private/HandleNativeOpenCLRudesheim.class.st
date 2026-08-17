@@ -1,8 +1,8 @@
 Class {
 	#name : 'HandleNativeOpenCLRudesheim',
 	#superclass : 'Object',
-	#traits : 'TShouldntNewUtilityRudesheim',
-	#classTraits : 'TShouldntNewUtilityRudesheim classTrait',
+	#traits : 'TShouldntNewRudesheim',
+	#classTraits : 'TShouldntNewRudesheim classTrait',
 	#instVars : [
 		'handlePointer'
 	],
