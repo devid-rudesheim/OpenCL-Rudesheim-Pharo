@@ -17,13 +17,13 @@ BaselineOfRudesheimOpenCL >> baseline: spec [
 				baseline: 'RudesheimKernel'
 				with:
 				[
-					spec repository: 'github://devid-rudesheim/Kernel-Rudesheim-Pharo:main'
+					spec repository: 'github://devid-rudesheim/Kernel-Rudesheim-Pharo:develop'
 				];
 
 				baseline: 'RudesheimUtility'
 				with:
 				[
-					spec repository: 'github://devid-rudesheim/Utility-Rudesheim-Pharo:main'
+					spec repository: 'github://devid-rudesheim/Utility-Rudesheim-Pharo:develop'
 				];
 
 				project: 'RudesheimUtilityTests'
