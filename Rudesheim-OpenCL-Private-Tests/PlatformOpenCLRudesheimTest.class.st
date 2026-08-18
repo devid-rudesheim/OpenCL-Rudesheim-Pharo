@@ -15,6 +15,12 @@ PlatformOpenCLRudesheimTest class >> targetClass [
 	^ PlatformOpenCLRudesheim.
 ]
 
+{ #category : 'accessing' }
+PlatformOpenCLRudesheimTest >> defaultBasicTarget [
+
+	^ self targetClass clPlatforms first.
+]
+
 { #category : 'tests' }
 PlatformOpenCLRudesheimTest >> runCLDevices0 [
 	

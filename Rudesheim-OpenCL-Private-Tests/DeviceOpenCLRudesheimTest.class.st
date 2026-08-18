@@ -12,6 +12,17 @@ DeviceOpenCLRudesheimTest class >> targetClass [
 	^ DeviceOpenCLRudesheim.
 ]
 
+{ #category : 'accessing' }
+DeviceOpenCLRudesheimTest >> defaultBasicTarget [
+
+	^
+	(
+		self targetClass
+			clDevicesForType:	{ Rudesheim OpenCL All }
+			of:					Rudesheim OpenCL Platform clPlatforms first
+	) first.
+]
+
 { #category : 'tests' }
 DeviceOpenCLRudesheimTest >> runCLDevicesForTypeOf0 [
 	

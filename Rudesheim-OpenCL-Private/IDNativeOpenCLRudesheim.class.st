@@ -1,6 +1,8 @@
 Class {
 	#name : 'IDNativeOpenCLRudesheim',
 	#superclass : 'Object',
+	#traits : 'TShouldntNewRudesheim',
+	#classTraits : 'TShouldntNewRudesheim classTrait',
 	#instVars : [
 		'idPointer'
 	],
