@@ -32,6 +32,12 @@ CommandQueueOpenCLRudesheimTest >> clContext [
 ]
 
 { #category : 'accessing' }
+CommandQueueOpenCLRudesheimTest >> clContext: aContextOpenCLRudesheim [
+
+	clContext := aContextOpenCLRudesheim.
+]
+
+{ #category : 'accessing' }
 CommandQueueOpenCLRudesheimTest >> clDevices [
 
 	^ clDevices
@@ -51,6 +57,28 @@ CommandQueueOpenCLRudesheimTest >> clProgram [
 			clProgram := self defaultCLProgram.
 		].
 
+]
+
+{ #category : 'accessing' }
+CommandQueueOpenCLRudesheimTest >> clProgram: aProgramOpenCLRudesheim [
+
+	clProgram := aProgramOpenCLRudesheim.
+]
+
+{ #category : 'running' }
+CommandQueueOpenCLRudesheimTest >> tearDown [
+	"Some composite test methods (e.g. testEnqueueFillByPatternForRangeForWait)
+	call #tearDown/#setUp mid-method to run several run*/test*0_n phases in a
+	row. #setUp (inherited) never resets clContext/clProgram, so without this
+	override a later phase would keep using the already-released (by
+	super tearDown, via BasicOpenCLRudesheimTest's trackForRelease:
+	bookkeeping) native handle instead of getting a fresh one."
+
+	self
+		clContext:	nil;
+		clProgram:	nil.
+
+	super tearDown.
 ]
 
 { #category : 'accessing' }

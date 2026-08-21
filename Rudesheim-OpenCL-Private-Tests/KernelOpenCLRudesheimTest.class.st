@@ -31,6 +31,12 @@ KernelOpenCLRudesheimTest >> clContext [
 ]
 
 { #category : 'accessing' }
+KernelOpenCLRudesheimTest >> clContext: aContextOpenCLRudesheim [
+
+	clContext := aContextOpenCLRudesheim.
+]
+
+{ #category : 'accessing' }
 KernelOpenCLRudesheimTest >> clDevices [
 
 	^ clDevices
@@ -39,6 +45,19 @@ KernelOpenCLRudesheimTest >> clDevices [
 			clDevices := self defaultCLDevices.
 		].
 
+]
+
+{ #category : 'running' }
+KernelOpenCLRudesheimTest >> tearDown [
+	"testAtPut calls #tearDown/#setUp mid-method to run several testAtPut0_n
+	phases in a row. #setUp (inherited) never resets clContext, so without
+	this override a later phase would keep using the already-released (by
+	super tearDown) native handle instead of getting a fresh one -- see
+	CommandQueueOpenCLRudesheimTest>>tearDown for the same fix."
+
+	self clContext: nil.
+
+	super tearDown.
 ]
 
 { #category : 'accessing' }
