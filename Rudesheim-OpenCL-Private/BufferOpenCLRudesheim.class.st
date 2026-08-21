@@ -291,12 +291,3 @@ BufferOpenCLRudesheim >> queue: aCommandQueueOpenCLRudesheim [
 
 	queue := aCommandQueueOpenCLRudesheim
 ]
-
-{ #category : 'releasing' }
-BufferOpenCLRudesheim >> releaseRudesheim [
-	"Polymorphic counterpart to SequenceableCollection>>releaseRudesheim (a
-	no-op there) -- lets code that may be holding either a plain Array or a
-	BufferOpenCLRudesheim release unconditionally without a kind check."
-
-	self release.
-]
