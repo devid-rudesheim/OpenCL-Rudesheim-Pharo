@@ -32,8 +32,12 @@ ContextOpenCLRudesheimTest >> clDevices [
 { #category : 'accessing' }
 ContextOpenCLRudesheimTest >> defaultBasicTarget [
 
-	^ self targetClass
-		clContextFor:	self clDevices.
+	^ self
+		trackForRelease:
+		(
+			self targetClass
+				clContextFor:	self clDevices
+		).
 ]
 
 { #category : 'accessing' }
@@ -50,23 +54,31 @@ ContextOpenCLRudesheimTest >> runBuildCLProgramForFromSourcesWithOptions0 [
 	|
 
 	program :=
-		self basicTarget
-			buildCLProgramFor:	self clDevices 
-			fromSources:
-			{
-				'
+		self
+			trackForRelease:
+			(
+				self basicTarget
+					buildCLProgramFor:	self clDevices
+					fromSources:
+					{
+						'
 kernel void Example()
 {
 }
-				'
-			}
-			withOptions:		self defaultCLStdOption.
+						'
+					}
+					withOptions:		self defaultCLStdOption
+			).
 
-	program
-		newCLKernelAt:	self sourceValue
-		withParameterTypes:
-		{
-		}.
+	self
+		trackForRelease:
+		(
+			program
+				newCLKernelAt:	self sourceValue
+				withParameterTypes:
+				{
+				}
+		).
 ]
 
 { #category : 'tests' }
@@ -78,12 +90,16 @@ ContextOpenCLRudesheimTest >> runNewCLBufferForSizeOptions0 [
 	cl := Rudesheim OpenCL.
 
 	(
-		self basicTarget
-			newCLBufferForSize:	16r10
-			options: 
-			{
-				cl ReadWrite.
-			}
+		self
+			trackForRelease:
+			(
+				self basicTarget
+					newCLBufferForSize:	16r10
+					options:
+					{
+						cl ReadWrite.
+					}
+			)
 	) asValueForCL.
 ]
 
@@ -100,13 +116,17 @@ ContextOpenCLRudesheimTest >> runNewCLBufferWithOptions0 [
 		IntegerArray
 			new: 16r10.
 	(
-		self basicTarget
-			newCLBufferWith:	ouput
-			options: 
-			{
-				cl ReadWrite.
-				cl HostPtr Use.
-			}
+		self
+			trackForRelease:
+			(
+				self basicTarget
+					newCLBufferWith:	ouput
+					options:
+					{
+						cl ReadWrite.
+						cl HostPtr Use.
+					}
+			)
 	) asValueForCL.
 ]
 
@@ -114,8 +134,12 @@ ContextOpenCLRudesheimTest >> runNewCLBufferWithOptions0 [
 ContextOpenCLRudesheimTest >> runNewCLCommandQueueFor0 [
 
 	(
-		self basicTarget
-			newCLCommandQueueFor:	self clDevices first
+		self
+			trackForRelease:
+			(
+				self basicTarget
+					newCLCommandQueueFor:	self clDevices first
+			)
 	) finish.
 ]
 
@@ -123,7 +147,9 @@ ContextOpenCLRudesheimTest >> runNewCLCommandQueueFor0 [
 ContextOpenCLRudesheimTest >> runNewCLEvent0 [
 
 	(
-		self basicTarget newCLEvent
+		(
+			self trackForRelease: self basicTarget newCLEvent
+		)
 			status:	0;
 			yourself
 	) wait.
@@ -153,29 +179,41 @@ ContextOpenCLRudesheimTest >> testCachedCLKernelAtOfProgramWithParameterTypes0_0
 	|
 
 	program :=
-		self basicTarget
-			cachedCLProgramFor:	self clDevices
-			fromSources:
-			{
-				'kernel void CacheMeKernel() { }'
-			}
-			withOptions:	self defaultCLStdOption.
+		self
+			trackForRelease:
+			(
+				self basicTarget
+					cachedCLProgramFor:	self clDevices
+					fromSources:
+					{
+						'kernel void CacheMeKernel() { }'
+					}
+					withOptions:	self defaultCLStdOption
+			).
 
 	kernel1 :=
-		self basicTarget
-			cachedCLKernelAt:	'CacheMeKernel'
-			ofProgram:			program
-			withParameterTypes:
-			{
-			}.
+		self
+			trackForRelease:
+			(
+				self basicTarget
+					cachedCLKernelAt:	'CacheMeKernel'
+					ofProgram:			program
+					withParameterTypes:
+					{
+					}
+			).
 
 	kernel2 :=
-		self basicTarget
-			cachedCLKernelAt:	'CacheMeKernel'
-			ofProgram:			program
-			withParameterTypes:
-			{
-			}.
+		self
+			trackForRelease:
+			(
+				self basicTarget
+					cachedCLKernelAt:	'CacheMeKernel'
+					ofProgram:			program
+					withParameterTypes:
+					{
+					}
+			).
 
 	self
 		assert:	kernel1 == kernel2.
@@ -190,31 +228,43 @@ ContextOpenCLRudesheimTest >> testCachedCLProgramForFromSourcesWithOptions0_0 [
 	|
 
 	program1 :=
-		self basicTarget
-			cachedCLProgramFor:	self clDevices
-			fromSources:
-			{
-				'kernel void CacheMe() { }'
-			}
-			withOptions:	self defaultCLStdOption.
+		self
+			trackForRelease:
+			(
+				self basicTarget
+					cachedCLProgramFor:	self clDevices
+					fromSources:
+					{
+						'kernel void CacheMe() { }'
+					}
+					withOptions:	self defaultCLStdOption
+			).
 
 	program2 :=
-		self basicTarget
-			cachedCLProgramFor:	self clDevices
-			fromSources:
-			{
-				'kernel void CacheMe() { }'
-			}
-			withOptions:	self defaultCLStdOption.
+		self
+			trackForRelease:
+			(
+				self basicTarget
+					cachedCLProgramFor:	self clDevices
+					fromSources:
+					{
+						'kernel void CacheMe() { }'
+					}
+					withOptions:	self defaultCLStdOption
+			).
 
 	program3 :=
-		self basicTarget
-			cachedCLProgramFor:	self clDevices
-			fromSources:
-			{
-				'kernel void CacheMeDifferently() { }'
-			}
-			withOptions:	self defaultCLStdOption.
+		self
+			trackForRelease:
+			(
+				self basicTarget
+					cachedCLProgramFor:	self clDevices
+					fromSources:
+					{
+						'kernel void CacheMeDifferently() { }'
+					}
+					withOptions:	self defaultCLStdOption
+			).
 
 	self
 		assert:	program1 == program2.

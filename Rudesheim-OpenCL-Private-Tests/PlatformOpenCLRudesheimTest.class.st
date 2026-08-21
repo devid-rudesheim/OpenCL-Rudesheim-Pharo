@@ -73,17 +73,22 @@ PlatformOpenCLRudesheimTest >> testAdhoc [
 			|
 			
 			devices := each0 clDevices.
-			
+
 			context :=
-				cl Context
-					clContextFor:	devices.
-			
+				self trackForRelease:
+				(
+					cl Context
+						clContextFor:	devices
+				).
+
 			program :=
-				context 
-					buildCLProgramFor:	devices
-					fromSources:
-					{
-						'
+				self trackForRelease:
+				(
+					context
+						buildCLProgramFor:	devices
+						fromSources:
+						{
+							'
 kernel void Increment( global unsigned int *input_output )
 {
 	++input_output[ get_global_id( 0 ) ];
@@ -93,36 +98,46 @@ kernel void Fill( global unsigned int *output )
 {
 	output[ get_global_id( 0 ) ] = get_global_id( 0 );
 }
-						'
-					}
-					withOptions:	self defaultCLStdOption.
+							'
+						}
+						withOptions:	self defaultCLStdOption
+				).
 
-			increment :=	
-				program
-					newCLKernelAt: 'Increment'
-					withParameterTypes:
-					{
-						TFBasicType pointer
-					}.
+			increment :=
+				self trackForRelease:
+				(
+					program
+						newCLKernelAt: 'Increment'
+						withParameterTypes:
+						{
+							TFBasicType pointer
+						}
+				).
 
-			fill :=	
-				program
-					newCLKernelAt:	'Fill'
-					withParameterTypes:
-					{
-						TFBasicType pointer
-					}.
+			fill :=
+				self trackForRelease:
+				(
+					program
+						newCLKernelAt:	'Fill'
+						withParameterTypes:
+						{
+							TFBasicType pointer
+						}
+				).
 
 			ouput :=
 				IntegerArray
 					new: 16r10.
 
 			filled :=
-				context
-					newCLBufferWith:	ouput.
-			
+				self trackForRelease:
+				(
+					context
+						newCLBufferWith:	ouput
+				).
+
 			"event wait."
-			
+
 			devices
 				do:
 				[ :each1 |
@@ -133,31 +148,40 @@ kernel void Fill( global unsigned int *output )
 					|
 
 					event1 :=
-						context newCLEvent
-							status: 0.
-						
+						self trackForRelease:
+						(
+							context newCLEvent
+								status: 0
+						).
+
 					queue :=
-						context
-							newCLCommandQueueFor: each1.
+						self trackForRelease:
+						(
+							context
+								newCLCommandQueueFor: each1
+						).
 
 					event2 :=
-						queue
-							enqueueKernel: fill
-							forNDRange:
-							{
+						self trackForRelease:
+						(
+							queue
+								enqueueKernel: fill
+								forNDRange:
 								{
-									ouput size.
-									2.
-								}.
-							}
-							withArguments:
-							{
-								filled
-							}
-							forWait:
-							{
-								event1
-							}.
+									{
+										ouput size.
+										2.
+									}.
+								}
+								withArguments:
+								{
+									filled
+								}
+								forWait:
+								{
+									event1
+								}
+						).
 					
 					Processor yield.
 					

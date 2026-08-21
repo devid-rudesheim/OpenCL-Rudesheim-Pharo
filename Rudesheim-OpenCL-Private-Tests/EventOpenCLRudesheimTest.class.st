@@ -44,14 +44,17 @@ EventOpenCLRudesheimTest >> runWait0 [
 
 	cl := Rudesheim OpenCL.
 	devices := cl Platform clPlatforms first clDevices.
-	context := cl Context clContextFor: devices.
+	context := self trackForRelease: (cl Context clContextFor: devices).
 
 	program :=
-		context
-			buildCLProgramFor:	devices
-			fromSources:
-			{
-				'
+		self
+			trackForRelease:
+			(
+				context
+					buildCLProgramFor:	devices
+					fromSources:
+					{
+						'
 kernel void SlowLoopRudesheim( global unsigned int *output, unsigned int iterationCount )
 {
 	unsigned int state;
@@ -65,43 +68,60 @@ kernel void SlowLoopRudesheim( global unsigned int *output, unsigned int iterati
 
 	output[ 0 ] = state;
 }
-				'
-			}
-			withOptions:	self defaultCLStdOption.
+						'
+					}
+					withOptions:	self defaultCLStdOption
+			).
 
 	queue :=
-		cl CommandQueue
-			clCommandQueueFor:	devices first
-			of:					context.
+		self
+			trackForRelease:
+			(
+				cl CommandQueue
+					clCommandQueueFor:	devices first
+					of:					context
+			).
 
 	outputBuffer :=
-		context
-			newCLBufferForSize:	TFBasicType uint byteSize.
+		self
+			trackForRelease:
+			(
+				context
+					newCLBufferForSize:	TFBasicType uint byteSize
+			).
 
 	kernel :=
-		program
-			newCLKernelAt:	'SlowLoopRudesheim'
-			withParameterTypes:
-			{
-				TFBasicType pointer.
-				TFBasicType uint.
-			}.
+		self
+			trackForRelease:
+			(
+				program
+					newCLKernelAt:	'SlowLoopRudesheim'
+					withParameterTypes:
+					{
+						TFBasicType pointer.
+						TFBasicType uint.
+					}
+			).
 
 	slowEvent :=
-		queue
-			enqueueKernel:	kernel
-			forNDRange:
-			{
-				{ 16r1. 16r1. 16r1. }
-			}
-			withArguments:
-			{
-				outputBuffer.
-				16r5F5E100.
-			}
-			forWait:
-			{
-			}.
+		self
+			trackForRelease:
+			(
+				queue
+					enqueueKernel:	kernel
+					forNDRange:
+					{
+						{ 16r1. 16r1. 16r1. }
+					}
+					withArguments:
+					{
+						outputBuffer.
+						16r5F5E100.
+					}
+					forWait:
+					{
+					}
+			).
 
 	[
 		slowEvent wait.
@@ -111,13 +131,16 @@ kernel void SlowLoopRudesheim( global unsigned int *output, unsigned int iterati
 	( Delay forMilliseconds: 16r0C8 ) wait.
 
 	otherContext :=
-		cl Context
-			clContextFor:	devices.
+		self trackForRelease: (cl Context clContextFor: devices).
 
 	otherQueue :=
-		cl CommandQueue
-			clCommandQueueFor:	devices first
-			of:					otherContext.
+		self
+			trackForRelease:
+			(
+				cl CommandQueue
+					clCommandQueueFor:	devices first
+					of:					otherContext
+			).
 
 	otherQueue finish.
 

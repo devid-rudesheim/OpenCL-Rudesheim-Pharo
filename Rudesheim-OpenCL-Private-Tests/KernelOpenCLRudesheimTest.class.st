@@ -44,30 +44,42 @@ KernelOpenCLRudesheimTest >> clDevices [
 { #category : 'accessing' }
 KernelOpenCLRudesheimTest >> defaultBasicTarget [
 
-	^ self targetClass
-		clKernelAt:				'Zero'
-		withParameterTypes:	{ }
-		of:
+	^ self
+		trackForRelease:
 		(
-			self clContext
-				buildCLProgramFor:	self clDevices
-				fromSources:
-				{
-					'
+			self targetClass
+				clKernelAt:				'Zero'
+				withParameterTypes:	{ }
+				of:
+				(
+					self
+						trackForRelease:
+						(
+							self clContext
+								buildCLProgramFor:	self clDevices
+								fromSources:
+								{
+									'
 kernel void Zero()
 {
 }
-					'
-				}
-				withOptions:	self defaultCLStdOption
+									'
+								}
+								withOptions:	self defaultCLStdOption
+						)
+				)
 		).
 ]
 
 { #category : 'accessing' }
 KernelOpenCLRudesheimTest >> defaultCLContext [
 
-	^ Rudesheim OpenCL Context
-		clContextFor:	self clDevices.
+	^ self
+		trackForRelease:
+		(
+			Rudesheim OpenCL Context
+				clContextFor:	self clDevices
+		).
 
 ]
 
@@ -84,16 +96,22 @@ KernelOpenCLRudesheimTest >> runAtPut0 [
 	|
 
 	target :=
-		self targetClass
-			clKernelAt:				self sourceValue first
-			withParameterTypes:	self sourceValue second
-			of:
+		self
+			trackForRelease:
 			(
-				self clContext
-					buildCLProgramFor:	self clDevices
-					fromSources:
-					{
-						'
+				self targetClass
+					clKernelAt:				self sourceValue first
+					withParameterTypes:	self sourceValue second
+					of:
+					(
+						self
+							trackForRelease:
+							(
+								self clContext
+									buildCLProgramFor:	self clDevices
+									fromSources:
+									{
+										'
 kernel void One( global unsigned int *one )
 {
 }
@@ -101,9 +119,11 @@ kernel void One( global unsigned int *one )
 kernel void Two( global unsigned int *one, unsigned int two )
 {
 }
-						'
-					}
-					withOptions:	self defaultCLStdOption
+										'
+									}
+									withOptions:	self defaultCLStdOption
+							)
+					)
 			).
 
 	self sourceValue last
@@ -174,8 +194,12 @@ KernelOpenCLRudesheimTest >> testAtPut0_2 [
 				TFBasicType pointer
 			}.
 			{
-				self clContext
-					newCLBufferForSize:	TFBasicType uint32 byteSize.
+				self
+					trackForRelease:
+					(
+						self clContext
+							newCLBufferForSize:	TFBasicType uint32 byteSize
+					).
 			}
 		};
 		runAtPut0.
@@ -193,8 +217,12 @@ KernelOpenCLRudesheimTest >> testAtPut0_3 [
 				TFBasicType uint32.
 			}.
 			{
-				self clContext
-					newCLBufferForSize:	TFBasicType uint32 byteSize.
+				self
+					trackForRelease:
+					(
+						self clContext
+							newCLBufferForSize:	TFBasicType uint32 byteSize
+					).
 				1
 			}
 		};

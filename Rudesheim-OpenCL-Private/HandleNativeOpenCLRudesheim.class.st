@@ -109,6 +109,16 @@ HandleNativeOpenCLRudesheim >> release [
 	handlePointer := nil.
 ]
 
+{ #category : 'releasing' }
+HandleNativeOpenCLRudesheim >> releaseRudesheim [
+	"Polymorphic counterpart to SequenceableCollection>>releaseRudesheim (a
+	no-op there) -- lets code that may be holding either a plain Array or any
+	HandleNativeOpenCLRudesheim subclass (CommandQueue/Context/Program/Kernel/
+	Event/Buffer) release unconditionally without a kind check."
+
+	self release.
+]
+
 { #category : 'finalization' }
 HandleNativeOpenCLRudesheim >> resourceData [
 
