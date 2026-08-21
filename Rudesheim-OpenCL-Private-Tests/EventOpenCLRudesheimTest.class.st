@@ -40,7 +40,10 @@ EventOpenCLRudesheimTest >> runWait0 [
 		slowEvent
 		otherContext
 		otherQueue
+		slowEventDone
 	|
+
+	slowEventDone := Semaphore new.
 
 	cl := Rudesheim OpenCL.
 	devices := cl Platform clPlatforms first clDevices.
@@ -125,6 +128,8 @@ kernel void SlowLoopRudesheim( global unsigned int *output, unsigned int iterati
 
 	[
 		slowEvent wait.
+
+		slowEventDone signal.
 	]
 		fork.
 
@@ -143,6 +148,14 @@ kernel void SlowLoopRudesheim( global unsigned int *output, unsigned int iterati
 			).
 
 	otherQueue finish.
+
+	"Wait for the forked slowEvent wait to actually complete before
+	returning, so #tearDown never releases slowEvent/kernel/queue/context
+	while the forked process might still be waiting on them -- see
+	CommandQueueOpenCLRudesheimTest>>runConcurrentFinishAcrossCommandQueues0
+	for the same fix and note/opencl-commandqueue-crash-investigation.md for
+	why this matters."
+	slowEventDone wait.
 
 ]
 

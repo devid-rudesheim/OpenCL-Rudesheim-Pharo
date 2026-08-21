@@ -202,7 +202,10 @@ CommandQueueOpenCLRudesheimTest >> runConcurrentFinishAcrossCommandQueues0 [
 		slowKernel
 		slowQueue
 		fastQueue
+		slowQueueDone
 	|
+
+	slowQueueDone := Semaphore new.
 
 	outputBuffer :=
 		self
@@ -260,12 +263,21 @@ CommandQueueOpenCLRudesheimTest >> runConcurrentFinishAcrossCommandQueues0 [
 			}.
 
 		slowQueue finish.
+
+		slowQueueDone signal.
 	]
 		fork.
 
 	( Delay forMilliseconds: 16r0C8 ) wait.
 
 	fastQueue finish.
+
+	"Wait for the forked slowQueue work to actually finish before returning,
+	so #tearDown never releases slowQueue/outputBuffer/slowKernel while the
+	forked process might still be using them -- releasing a still-in-use
+	native handle out from under an in-flight OpenCL call was found to crash
+	the VM natively, see note/opencl-commandqueue-crash-investigation.md."
+	slowQueueDone wait.
 
 ]
 
