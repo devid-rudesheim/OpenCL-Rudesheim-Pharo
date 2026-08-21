@@ -17,7 +17,7 @@ below, which used to be an unconditionally-skipped diagnostic and is now a real 
 "
 Class {
 	#name : 'BufferOpenCLRudesheimReadStabilityTest',
-	#superclass : 'BasicRudesheimTest',
+	#superclass : 'BasicOpenCLRudesheimTest',
 	#instVars : [
 		'clContext'
 	],
@@ -39,8 +39,12 @@ BufferOpenCLRudesheimReadStabilityTest >> clContext [
 		ifNil:
 		[
 			clContext :=
-				ContextOpenCLRudesheim
-					clContextFor:	Rudesheim OpenCL Platform clPlatforms first clDevices.
+				self
+					trackForRelease:
+					(
+						ContextOpenCLRudesheim
+							clContextFor:	Rudesheim OpenCL Platform clPlatforms first clDevices
+					).
 		].
 
 ]
@@ -48,19 +52,27 @@ BufferOpenCLRudesheimReadStabilityTest >> clContext [
 { #category : 'accessing' }
 BufferOpenCLRudesheimReadStabilityTest >> defaultBasicTarget [
 
-	^ self clContext
-		newCLBufferForSize:	16r10
-		options:
-		{
-			Rudesheim OpenCL ReadWrite.
-		}.
+	^ self
+		trackForRelease:
+		(
+			self clContext
+				newCLBufferForSize:	16r10
+				options:
+				{
+					Rudesheim OpenCL ReadWrite.
+				}
+		).
 ]
 
 { #category : 'accessing' }
 BufferOpenCLRudesheimReadStabilityTest >> clQueue [
 
-	^ self clContext
-		newCLCommandQueueFor:	Rudesheim OpenCL Platform clPlatforms first clDevices first.
+	^ self
+		trackForRelease:
+		(
+			self clContext
+				newCLCommandQueueFor:	Rudesheim OpenCL Platform clPlatforms first clDevices first
+		).
 ]
 
 { #category : 'accessing' }
@@ -70,31 +82,39 @@ BufferOpenCLRudesheimReadStabilityTest >> identityKernel [
 	these tests stay independent of note/resnet50-onnx-support-plan.md's
 	kernel source and don't share a program/kernel cache entry with it."
 
-	^ self identityKernelProgram
-		newCLKernelAt:	'CopyIdentityRudesheimReadStabilityTest'
-		withParameterTypes:
-		{
-			TFBasicType pointer.
-			TFBasicType pointer.
-		}.
+	^ self
+		trackForRelease:
+		(
+			self identityKernelProgram
+				newCLKernelAt:	'CopyIdentityRudesheimReadStabilityTest'
+				withParameterTypes:
+				{
+					TFBasicType pointer.
+					TFBasicType pointer.
+				}
+		).
 ]
 
 { #category : 'accessing' }
 BufferOpenCLRudesheimReadStabilityTest >> identityKernelProgram [
 
-	^ self clContext
-		buildCLProgramFor:	Rudesheim OpenCL Platform clPlatforms first clDevices
-		fromSources:
-		{
-			'
+	^ self
+		trackForRelease:
+		(
+			self clContext
+				buildCLProgramFor:	Rudesheim OpenCL Platform clPlatforms first clDevices
+				fromSources:
+				{
+					'
 kernel void CopyIdentityRudesheimReadStabilityTest(global const float* input, global float* output)
 {
 	uint i = get_global_id(0);
 	output[i] = input[i];
 }
 '
-		}
-		withOptions:	''.
+				}
+				withOptions:	''
+		).
 ]
 
 { #category : 'tests' }

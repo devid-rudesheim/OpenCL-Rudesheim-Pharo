@@ -3,7 +3,7 @@ A BufferOpenCLRudesheimTest is a test class for testing the behavior of BufferOp
 "
 Class {
 	#name : 'BufferOpenCLRudesheimTest',
-	#superclass : 'BasicRudesheimTest',
+	#superclass : 'BasicOpenCLRudesheimTest',
 	#instVars : [
 		'clContext'
 	],
@@ -25,8 +25,12 @@ BufferOpenCLRudesheimTest >> clContext [
 		ifNil:
 		[
 			clContext :=
-				ContextOpenCLRudesheim
-					clContextFor:	Rudesheim OpenCL Platform clPlatforms first clDevices.
+				self
+					trackForRelease:
+					(
+						ContextOpenCLRudesheim
+							clContextFor:	Rudesheim OpenCL Platform clPlatforms first clDevices
+					).
 		].
 
 ]
@@ -34,19 +38,27 @@ BufferOpenCLRudesheimTest >> clContext [
 { #category : 'accessing' }
 BufferOpenCLRudesheimTest >> clQueue [
 
-	^ self clContext
-		newCLCommandQueueFor:	Rudesheim OpenCL Platform clPlatforms first clDevices first.
+	^ self
+		trackForRelease:
+		(
+			self clContext
+				newCLCommandQueueFor:	Rudesheim OpenCL Platform clPlatforms first clDevices first
+		).
 ]
 
 { #category : 'accessing' }
 BufferOpenCLRudesheimTest >> defaultBasicTarget [
 
-	^ self clContext
-		newCLBufferForSize:	16r10
-		options:
-		{
-			Rudesheim OpenCL ReadWrite.
-		}.
+	^ self
+		trackForRelease:
+		(
+			self clContext
+				newCLBufferForSize:	16r10
+				options:
+				{
+					Rudesheim OpenCL ReadWrite.
+				}
+		).
 ]
 
 { #category : 'tests' }

@@ -44,24 +44,32 @@ ProgramOpenCLRudesheimTest >> clDevices [
 { #category : 'accessing' }
 ProgramOpenCLRudesheimTest >> defaultBasicTarget [
 
-	^ self clContext
-		buildCLProgramFor:	self clDevices
-		fromSources:
-		{
-			'
+	^ self
+		trackForRelease:
+		(
+			self clContext
+				buildCLProgramFor:	self clDevices
+				fromSources:
+				{
+					'
 kernel void Zero()
 {
 }
-			'
-		}
-		withOptions:	self defaultCLStdOption.
+					'
+				}
+				withOptions:	self defaultCLStdOption
+		).
 ]
 
 { #category : 'accessing' }
 ProgramOpenCLRudesheimTest >> defaultCLContext [
 
-	^ Rudesheim OpenCL Context
-		clContextFor:	self clDevices.
+	^ self
+		trackForRelease:
+		(
+			Rudesheim OpenCL Context
+				clContextFor:	self clDevices
+		).
 
 ]
 
@@ -81,14 +89,17 @@ ProgramOpenCLRudesheimTest >> runNewCLKernelAtWithParameterTypes0 [
 	|
 
 	cl := Rudesheim OpenCL.
-	devices := cl Platform clPlatforms first clDevices. 
+	devices := cl Platform clPlatforms first clDevices.
 
 	program :=
-		cl Program
-			buildCLProgramFor: devices
-			fromSources:
-			{
-				'
+		self
+			trackForRelease:
+			(
+				cl Program
+					buildCLProgramFor: devices
+					fromSources:
+					{
+						'
 kernel void One()
 {
 }
@@ -96,20 +107,29 @@ kernel void One()
 kernel void Two()
 {
 }
-				'
-			}
-			withOptions:	self defaultCLStdOption
-			of:
-			(
-				cl Context
-					clContextFor:	devices
+						'
+					}
+					withOptions:	self defaultCLStdOption
+					of:
+					(
+						self
+							trackForRelease:
+							(
+								cl Context
+									clContextFor:	devices
+							)
+					)
 			).
 
-	program
-		newCLKernelAt:	self sourceValue
-		withParameterTypes:
-		{
-		}.	
+	self
+		trackForRelease:
+		(
+			program
+				newCLKernelAt:	self sourceValue
+				withParameterTypes:
+				{
+				}
+		).
 ]
 
 { #category : 'tests' }
@@ -123,7 +143,7 @@ ProgramOpenCLRudesheimTest >> testBuildCLProgramForFromSourcesWithOptionsOfDetai
 
 	cl := Rudesheim OpenCL.
 	devices := cl Platform clPlatforms first clDevices.
-	context := cl Context clContextFor: devices.
+	context := self trackForRelease: (cl Context clContextFor: devices).
 
 	caughtError :=
 		[
@@ -160,7 +180,7 @@ ProgramOpenCLRudesheimTest >> testCompileCLProgramForFromSourcesWithOptionsHeade
 
 	cl := Rudesheim OpenCL.
 	devices := cl Platform clPlatforms first clDevices.
-	context := cl Context clContextFor: devices.
+	context := self trackForRelease: (cl Context clContextFor: devices).
 
 	( Smalltalk os rudesheim openCLTestAsserter )
 		for:	self
@@ -265,16 +285,20 @@ ProgramOpenCLRudesheimTest >> testNewCLProgramByLinkingForWithOptionsNotSupporte
 
 	cl := Rudesheim OpenCL.
 	devices := cl Platform clPlatforms first clDevices.
-	context := cl Context clContextFor: devices.
+	context := self trackForRelease: (cl Context clContextFor: devices).
 
 	program :=
-		context
-			buildCLProgramFor:	devices
-			fromSources:
-			{
-				'kernel void NeverLinked() { }'
-			}
-			withOptions:	self defaultCLStdOption.
+		self
+			trackForRelease:
+			(
+				context
+					buildCLProgramFor:	devices
+					fromSources:
+					{
+						'kernel void NeverLinked() { }'
+					}
+					withOptions:	self defaultCLStdOption
+			).
 
 	( Smalltalk os rudesheim openCLTestAsserter )
 		for:	self
