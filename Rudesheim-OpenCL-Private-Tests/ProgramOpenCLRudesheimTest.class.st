@@ -15,35 +15,29 @@ Class {
 
 { #category : 'accessing' }
 ProgramOpenCLRudesheimTest class >> targetClass [
-
 	^ ProgramOpenCLRudesheim.
 ]
 
 { #category : 'accessing' }
 ProgramOpenCLRudesheimTest >> clContext [
-
 	^ clContext
 		ifNil:
 		[
 			clContext := self defaultCLContext.
 		].
-
 ]
 
 { #category : 'accessing' }
 ProgramOpenCLRudesheimTest >> clDevices [
-
 	^ clDevices
 		ifNil:
 		[
 			clDevices := self defaultCLDevices.
 		].
-
 ]
 
 { #category : 'accessing' }
 ProgramOpenCLRudesheimTest >> defaultBasicTarget [
-
 	^ self
 		trackForRelease:
 		(
@@ -63,21 +57,17 @@ kernel void Zero()
 
 { #category : 'accessing' }
 ProgramOpenCLRudesheimTest >> defaultCLContext [
-
 	^ self
 		trackForRelease:
 		(
 			Rudesheim OpenCL Context
 				clContextFor:	self clDevices
 		).
-
 ]
 
 { #category : 'accessing' }
 ProgramOpenCLRudesheimTest >> defaultCLDevices [
-
 	^ Rudesheim OpenCL Platform clPlatforms first clDevices.
-
 ]
 
 { #category : 'tests' }
@@ -96,7 +86,7 @@ ProgramOpenCLRudesheimTest >> runNewCLKernelAtWithParameterTypes0 [
 			trackForRelease:
 			(
 				cl Program
-					buildCLProgramFor: devices
+					buildCLProgramFor:	devices
 					fromSources:
 					{
 						'
@@ -127,8 +117,7 @@ kernel void Two()
 			program
 				newCLKernelAt:	self sourceValue
 				withParameterTypes:
-				{
-				}
+				{}
 		).
 ]
 
@@ -143,31 +132,49 @@ ProgramOpenCLRudesheimTest >> testBuildCLProgramForFromSourcesWithOptionsOfDetai
 
 	cl := Rudesheim OpenCL.
 	devices := cl Platform clPlatforms first clDevices.
-	context := self trackForRelease: (cl Context clContextFor: devices).
+
+	context :=
+		self
+			trackForRelease:
+			(
+				cl Context
+					clContextFor:	devices
+			).
 
 	caughtError :=
-		[
-			context
-				buildCLProgramFor:	devices
-				fromSources:
-				{
-					'kernel void Broken( global unsigned int *output ) { output[0] = ; }'
-				}
-				withOptions:	self defaultCLStdOption.
-			nil.
-		]
-			on: ProgramBuildFailedOpenCLRudesheim
-			do:
-			[ :anError |
-				anError.
-			].
+	[
+		context
+			buildCLProgramFor:	devices
+			fromSources:
+			{
+				'kernel void Broken( global unsigned int *output ) { output[0] = ; }'
+			}
+			withOptions:	self defaultCLStdOption.
+
+		nil.
+	]
+		on:	ProgramBuildFailedOpenCLRudesheim
+		do:
+		[ :anError |
+			anError.
+		].
 
 	self
 		assert:	caughtError notNil.
+
 	self
-		assert:	( caughtError buildLog includesSubstring: 'expected expression' ).
+		assert:
+		(
+			caughtError buildLog
+				includesSubstring:	'expected expression'
+		).
+
 	self
-		assert:	( caughtError messageText includesSubstring: 'build log:' ).
+		assert:
+		(
+			caughtError messageText
+				includesSubstring:	'build log:'
+		).
 ]
 
 { #category : 'tests' }
@@ -180,9 +187,16 @@ ProgramOpenCLRudesheimTest >> testCompileCLProgramForFromSourcesWithOptionsHeade
 
 	cl := Rudesheim OpenCL.
 	devices := cl Platform clPlatforms first clDevices.
-	context := self trackForRelease: (cl Context clContextFor: devices).
 
-	( Smalltalk os rudesheim openCLTestAsserter )
+	context :=
+		self
+			trackForRelease:
+			(
+				cl Context
+					clContextFor:	devices
+			).
+
+	Smalltalk os rudesheim openCLTestAsserter
 		for:	self
 		should:
 		[
@@ -193,14 +207,13 @@ ProgramOpenCLRudesheimTest >> testCompileCLProgramForFromSourcesWithOptionsHeade
 					'kernel void NeverCompiled() { }'
 				}
 				withOptions:	self defaultCLStdOption
-				headers:		{ }.
+				headers:	{}.
 		]
 		raiseCompileOrLinkError:	Rudesheim OpenCL Native Error ProgramCompileNotSupported.
 ]
 
 { #category : 'tests' }
 ProgramOpenCLRudesheimTest >> testNewCLKernelAtWithParameterTypes [
-
 	self
 		testNewCLKernelAtWithParameterTypes0_0;
 		tearDown;
@@ -213,7 +226,6 @@ ProgramOpenCLRudesheimTest >> testNewCLKernelAtWithParameterTypes [
 
 { #category : 'tests' }
 ProgramOpenCLRudesheimTest >> testNewCLKernelAtWithParameterTypes0_0 [
-
 	self
 		should:
 		[
@@ -221,8 +233,7 @@ ProgramOpenCLRudesheimTest >> testNewCLKernelAtWithParameterTypes0_0 [
 				sourceValue:	'Three';
 				runNewCLKernelAtWithParameterTypes0.
 		]
-		raise: Rudesheim OpenCL Native Error Primitive.
-
+		raise:	Rudesheim OpenCL Native Error Primitive.
 ]
 
 { #category : 'tests' }
@@ -232,43 +243,50 @@ ProgramOpenCLRudesheimTest >> testNewCLKernelAtWithParameterTypes0_0Detailed [
 	|
 
 	caughtError :=
-		[
-			self
-				sourceValue:	'Three';
-				runNewCLKernelAtWithParameterTypes0.
+	[
+		self
+			sourceValue:	'Three';
+			runNewCLKernelAtWithParameterTypes0.
 
-			nil.
-		]
-			on: KernelCreationFailedOpenCLRudesheim
-			do:
-			[ :anError |
-				anError.
-			].
+		nil.
+	]
+		on:	KernelCreationFailedOpenCLRudesheim
+		do:
+		[ :anError |
+			anError.
+		].
 
 	self
 		assert:	caughtError notNil.
+
 	self
 		assert:	caughtError kernelName
 		equals:	'Three'.
-	self
-		assert:	( caughtError messageText includesSubstring: 'Three' ).
-	self
-		assert:	( caughtError messageText includesSubstring: 'invalid_kernel_name' ).
 
+	self
+		assert:
+		(
+			caughtError messageText
+				includesSubstring:	'Three'
+		).
+
+	self
+		assert:
+		(
+			caughtError messageText
+				includesSubstring:	'invalid_kernel_name'
+		).
 ]
 
 { #category : 'tests' }
 ProgramOpenCLRudesheimTest >> testNewCLKernelAtWithParameterTypes0_1 [
-
 	self
 		sourceValue:	'One';
 		runNewCLKernelAtWithParameterTypes0.
-
 ]
 
 { #category : 'tests' }
 ProgramOpenCLRudesheimTest >> testNewCLKernelAtWithParameterTypes0_2 [
-
 	self
 		sourceValue:	'Two';
 		runNewCLKernelAtWithParameterTypes0.
@@ -285,7 +303,14 @@ ProgramOpenCLRudesheimTest >> testNewCLProgramByLinkingForWithOptionsNotSupporte
 
 	cl := Rudesheim OpenCL.
 	devices := cl Platform clPlatforms first clDevices.
-	context := self trackForRelease: (cl Context clContextFor: devices).
+
+	context :=
+		self
+			trackForRelease:
+			(
+				cl Context
+					clContextFor:	devices
+			).
 
 	program :=
 		self
@@ -300,7 +325,7 @@ ProgramOpenCLRudesheimTest >> testNewCLProgramByLinkingForWithOptionsNotSupporte
 					withOptions:	self defaultCLStdOption
 			).
 
-	( Smalltalk os rudesheim openCLTestAsserter )
+	Smalltalk os rudesheim openCLTestAsserter
 		for:	self
 		should:
 		[
@@ -309,8 +334,8 @@ ProgramOpenCLRudesheimTest >> testNewCLProgramByLinkingForWithOptionsNotSupporte
 				{
 					program
 				}
-				for:				devices
-				withOptions:		''.
+				for:	devices
+				withOptions:	''.
 		]
 		raiseCompileOrLinkError:	Rudesheim OpenCL Native Error ProgramLinkNotSupported.
 ]

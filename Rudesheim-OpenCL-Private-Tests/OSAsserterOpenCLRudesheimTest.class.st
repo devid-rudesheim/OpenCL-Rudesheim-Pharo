@@ -15,17 +15,14 @@ Class {
 }
 
 { #category : 'asserting' }
-OSAsserterOpenCLRudesheimTest class >> for:			aTestCase
-should:				aBlock
-raiseCompileOrLinkError:	aNotSupportedExceptionClass [
-
+OSAsserterOpenCLRudesheimTest class >> for: aTestCase
+should: aBlock
+raiseCompileOrLinkError: aNotSupportedExceptionClass [
 	[
 		aBlock value.
 	]
-		on: Error
+		on:	Error
 		do:
 		[ :anError |
-			"Some native failure is an acceptable outcome here too - this OS just isn't
-			known to reject the operation outright the way macOS does."
 		].
 ]

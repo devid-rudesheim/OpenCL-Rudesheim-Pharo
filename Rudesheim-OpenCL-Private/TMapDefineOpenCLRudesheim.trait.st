@@ -7,13 +7,11 @@ Trait {
 
 { #category : 'accessing' }
 TMapDefineOpenCLRudesheim classSide >> clMapType [
-
 	^ 1
 		bitShift:	self offsetOfCLMapType.
 ]
 
 { #category : 'accessing' }
 TMapDefineOpenCLRudesheim classSide >> offsetOfCLMapType [
-
 	^ self subclassResponsibility.
 ]

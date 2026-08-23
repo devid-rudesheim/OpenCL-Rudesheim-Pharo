@@ -10,29 +10,25 @@ Class {
 
 { #category : 'accessing' }
 UInt64ElementTypeOpenCLRudesheim class >> byteSize [
-
 	^ 8.
 ]
 
-{ #category : 'accessing' }
-UInt64ElementTypeOpenCLRudesheim class >> signed [
-
-	^ false.
-]
-
 { #category : 'reading' }
-UInt64ElementTypeOpenCLRudesheim class >> readValue:	aByteArrayOrExternalAddress
-atOffset:	anInteger [
-
+UInt64ElementTypeOpenCLRudesheim class >> readValue: aByteArrayOrExternalAddress
+atOffset: anInteger [
 	^ aByteArrayOrExternalAddress
 		uint64AtOffset:	anInteger.
 ]
 
-{ #category : 'writing' }
-UInt64ElementTypeOpenCLRudesheim class >> writeValue:	aNumber
-intoByteArray:	aByteArray
-atOffset:	anInteger [
+{ #category : 'accessing' }
+UInt64ElementTypeOpenCLRudesheim class >> signed [
+	^ false.
+]
 
+{ #category : 'writing' }
+UInt64ElementTypeOpenCLRudesheim class >> writeValue: aNumber
+intoByteArray: aByteArray
+atOffset: anInteger [
 	^ aByteArray
 		uint64AtOffset:	anInteger
 		put:	aNumber asInteger.

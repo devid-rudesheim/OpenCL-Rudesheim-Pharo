@@ -10,29 +10,25 @@ Class {
 
 { #category : 'accessing' }
 SInt16ElementTypeOpenCLRudesheim class >> byteSize [
-
 	^ 2.
 ]
 
-{ #category : 'accessing' }
-SInt16ElementTypeOpenCLRudesheim class >> signed [
-
-	^ true.
-]
-
 { #category : 'reading' }
-SInt16ElementTypeOpenCLRudesheim class >> readValue:	aByteArrayOrExternalAddress
-atOffset:	anInteger [
-
+SInt16ElementTypeOpenCLRudesheim class >> readValue: aByteArrayOrExternalAddress
+atOffset: anInteger [
 	^ aByteArrayOrExternalAddress
 		int16AtOffset:	anInteger.
 ]
 
-{ #category : 'writing' }
-SInt16ElementTypeOpenCLRudesheim class >> writeValue:	aNumber
-intoByteArray:	aByteArray
-atOffset:	anInteger [
+{ #category : 'accessing' }
+SInt16ElementTypeOpenCLRudesheim class >> signed [
+	^ true.
+]
 
+{ #category : 'writing' }
+SInt16ElementTypeOpenCLRudesheim class >> writeValue: aNumber
+intoByteArray: aByteArray
+atOffset: anInteger [
 	^ aByteArray
 		int16AtOffset:	anInteger
 		put:	aNumber asInteger.

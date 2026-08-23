@@ -7,13 +7,11 @@ Trait {
 
 { #category : 'accessing' }
 TBufferDefineOpenCLRudesheim classSide >> clBufferType [
-
 	^ 1
 		bitShift:	self offsetOfCLBufferType.
 ]
 
 { #category : 'accessing' }
 TBufferDefineOpenCLRudesheim classSide >> offsetOfCLBufferType [
-
 	^ self subclassResponsibility.
 ]

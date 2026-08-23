@@ -15,60 +15,40 @@ Class {
 
 { #category : 'accessing' }
 KernelOpenCLRudesheimTest class >> targetClass [
-
 	^ KernelOpenCLRudesheim.
 ]
 
 { #category : 'accessing' }
 KernelOpenCLRudesheimTest >> clContext [
-
 	^ clContext
 		ifNil:
 		[
 			clContext := self defaultCLContext.
 		].
-
 ]
 
 { #category : 'accessing' }
 KernelOpenCLRudesheimTest >> clContext: aContextOpenCLRudesheim [
-
 	clContext := aContextOpenCLRudesheim.
 ]
 
 { #category : 'accessing' }
 KernelOpenCLRudesheimTest >> clDevices [
-
 	^ clDevices
 		ifNil:
 		[
 			clDevices := self defaultCLDevices.
 		].
-
-]
-
-{ #category : 'running' }
-KernelOpenCLRudesheimTest >> tearDown [
-	"testAtPut calls #tearDown/#setUp mid-method to run several testAtPut0_n
-	phases in a row. #setUp (inherited) never resets clContext, so without
-	this override a later phase would keep using the already-released (by
-	super tearDown) native handle instead of getting a fresh one -- see
-	CommandQueueOpenCLRudesheimTest>>tearDown for the same fix."
-
-	self clContext: nil.
-
-	super tearDown.
 ]
 
 { #category : 'accessing' }
 KernelOpenCLRudesheimTest >> defaultBasicTarget [
-
 	^ self
 		trackForRelease:
 		(
 			self targetClass
-				clKernelAt:				'Zero'
-				withParameterTypes:	{ }
+				clKernelAt:	'Zero'
+				withParameterTypes:	{}
 				of:
 				(
 					self
@@ -92,19 +72,16 @@ kernel void Zero()
 
 { #category : 'accessing' }
 KernelOpenCLRudesheimTest >> defaultCLContext [
-
 	^ self
 		trackForRelease:
 		(
 			Rudesheim OpenCL Context
 				clContextFor:	self clDevices
 		).
-
 ]
 
 { #category : 'accessing' }
 KernelOpenCLRudesheimTest >> defaultCLDevices [
-
 	^ Rudesheim OpenCL Platform clPlatforms first clDevices.
 ]
 
@@ -119,7 +96,7 @@ KernelOpenCLRudesheimTest >> runAtPut0 [
 			trackForRelease:
 			(
 				self targetClass
-					clKernelAt:				self sourceValue first
+					clKernelAt:	self sourceValue first
 					withParameterTypes:	self sourceValue second
 					of:
 					(
@@ -149,14 +126,26 @@ kernel void Two( global unsigned int *one, unsigned int two )
 		withIndexDo:
 		[ :each :index |
 			target
-				at:		index 
+				at:	index
 				put:	each.
 		].
 ]
 
+{ #category : 'running' }
+KernelOpenCLRudesheimTest >> tearDown [
+	"testAtPut calls #tearDown/#setUp mid-method to run several testAtPut0_n
+	phases in a row. #setUp (inherited) never resets clContext, so without
+	this override a later phase would keep using the already-released (by
+	super tearDown) native handle instead of getting a fresh one -- see
+	CommandQueueOpenCLRudesheimTest>>tearDown for the same fix."
+	self
+		clContext:	nil.
+
+	super tearDown.
+]
+
 { #category : 'tests' }
 KernelOpenCLRudesheimTest >> testAtPut [
-
 	self
 		testAtPut0_0;
 		tearDown;
@@ -166,7 +155,6 @@ KernelOpenCLRudesheimTest >> testAtPut [
 
 { #category : 'tests' }
 KernelOpenCLRudesheimTest >> testAtPut0_0 [
-
 	self
 		should:
 		[
@@ -174,20 +162,18 @@ KernelOpenCLRudesheimTest >> testAtPut0_0 [
 				sourceValue:
 				{
 					'One'.
-					{
-					}.
+					{}.
 					{
 						0
 					}
 				};
 				runAtPut0.
 		]
-		raise: SubscriptOutOfBounds.
+		raise:	SubscriptOutOfBounds.
 ]
 
 { #category : 'tests' }
 KernelOpenCLRudesheimTest >> testAtPut0_1 [
-
 	self
 		sourceValue:
 		{
@@ -204,7 +190,6 @@ KernelOpenCLRudesheimTest >> testAtPut0_1 [
 
 { #category : 'tests' }
 KernelOpenCLRudesheimTest >> testAtPut0_2 [
-
 	self
 		sourceValue:
 		{
@@ -218,7 +203,7 @@ KernelOpenCLRudesheimTest >> testAtPut0_2 [
 					(
 						self clContext
 							newCLBufferForSize:	TFBasicType uint32 byteSize
-					).
+					)
 			}
 		};
 		runAtPut0.
@@ -226,14 +211,13 @@ KernelOpenCLRudesheimTest >> testAtPut0_2 [
 
 { #category : 'tests' }
 KernelOpenCLRudesheimTest >> testAtPut0_3 [
-
 	self
 		sourceValue:
 		{
 			'Two'.
 			{
 				TFBasicType pointer.
-				TFBasicType uint32.
+				TFBasicType uint32
 			}.
 			{
 				self

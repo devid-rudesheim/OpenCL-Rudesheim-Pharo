@@ -10,44 +10,34 @@ Class {
 }
 
 { #category : 'instance creation' }
-EventCreationFailedOpenCLRudesheim class >> signalForCause:	aPrimitiveErrorNativeOpenCLRudesheim
-context:				aCLContext [
-
+EventCreationFailedOpenCLRudesheim class >> signalForCause: aPrimitiveErrorNativeOpenCLRudesheim
+context: aCLContext [
 	^ self basicNew
 		signalForCause:	aPrimitiveErrorNativeOpenCLRudesheim
-		context:				aCLContext.
-
+		context:	aCLContext.
 ]
 
 { #category : 'accessing' }
 EventCreationFailedOpenCLRudesheim >> context [
-
 	^ context.
-
 ]
 
 { #category : 'accessing' }
 EventCreationFailedOpenCLRudesheim >> context: aCLContext [
-
 	context := aCLContext.
-
 ]
 
 { #category : 'accessing' }
 EventCreationFailedOpenCLRudesheim >> contextDescription [
-
-	^ 'creating an event on ', self context printString.
-
+	^ 'creating an event on ' , self context printString.
 ]
 
 { #category : 'signaling' }
-EventCreationFailedOpenCLRudesheim >> signalForCause:	aPrimitiveErrorNativeOpenCLRudesheim
-context:				aCLContext [
-
+EventCreationFailedOpenCLRudesheim >> signalForCause: aPrimitiveErrorNativeOpenCLRudesheim
+context: aCLContext [
 	self
-		cause:		aPrimitiveErrorNativeOpenCLRudesheim;
+		cause:	aPrimitiveErrorNativeOpenCLRudesheim;
 		context:	aCLContext.
 
 	^ super signal.
-
 ]

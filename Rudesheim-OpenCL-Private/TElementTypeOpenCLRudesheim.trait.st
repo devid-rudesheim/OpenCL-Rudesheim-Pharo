@@ -7,14 +7,12 @@ Trait {
 
 { #category : 'accessing' }
 TElementTypeOpenCLRudesheim classSide >> byteSize [
-
 	^ self subclassResponsibility.
 ]
 
 { #category : 'reading' }
-TElementTypeOpenCLRudesheim classSide >> readElementsFrom:	aByteArrayOrExternalAddress
-count:	aCountInteger [
-
+TElementTypeOpenCLRudesheim classSide >> readElementsFrom: aByteArrayOrExternalAddress
+count: aCountInteger [
 	|
 		result
 	|
@@ -22,6 +20,7 @@ count:	aCountInteger [
 	result :=
 		Array
 			new:	aCountInteger.
+
 	1
 		to:	aCountInteger
 		do:
@@ -35,20 +34,19 @@ count:	aCountInteger [
 						atOffset:	( index - 1 ) * self byteSize
 				).
 		].
+
 	^ result.
 ]
 
 { #category : 'reading' }
-TElementTypeOpenCLRudesheim classSide >> readValue:	aByteArrayOrExternalAddress
-atOffset:	anInteger [
-
+TElementTypeOpenCLRudesheim classSide >> readValue: aByteArrayOrExternalAddress
+atOffset: anInteger [
 	^ self subclassResponsibility.
 ]
 
 { #category : 'writing' }
-TElementTypeOpenCLRudesheim classSide >> writeElementsOf:	aCollection
-intoByteArray:	aByteArray [
-
+TElementTypeOpenCLRudesheim classSide >> writeElementsOf: aCollection
+intoByteArray: aByteArray [
 	aCollection
 		withIndexDo:
 		[ :each :index |
@@ -60,9 +58,8 @@ intoByteArray:	aByteArray [
 ]
 
 { #category : 'writing' }
-TElementTypeOpenCLRudesheim classSide >> writeValue:	aNumber
-intoByteArray:	aByteArray
-atOffset:	anInteger [
-
+TElementTypeOpenCLRudesheim classSide >> writeValue: aNumber
+intoByteArray: aByteArray
+atOffset: anInteger [
 	^ self subclassResponsibility.
 ]

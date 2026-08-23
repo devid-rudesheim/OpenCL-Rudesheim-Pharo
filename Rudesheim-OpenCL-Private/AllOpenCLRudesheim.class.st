@@ -10,6 +10,5 @@ Class {
 
 { #category : 'accessing' }
 AllOpenCLRudesheim class >> clDeviceType [
-
 	^ 16rffFFffFF.
 ]

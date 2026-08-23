@@ -7,19 +7,16 @@ Trait {
 
 { #category : 'accessing' }
 TDeviceDefineOpenCLRudesheim classSide >> clDeviceType [
-
 	^ 1
 		bitShift:	self offsetOfCLDeviceType.
 ]
 
 { #category : 'accessing' }
 TDeviceDefineOpenCLRudesheim classSide >> offsetOfCLDeviceType [
-
 	^ self subclassResponsibility.
 ]
 
 { #category : 'accessing' }
 TDeviceDefineOpenCLRudesheim >> clDeviceType [
-
 	^ self class clDeviceType.
 ]

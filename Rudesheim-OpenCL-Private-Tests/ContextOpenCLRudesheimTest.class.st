@@ -14,24 +14,20 @@ Class {
 
 { #category : 'accessing' }
 ContextOpenCLRudesheimTest class >> targetClass [
-
 	^ ContextOpenCLRudesheim.
 ]
 
 { #category : 'accessing' }
 ContextOpenCLRudesheimTest >> clDevices [
-
 	^ clDevices
 		ifNil:
 		[
 			clDevices := self defaultCLDevices.
 		].
-
 ]
 
 { #category : 'accessing' }
 ContextOpenCLRudesheimTest >> defaultBasicTarget [
-
 	^ self
 		trackForRelease:
 		(
@@ -42,9 +38,7 @@ ContextOpenCLRudesheimTest >> defaultBasicTarget [
 
 { #category : 'accessing' }
 ContextOpenCLRudesheimTest >> defaultCLDevices [
-
 	^ Rudesheim OpenCL Platform clPlatforms first clDevices.
-
 ]
 
 { #category : 'tests' }
@@ -67,7 +61,7 @@ kernel void Example()
 }
 						'
 					}
-					withOptions:		self defaultCLStdOption
+					withOptions:	self defaultCLStdOption
 			).
 
 	self
@@ -76,8 +70,7 @@ kernel void Example()
 			program
 				newCLKernelAt:	self sourceValue
 				withParameterTypes:
-				{
-				}
+				{}
 		).
 ]
 
@@ -97,7 +90,7 @@ ContextOpenCLRudesheimTest >> runNewCLBufferForSizeOptions0 [
 					newCLBufferForSize:	16r10
 					options:
 					{
-						cl ReadWrite.
+						cl ReadWrite
 					}
 			)
 	) asValueForCL.
@@ -114,7 +107,8 @@ ContextOpenCLRudesheimTest >> runNewCLBufferWithOptions0 [
 
 	ouput :=
 		IntegerArray
-			new: 16r10.
+			new:	16r10.
+
 	(
 		self
 			trackForRelease:
@@ -124,7 +118,7 @@ ContextOpenCLRudesheimTest >> runNewCLBufferWithOptions0 [
 					options:
 					{
 						cl ReadWrite.
-						cl HostPtr Use.
+						cl HostPtr Use
 					}
 			)
 	) asValueForCL.
@@ -132,7 +126,6 @@ ContextOpenCLRudesheimTest >> runNewCLBufferWithOptions0 [
 
 { #category : 'tests' }
 ContextOpenCLRudesheimTest >> runNewCLCommandQueueFor0 [
-
 	(
 		self
 			trackForRelease:
@@ -145,10 +138,10 @@ ContextOpenCLRudesheimTest >> runNewCLCommandQueueFor0 [
 
 { #category : 'tests' }
 ContextOpenCLRudesheimTest >> runNewCLEvent0 [
-
 	(
 		(
-			self trackForRelease: self basicTarget newCLEvent
+			self
+				trackForRelease:	self basicTarget newCLEvent
 		)
 			status:	0;
 			yourself
@@ -157,14 +150,11 @@ ContextOpenCLRudesheimTest >> runNewCLEvent0 [
 
 { #category : 'tests' }
 ContextOpenCLRudesheimTest >> testBuildCLProgramForFromSourcesWithOptions [
-
-	self
-		testBuildCLProgramForFromSourcesWithOptions0_0.
+	self testBuildCLProgramForFromSourcesWithOptions0_0.
 ]
 
 { #category : 'tests' }
 ContextOpenCLRudesheimTest >> testBuildCLProgramForFromSourcesWithOptions0_0 [
-	
 	self
 		sourceValue:	'Example';
 		runBuildCLProgramForFromSourcesWithOptions0.
@@ -197,10 +187,9 @@ ContextOpenCLRudesheimTest >> testCachedCLKernelAtOfProgramWithParameterTypes0_0
 			(
 				self basicTarget
 					cachedCLKernelAt:	'CacheMeKernel'
-					ofProgram:			program
+					ofProgram:	program
 					withParameterTypes:
-					{
-					}
+					{}
 			).
 
 	kernel2 :=
@@ -209,10 +198,9 @@ ContextOpenCLRudesheimTest >> testCachedCLKernelAtOfProgramWithParameterTypes0_0
 			(
 				self basicTarget
 					cachedCLKernelAt:	'CacheMeKernel'
-					ofProgram:			program
+					ofProgram:	program
 					withParameterTypes:
-					{
-					}
+					{}
 			).
 
 	self
@@ -268,62 +256,47 @@ ContextOpenCLRudesheimTest >> testCachedCLProgramForFromSourcesWithOptions0_0 [
 
 	self
 		assert:	program1 == program2.
+
 	self
 		deny:	program1 == program3.
 ]
 
 { #category : 'tests' }
 ContextOpenCLRudesheimTest >> testNewCLBufferForSizeOptions [
-
-	self
-		testNewCLBufferForSizeOptions0_0.
+	self testNewCLBufferForSizeOptions0_0.
 ]
 
 { #category : 'tests' }
 ContextOpenCLRudesheimTest >> testNewCLBufferForSizeOptions0_0 [
-
-	self
-		runNewCLBufferForSizeOptions0.
+	self runNewCLBufferForSizeOptions0.
 ]
 
 { #category : 'tests' }
 ContextOpenCLRudesheimTest >> testNewCLBufferWithOptions [
-
-	self
-		testNewCLBufferWithOptions0_0
+	self testNewCLBufferWithOptions0_0.
 ]
 
 { #category : 'tests' }
 ContextOpenCLRudesheimTest >> testNewCLBufferWithOptions0_0 [
-
-	self
-		runNewCLBufferWithOptions0
+	self runNewCLBufferWithOptions0.
 ]
 
 { #category : 'tests' }
 ContextOpenCLRudesheimTest >> testNewCLCommandQueueFor [
-
-	self
-		testNewCLCommandQueueFor0_0.
+	self testNewCLCommandQueueFor0_0.
 ]
 
 { #category : 'tests' }
 ContextOpenCLRudesheimTest >> testNewCLCommandQueueFor0_0 [
-
-	self
-		runNewCLCommandQueueFor0.
+	self runNewCLCommandQueueFor0.
 ]
 
 { #category : 'tests' }
 ContextOpenCLRudesheimTest >> testNewCLEvent [
-
-	self
-		testNewCLEvent0_0.
+	self testNewCLEvent0_0.
 ]
 
 { #category : 'tests' }
 ContextOpenCLRudesheimTest >> testNewCLEvent0_0 [
-
-	self
-		runNewCLEvent0.
+	self runNewCLEvent0.
 ]

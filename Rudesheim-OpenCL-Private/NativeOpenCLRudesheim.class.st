@@ -8,26 +8,25 @@ Class {
 
 { #category : 'namespace' }
 NativeOpenCLRudesheim class >> Error [
-
 	^ ErrorNativeOpenCLRudesheim.
 ]
 
 { #category : 'namespace' }
 NativeOpenCLRudesheim class >> Functions [
-
 	^ FunctionsNativeOpenCLRudesheim.
 ]
 
 { #category : 'namespace' }
-NativeOpenCLRudesheim class >> Handle [ ^ HandleNativeOpenCLRudesheim
+NativeOpenCLRudesheim class >> Handle [
+	^ HandleNativeOpenCLRudesheim.
 ]
 
 { #category : 'namespace' }
-NativeOpenCLRudesheim class >> ID [ ^ IDNativeOpenCLRudesheim
+NativeOpenCLRudesheim class >> ID [
+	^ IDNativeOpenCLRudesheim.
 ]
 
 { #category : 'namespace' }
 NativeOpenCLRudesheim class >> Library [
-
 	^ LibraryNativeOpenCLRudesheim.
 ]

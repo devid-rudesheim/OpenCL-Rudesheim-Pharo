@@ -16,105 +16,74 @@ Class {
 
 { #category : 'accessing' }
 CommandQueueOpenCLRudesheimTest class >> targetClass [
-
 	^ CommandQueueOpenCLRudesheim.
 ]
 
 { #category : 'accessing' }
 CommandQueueOpenCLRudesheimTest >> clContext [
-
 	^ clContext
 		ifNil:
 		[
 			clContext := self defaultCLContext.
 		].
-
 ]
 
 { #category : 'accessing' }
 CommandQueueOpenCLRudesheimTest >> clContext: aContextOpenCLRudesheim [
-
 	clContext := aContextOpenCLRudesheim.
 ]
 
 { #category : 'accessing' }
 CommandQueueOpenCLRudesheimTest >> clDevices [
-
 	^ clDevices
 		ifNil:
 		[
 			clDevices := self defaultCLDevices.
 		].
-
 ]
 
 { #category : 'accessing' }
 CommandQueueOpenCLRudesheimTest >> clProgram [
-
 	^ clProgram
 		ifNil:
 		[
 			clProgram := self defaultCLProgram.
 		].
-
 ]
 
 { #category : 'accessing' }
 CommandQueueOpenCLRudesheimTest >> clProgram: aProgramOpenCLRudesheim [
-
 	clProgram := aProgramOpenCLRudesheim.
-]
-
-{ #category : 'running' }
-CommandQueueOpenCLRudesheimTest >> tearDown [
-	"Some composite test methods (e.g. testEnqueueFillByPatternForRangeForWait)
-	call #tearDown/#setUp mid-method to run several run*/test*0_n phases in a
-	row. #setUp (inherited) never resets clContext/clProgram, so without this
-	override a later phase would keep using the already-released (by
-	super tearDown, via BasicOpenCLRudesheimTest's trackForRelease:
-	bookkeeping) native handle instead of getting a fresh one."
-
-	self
-		clContext:	nil;
-		clProgram:	nil.
-
-	super tearDown.
 ]
 
 { #category : 'accessing' }
 CommandQueueOpenCLRudesheimTest >> defaultBasicTarget [
-
 	^ self
 		trackForRelease:
 		(
 			self targetClass
 				clCommandQueueFor:	self clDevices first
-				of:					self clContext
+				of:	self clContext
 		).
 ]
 
 { #category : 'accessing' }
 CommandQueueOpenCLRudesheimTest >> defaultCLContext [
-
 	^ self
 		trackForRelease:
 		(
 			Rudesheim OpenCL Context
 				clContextFor:	self clDevices
 		).
-
 ]
 
 { #category : 'accessing' }
 CommandQueueOpenCLRudesheimTest >> defaultCLDevices [
-
 	^ Rudesheim OpenCL Platform clPlatforms first clDevices.
-
 ]
 
 { #category : 'accessing' }
 CommandQueueOpenCLRudesheimTest >> defaultCLProgram [
-
 	^ self
 		trackForRelease:
 		(
@@ -189,10 +158,9 @@ kernel void SlowLoopRudesheim( global unsigned int *output, unsigned int iterati
 	output[ 0 ] = state;
 }
 				'
-			}
-			withOptions:		self defaultCLStdOption
+				}
+				withOptions:	self defaultCLStdOption
 		).
-
 ]
 
 { #category : 'tests' }
@@ -224,7 +192,7 @@ CommandQueueOpenCLRudesheimTest >> runConcurrentFinishAcrossCommandQueues0 [
 					withParameterTypes:
 					{
 						TFBasicType pointer.
-						TFBasicType uint.
+						TFBasicType uint
 					}
 			).
 
@@ -234,7 +202,7 @@ CommandQueueOpenCLRudesheimTest >> runConcurrentFinishAcrossCommandQueues0 [
 			(
 				self targetClass
 					clCommandQueueFor:	self clDevices first
-					of:					self clContext
+					of:	self clContext
 			).
 
 	fastQueue :=
@@ -243,42 +211,43 @@ CommandQueueOpenCLRudesheimTest >> runConcurrentFinishAcrossCommandQueues0 [
 			(
 				self targetClass
 					clCommandQueueFor:	self clDevices first
-					of:					self clContext
+					of:	self clContext
 			).
-
 	[
 		slowQueue
 			enqueueKernel:	slowKernel
 			forNDRange:
 			{
-				{ 16r1. 16r1. 16r1. }
+				{
+					16r1.
+					16r1.
+					16r1
+				}
 			}
 			withArguments:
 			{
 				outputBuffer.
-				16r5F5E100.
+				16r5F5E100
 			}
 			forWait:
-			{
-			}.
+			{}.
 
 		slowQueue finish.
-
 		slowQueueDone signal.
-	]
-		fork.
+	] fork.
 
-	( Delay forMilliseconds: 16r0C8 ) wait.
+	(
+		Delay
+			forMilliseconds:	16r0C8
+	) wait.
 
 	fastQueue finish.
-
 	"Wait for the forked slowQueue work to actually finish before returning,
 	so #tearDown never releases slowQueue/outputBuffer/slowKernel while the
 	forked process might still be using them -- releasing a still-in-use
 	native handle out from under an in-flight OpenCL call was found to crash
 	the VM natively, see note/opencl-commandqueue-crash-investigation.md."
 	slowQueueDone wait.
-
 ]
 
 { #category : 'tests' }
@@ -303,8 +272,8 @@ CommandQueueOpenCLRudesheimTest >> runEnqueueCopyFromOffsetToForRangeAsForWait1 
 			trackForRelease:
 			(
 				self targetClass
-					clCommandQueueFor:		self clDevices first
-					of:						self clContext
+					clCommandQueueFor:	self clDevices first
+					of:	self clContext
 			).
 
 	input :=
@@ -312,7 +281,7 @@ CommandQueueOpenCLRudesheimTest >> runEnqueueCopyFromOffsetToForRangeAsForWait1 
 			trackForRelease:
 			(
 				self clContext
-					newCLBufferForSize: ouput byteSize
+					newCLBufferForSize:	ouput byteSize
 			).
 
 	fillKernel :=
@@ -334,7 +303,7 @@ CommandQueueOpenCLRudesheimTest >> runEnqueueCopyFromOffsetToForRangeAsForWait1 
 			{
 				ouput size.
 				16r1.
-				16r1.
+				16r1
 			}
 		}
 		withArguments:
@@ -352,23 +321,22 @@ CommandQueueOpenCLRudesheimTest >> runEnqueueCopyFromOffsetToForRangeAsForWait1 
 
 	target
 		enqueueCopyFrom:	input
-		offset: 0
-		to:					copyOutput
+		offset:	0
+		to:	copyOutput
 		forRange:
 		(
 			1
-				to: ouput size
+				to:	ouput size
 		)
 		as:	TFBasicType uint
 		forWait:
-		{
-		}.
+		{}.
 
 	target finish.
 
 	self
 		assertCollection:	ouput asArray
-		equals: 			#( 0 1 2 3 ).
+		equals:	#( 0 1 2 3 ).
 ]
 
 { #category : 'tests' }
@@ -391,8 +359,8 @@ CommandQueueOpenCLRudesheimTest >> runEnqueueFillByPatternForRangeForWait0 [
 			trackForRelease:
 			(
 				self targetClass
-					clCommandQueueFor:		self clDevices first
-					of:						self clContext
+					clCommandQueueFor:	self clDevices first
+					of:	self clContext
 			).
 
 	fillBuffer :=
@@ -405,17 +373,16 @@ CommandQueueOpenCLRudesheimTest >> runEnqueueFillByPatternForRangeForWait0 [
 
 	target
 		enqueueFill:	fillBuffer
-		byPattern: #( 1 ) asIntegerArray
+		byPattern:	#( 1 ) asIntegerArray
 		forRange:	self sourceValue
 		forWait:
-		{
-		}.
+		{}.
 
 	target finish.
 
 	self
 		assertCollection:	ouput asArray
-		equals: 			#( 0 1 1 0 ).
+		equals:	#( 0 1 1 0 ).
 ]
 
 { #category : 'tests' }
@@ -438,8 +405,8 @@ CommandQueueOpenCLRudesheimTest >> runEnqueueFillByPatternForRangeForWait1 [
 			trackForRelease:
 			(
 				self targetClass
-					clCommandQueueFor:		self clDevices first
-					of:						self clContext
+					clCommandQueueFor:	self clDevices first
+					of:	self clContext
 			).
 
 	fillBuffer :=
@@ -452,21 +419,20 @@ CommandQueueOpenCLRudesheimTest >> runEnqueueFillByPatternForRangeForWait1 [
 
 	target
 		enqueueFill:	fillBuffer
-		byPattern: #( 1 ) asIntegerArray
+		byPattern:	#( 1 ) asIntegerArray
 		forRange:
 		(
 			2
 				to:	3
 		)
 		forWait:
-		{
-		}.
+		{}.
 
 	target finish.
 
 	self
 		assertCollection:	ouput asArray
-		equals: 			#( 0 1 1 0 ).
+		equals:	#( 0 1 1 0 ).
 ]
 
 { #category : 'tests' }
@@ -483,14 +449,14 @@ CommandQueueOpenCLRudesheimTest >> runEnqueueKernelForNDRangeWithArgumentsForWai
 
 	ndRange :=
 	{
-		#( 2 4 8 ).
+		#( 2 4 8 )
 	}.
 
 	lengthOfGlobalRange :=
 		ndRange first
 			fold:
 			[ :left :right |
-				left * right
+				left * right.
 			].
 
 	ouput :=
@@ -504,8 +470,8 @@ CommandQueueOpenCLRudesheimTest >> runEnqueueKernelForNDRangeWithArgumentsForWai
 			trackForRelease:
 			(
 				self targetClass
-					clCommandQueueFor:		self clDevices first
-					of:						self clContext
+					clCommandQueueFor:	self clDevices first
+					of:	self clContext
 			).
 
 	fillKernel :=
@@ -536,8 +502,7 @@ CommandQueueOpenCLRudesheimTest >> runEnqueueKernelForNDRangeWithArgumentsForWai
 			kernelOutput
 		}
 		forWait:
-		{
-		}.
+		{}.
 
 	target finish.
 
@@ -564,6 +529,7 @@ CommandQueueOpenCLRudesheimTest >> runEnqueueKernelForNDRangeWithArgumentsForWai
 	|
 
 	baseRange := #( 2 4 8 ).
+
 	ndRange :=
 	{
 		baseRange.
@@ -574,7 +540,7 @@ CommandQueueOpenCLRudesheimTest >> runEnqueueKernelForNDRangeWithArgumentsForWai
 		ndRange first
 			fold:
 			[ :left :right |
-				left * right
+				left * right.
 			].
 
 	ouput :=
@@ -588,8 +554,8 @@ CommandQueueOpenCLRudesheimTest >> runEnqueueKernelForNDRangeWithArgumentsForWai
 			trackForRelease:
 			(
 				self targetClass
-					clCommandQueueFor:		self clDevices first
-					of:						self clContext
+					clCommandQueueFor:	self clDevices first
+					of:	self clContext
 			).
 
 	oneKernel :=
@@ -620,8 +586,7 @@ CommandQueueOpenCLRudesheimTest >> runEnqueueKernelForNDRangeWithArgumentsForWai
 			kernelOutput
 		}
 		forWait:
-		{
-		}.
+		{}.
 
 	target finish.
 
@@ -654,14 +619,14 @@ CommandQueueOpenCLRudesheimTest >> runEnqueueKernelForNDRangeWithArgumentsForWai
 
 	ndRange :=
 	{
-		#( 2 4 8 ).
+		#( 2 4 8 )
 	}.
 
 	lengthOfGlobalRange :=
 		ndRange first
 			fold:
 			[ :left :right |
-				left * right
+				left * right.
 			].
 
 	ouput :=
@@ -673,30 +638,32 @@ CommandQueueOpenCLRudesheimTest >> runEnqueueKernelForNDRangeWithArgumentsForWai
 	buffers :=
 	(
 		1
-			to: 4
+			to:	4
 	)
 		collect:
 		[ :each |
-				self clContext
-					newCLBufferForSize: ouput byteSize.
+			self clContext
+				newCLBufferForSize:	ouput byteSize.
 		].
 
 	buffers
 		do:
 		[ :each |
-			self trackForRelease: each.
+			self
+				trackForRelease:	each.
 		].
 
 	eventOfTrigger :=
-		self trackForRelease: self clContext newCLEvent.
+		self
+			trackForRelease:	self clContext newCLEvent.
 
 	target :=
 		self
 			trackForRelease:
 			(
 				self targetClass
-					clCommandQueueFor:		self clDevices first
-					of:						self clContext
+					clCommandQueueFor:	self clDevices first
+					of:	self clContext
 			).
 
 	accumulate :=
@@ -709,7 +676,7 @@ CommandQueueOpenCLRudesheimTest >> runEnqueueKernelForNDRangeWithArgumentsForWai
 					{
 						TFBasicType pointer.
 						TFBasicType pointer.
-						TFBasicType uint.
+						TFBasicType uint
 					}
 			).
 
@@ -720,7 +687,7 @@ CommandQueueOpenCLRudesheimTest >> runEnqueueKernelForNDRangeWithArgumentsForWai
 				buffers
 					at:	1
 			)
-			byPattern: #( 0 ) asIntegerArray
+			byPattern:	#( 0 ) asIntegerArray
 			forRange:
 			(
 				1
@@ -735,35 +702,34 @@ CommandQueueOpenCLRudesheimTest >> runEnqueueKernelForNDRangeWithArgumentsForWai
 	{
 		target
 			enqueueKernel:	accumulate
-			forNDRange:		ndRange
+			forNDRange:	ndRange
 			withArguments:
 			{
 				buffers
 					at:	2.
 				buffers
 					at:	1.
-				16r01.
+				16r01
 			}
 			forWait:
 			{
 				eventOfBegin
 			}.
-
 		target
 			enqueueKernel:	accumulate
-			forNDRange:		ndRange
+			forNDRange:	ndRange
 			withArguments:
 			{
 				buffers
 					at:	3.
 				buffers
 					at:	1.
-				16r02.
+				16r02
 			}
 			forWait:
 			{
 				eventOfBegin
-			}.
+			}
 	}.
 
 	addKernel :=
@@ -776,7 +742,7 @@ CommandQueueOpenCLRudesheimTest >> runEnqueueKernelForNDRangeWithArgumentsForWai
 					{
 						TFBasicType pointer.
 						TFBasicType pointer.
-						TFBasicType pointer.
+						TFBasicType pointer
 					}
 			).
 
@@ -791,22 +757,21 @@ CommandQueueOpenCLRudesheimTest >> runEnqueueKernelForNDRangeWithArgumentsForWai
 	eventOfEnd :=
 		target
 			enqueueKernel:	addKernel
-			forNDRange:		ndRange
+			forNDRange:	ndRange
 			withArguments:
 			{
 				addOutput.
 				buffers
 					at:	2.
 				buffers
-					at:	3.
+					at:	3
 			}
 			forWait:	eventOfBranch.
 
 	eventOfTrigger
-		status: 0.
+		status:	0.
 
 	eventOfEnd wait.
-
 	target finish.
 
 	self
@@ -819,17 +784,19 @@ CommandQueueOpenCLRudesheimTest >> runEnqueueKernelForNDRangeWithArgumentsForWai
 			)
 				collect:
 				[ :each |
-					16r01 + 16r02
+					16r01 + 16r02.
 				]
-				as: Array
+				as:	Array
 		).
 ]
 
 { #category : 'tests' }
 CommandQueueOpenCLRudesheimTest >> runEnqueueMapForRangeAsOptionsBlockingForWait0 [
+	self
+		flag:	#toImplement.
 
-	self flag: #toImplement.
-	self assert: false
+	self
+		assert:	false.
 ]
 
 { #category : 'tests' }
@@ -855,8 +822,8 @@ CommandQueueOpenCLRudesheimTest >> runEnqueueMapForRangeAsOptionsBlockingForWait
 			trackForRelease:
 			(
 				self targetClass
-					clCommandQueueFor:		self clDevices first
-					of:						self clContext
+					clCommandQueueFor:	self clDevices first
+					of:	self clContext
 			).
 
 	mappedArray :=
@@ -864,33 +831,32 @@ CommandQueueOpenCLRudesheimTest >> runEnqueueMapForRangeAsOptionsBlockingForWait
 			trackForRelease:
 			(
 				self clContext
-					newCLBufferWith: ouput
+					newCLBufferWith:	ouput
 			).
 
 	forWaitEvent :=
-		self trackForRelease: self clContext newCLEvent.
+		self
+			trackForRelease:	self clContext newCLEvent.
 
 	tuple :=
 		target
-			enqueueMap:		mappedArray
+			enqueueMap:	mappedArray
 			forRange:
 			(
 				1
-					to: ouput size
+					to:	ouput size
 			)
-			as: 			TFBasicType uint32
+			as:	TFBasicType uint32
 			options:
 			{
 				cl WriteOnly
 			}
-			blocking:		true
+			blocking:	true
 			forWait:
 			{
-
 				forWaitEvent
 					status:	0;
 					yourself
-
 			}.
 
 	rawArray := tuple first.
@@ -898,17 +864,15 @@ CommandQueueOpenCLRudesheimTest >> runEnqueueMapForRangeAsOptionsBlockingForWait
 	self sourceValue
 		do:
 		[ :each |
-
 			rawArray
 				uint32AtOffset:	each * TFBasicType uint byteSize
-				put: 				each.
-
+				put:	each.
 		].
 
 	(
 		target
 			enqueueUnmap:	tuple first
-			of:				mappedArray
+			of:	mappedArray
 			forWait:
 			{
 				tuple last
@@ -919,8 +883,7 @@ CommandQueueOpenCLRudesheimTest >> runEnqueueMapForRangeAsOptionsBlockingForWait
 
 	self
 		assertCollection:	ouput asArray
-		equals: 			self expectedValue.
-
+		equals:	self expectedValue.
 ]
 
 { #category : 'tests' }
@@ -944,8 +907,8 @@ CommandQueueOpenCLRudesheimTest >> runEnqueueMapForRangeAsOptionsBlockingForWait
 			trackForRelease:
 			(
 				self targetClass
-					clCommandQueueFor:		self clDevices first
-					of:						self clContext
+					clCommandQueueFor:	self clDevices first
+					of:	self clContext
 			).
 
 	mappedArray :=
@@ -953,47 +916,42 @@ CommandQueueOpenCLRudesheimTest >> runEnqueueMapForRangeAsOptionsBlockingForWait
 			trackForRelease:
 			(
 				self clContext
-					newCLBufferWith: ouput
+					newCLBufferWith:	ouput
 			).
 
 	forWaitEvent :=
-		self trackForRelease: self clContext newCLEvent.
+		self
+			trackForRelease:	self clContext newCLEvent.
 
 	(
 		target
-			enqueueMap:		mappedArray
+			enqueueMap:	mappedArray
 			forRange:
 			(
 				1
-					to: ouput size
+					to:	ouput size
 			)
-			as: 			TFBasicType uint32
+			as:	TFBasicType uint32
 			options:
 			{
 				cl WriteOnly
 			}
-			blocking:		true
+			blocking:	true
 			forWait:
 			{
-
 				forWaitEvent
 					status:	0;
 					yourself
-
 			}
 			do:
 			[ :rawArray |
-
 				self sourceValue
 					do:
 					[ :each |
-
 						rawArray
 							uint32AtOffset:	each * TFBasicType uint byteSize
-							put: 				each.
-
+							put:	each.
 					].
-
 			]
 	) wait.
 
@@ -1001,64 +959,63 @@ CommandQueueOpenCLRudesheimTest >> runEnqueueMapForRangeAsOptionsBlockingForWait
 
 	self
 		assertCollection:	ouput asArray
-		equals: 			self expectedValue.
+		equals:	self expectedValue.
+]
 
+{ #category : 'running' }
+CommandQueueOpenCLRudesheimTest >> tearDown [
+	"Some composite test methods (e.g. testEnqueueFillByPatternForRangeForWait)
+	call #tearDown/#setUp mid-method to run several run*/test*0_n phases in a
+	row. #setUp (inherited) never resets clContext/clProgram, so without this
+	override a later phase would keep using the already-released (by
+	super tearDown, via BasicOpenCLRudesheimTest's trackForRelease:
+	bookkeeping) native handle instead of getting a fresh one."
+	self
+		clContext:	nil;
+		clProgram:	nil.
+
+	super tearDown.
 ]
 
 { #category : 'tests' }
 CommandQueueOpenCLRudesheimTest >> testConcurrentFinishAcrossCommandQueues [
-
-	self
-		testConcurrentFinishAcrossCommandQueues0_0.
-
+	self testConcurrentFinishAcrossCommandQueues0_0.
 ]
 
 { #category : 'tests' }
 CommandQueueOpenCLRudesheimTest >> testConcurrentFinishAcrossCommandQueues0_0 [
-
 	self
-		timeLimit: 5 seconds;
+		timeLimit:	5 seconds;
 		runConcurrentFinishAcrossCommandQueues0.
-
 ]
 
 { #category : 'tests' }
 CommandQueueOpenCLRudesheimTest >> testEnqueueCopyFromOffsetToForRangeAsForWait [
-
-	self
-		"testEnqueueCopyFromOffsetToForRangeAsForWait0_0;
-		tearDown;
-		setUp;"
-		testEnqueueCopyFromOffsetToForRangeAsForWait1_0.
-
+	self testEnqueueCopyFromOffsetToForRangeAsForWait1_0.
 ]
 
 { #category : 'tests' }
 CommandQueueOpenCLRudesheimTest >> testEnqueueCopyFromOffsetToForRangeAsForWait0_0 [
-
-	self skip: 'Placeholder selector; implemented coverage is in testEnqueueCopyFromOffsetToForRangeAsForWait1_0.'.
+	self
+		skip:	'Placeholder selector; implemented coverage is in testEnqueueCopyFromOffsetToForRangeAsForWait1_0.'.
 ]
 
 { #category : 'tests' }
 CommandQueueOpenCLRudesheimTest >> testEnqueueCopyFromOffsetToForRangeAsForWait1_0 [
-
-	self
-		runEnqueueCopyFromOffsetToForRangeAsForWait1.
+	self runEnqueueCopyFromOffsetToForRangeAsForWait1.
 ]
 
 { #category : 'tests' }
 CommandQueueOpenCLRudesheimTest >> testEnqueueFillByPatternForRangeForWait [
-
 	self
 		testEnqueueFillByPatternForRangeForWait0_0;
 		tearDown;
 		setUp;
-		testEnqueueFillByPatternForRangeForWait1_0
+		testEnqueueFillByPatternForRangeForWait1_0.
 ]
 
 { #category : 'tests' }
 CommandQueueOpenCLRudesheimTest >> testEnqueueFillByPatternForRangeForWait0_0 [
-
 	self
 		should:
 		[
@@ -1066,9 +1023,9 @@ CommandQueueOpenCLRudesheimTest >> testEnqueueFillByPatternForRangeForWait0_0 [
 				sourceValue:
 				(
 					16r8
-						to: 16r10
+						to:	16r10
 				);
-				runEnqueueFillByPatternForRangeForWait0
+				runEnqueueFillByPatternForRangeForWait0.
 		]
 		raise:	Rudesheim OpenCL Native Error Primitive.
 ]
@@ -1080,35 +1037,43 @@ CommandQueueOpenCLRudesheimTest >> testEnqueueFillByPatternForRangeForWait0_0Det
 	|
 
 	caughtError :=
-		[
-			self
-				sourceValue:
-				(
-					16r8
-						to: 16r10
-				);
-				runEnqueueFillByPatternForRangeForWait0.
+	[
+		self
+			sourceValue:
+			(
+				16r8
+					to:	16r10
+			);
+			runEnqueueFillByPatternForRangeForWait0.
 
-			nil.
-		]
-			on: EnqueueFillFailedOpenCLRudesheim
-			do:
-			[ :anError |
-				anError.
-			].
+		nil.
+	]
+		on:	EnqueueFillFailedOpenCLRudesheim
+		do:
+		[ :anError |
+			anError.
+		].
 
 	self
 		assert:	caughtError notNil.
-	self
-		assert:	( caughtError messageText includesSubstring: 'enqueueing a fill' ).
-	self
-		assert:	( caughtError messageText includesSubstring: 'invalid_value' ).
 
+	self
+		assert:
+		(
+			caughtError messageText
+				includesSubstring:	'enqueueing a fill'
+		).
+
+	self
+		assert:
+		(
+			caughtError messageText
+				includesSubstring:	'invalid_value'
+		).
 ]
 
 { #category : 'tests' }
 CommandQueueOpenCLRudesheimTest >> testEnqueueFillByPatternForRangeForWait0_1 [
-
 	self
 		should:
 		[
@@ -1116,18 +1081,16 @@ CommandQueueOpenCLRudesheimTest >> testEnqueueFillByPatternForRangeForWait0_1 [
 				sourceValue:
 				(
 					16r10
-						to: 16r1
+						to:	16r1
 				);
-				runEnqueueFillByPatternForRangeForWait0
+				runEnqueueFillByPatternForRangeForWait0.
 		]
 		raise:	Rudesheim OpenCL Native Error Primitive.
 ]
 
 { #category : 'tests' }
 CommandQueueOpenCLRudesheimTest >> testEnqueueFillByPatternForRangeForWait1_0 [
-
-	self
-		runEnqueueFillByPatternForRangeForWait1.
+	self runEnqueueFillByPatternForRangeForWait1.
 ]
 
 { #category : 'tests' }
@@ -1143,14 +1106,14 @@ CommandQueueOpenCLRudesheimTest >> testEnqueueKernelAndWaitForNDRangeWithArgumen
 
 	ndRange :=
 	{
-		#( 2 4 8 ).
+		#( 2 4 8 )
 	}.
 
 	lengthOfGlobalRange :=
 		ndRange first
 			fold:
 			[ :left :right |
-				left * right
+				left * right.
 			].
 
 	ouput :=
@@ -1162,8 +1125,8 @@ CommandQueueOpenCLRudesheimTest >> testEnqueueKernelAndWaitForNDRangeWithArgumen
 			trackForRelease:
 			(
 				self targetClass
-					clCommandQueueFor:		self clDevices first
-					of:						self clContext
+					clCommandQueueFor:	self clDevices first
+					of:	self clContext
 			).
 
 	fillKernel :=
@@ -1205,7 +1168,6 @@ CommandQueueOpenCLRudesheimTest >> testEnqueueKernelAndWaitForNDRangeWithArgumen
 
 { #category : 'tests' }
 CommandQueueOpenCLRudesheimTest >> testEnqueueKernelForNDRangeWithArgumentsForWait [
-
 	self
 		"testEnqueueKernelForNDRangeWithArgumentsForWait0_0;
 		tearDown;
@@ -1217,47 +1179,38 @@ CommandQueueOpenCLRudesheimTest >> testEnqueueKernelForNDRangeWithArgumentsForWa
 		tearDown;
 		setUp;
 		testEnqueueKernelForNDRangeWithArgumentsForWait3_0.
-
 ]
 
 { #category : 'tests' }
 CommandQueueOpenCLRudesheimTest >> testEnqueueKernelForNDRangeWithArgumentsForWait0_0 [
-
-	self skip: 'Placeholder selector; implemented coverage is in testEnqueueKernelForNDRangeWithArgumentsForWait1_0 and later variants.'.
+	self
+		skip:	'Placeholder selector; implemented coverage is in testEnqueueKernelForNDRangeWithArgumentsForWait1_0 and later variants.'.
 ]
 
 { #category : 'tests' }
 CommandQueueOpenCLRudesheimTest >> testEnqueueKernelForNDRangeWithArgumentsForWait1_0 [
-
-	self
-		runEnqueueKernelForNDRangeWithArgumentsForWait1.
+	self runEnqueueKernelForNDRangeWithArgumentsForWait1.
 ]
 
 { #category : 'tests' }
 CommandQueueOpenCLRudesheimTest >> testEnqueueKernelForNDRangeWithArgumentsForWait2_0 [
-
-	self
-		runEnqueueKernelForNDRangeWithArgumentsForWait2.
+	self runEnqueueKernelForNDRangeWithArgumentsForWait2.
 ]
 
 { #category : 'tests' }
 CommandQueueOpenCLRudesheimTest >> testEnqueueKernelForNDRangeWithArgumentsForWait3_0 [
-
-	self
-		runEnqueueKernelForNDRangeWithArgumentsForWait3.
+	self runEnqueueKernelForNDRangeWithArgumentsForWait3.
 ]
 
 { #category : 'tests' }
 CommandQueueOpenCLRudesheimTest >> testEnqueueMapForRangeAsOptionsBlockingForWait [
-
-	self
-		testEnqueueMapForRangeAsOptionsBlockingForWait1_0.
+	self testEnqueueMapForRangeAsOptionsBlockingForWait1_0.
 ]
 
 { #category : 'tests' }
 CommandQueueOpenCLRudesheimTest >> testEnqueueMapForRangeAsOptionsBlockingForWait0_0 [
-
-	self skip: 'Placeholder selector; implemented coverage is in testEnqueueMapForRangeAsOptionsBlockingForWait1_0.'.
+	self
+		skip:	'Placeholder selector; implemented coverage is in testEnqueueMapForRangeAsOptionsBlockingForWait1_0.'.
 ]
 
 { #category : 'tests' }
@@ -1278,15 +1231,13 @@ CommandQueueOpenCLRudesheimTest >> testEnqueueMapForRangeAsOptionsBlockingForWai
 
 { #category : 'tests' }
 CommandQueueOpenCLRudesheimTest >> testEnqueueMapForRangeAsOptionsBlockingForWaitDo [
-
-	self
-		testEnqueueMapForRangeAsOptionsBlockingForWaitDo1_0.
+	self testEnqueueMapForRangeAsOptionsBlockingForWaitDo1_0.
 ]
 
 { #category : 'tests' }
 CommandQueueOpenCLRudesheimTest >> testEnqueueMapForRangeAsOptionsBlockingForWaitDo0_0 [
-
-	self skip: 'Placeholder selector; implemented coverage is in testEnqueueMapForRangeAsOptionsBlockingForWaitDo1_0.'.
+	self
+		skip:	'Placeholder selector; implemented coverage is in testEnqueueMapForRangeAsOptionsBlockingForWaitDo1_0.'.
 ]
 
 { #category : 'tests' }
@@ -1318,8 +1269,8 @@ CommandQueueOpenCLRudesheimTest >> testReadFromCountElementTypeRoundTripsDouble0
 			trackForRelease:
 			(
 				self targetClass
-					clCommandQueueFor:		self clDevices first
-					of:						self clContext
+					clCommandQueueFor:	self clDevices first
+					of:	self clContext
 			).
 
 	buffer :=
@@ -1329,7 +1280,10 @@ CommandQueueOpenCLRudesheimTest >> testReadFromCountElementTypeRoundTripsDouble0
 				self clContext
 					newCLBufferWith:
 					{
-						1.25. 2.75. 3.125. 4.0625.
+						1.25.
+						2.75.
+						3.125.
+						4.0625
 					}
 					elementType:	TFBasicType double
 			).
@@ -1344,7 +1298,10 @@ CommandQueueOpenCLRudesheimTest >> testReadFromCountElementTypeRoundTripsDouble0
 		assertCollection:	result
 		equals:
 		{
-			1.25. 2.75. 3.125. 4.0625.
+			1.25.
+			2.75.
+			3.125.
+			4.0625
 		}.
 ]
 
@@ -1361,8 +1318,8 @@ CommandQueueOpenCLRudesheimTest >> testReadFromCountElementTypeRoundTripsFloat0_
 			trackForRelease:
 			(
 				self targetClass
-					clCommandQueueFor:		self clDevices first
-					of:						self clContext
+					clCommandQueueFor:	self clDevices first
+					of:	self clContext
 			).
 
 	buffer :=
@@ -1372,7 +1329,10 @@ CommandQueueOpenCLRudesheimTest >> testReadFromCountElementTypeRoundTripsFloat0_
 				self clContext
 					newCLBufferWith:
 					{
-						1.5. 2.5. 3.5. 4.5.
+						1.5.
+						2.5.
+						3.5.
+						4.5
 					}
 					elementType:	TFBasicType float
 			).
@@ -1387,6 +1347,9 @@ CommandQueueOpenCLRudesheimTest >> testReadFromCountElementTypeRoundTripsFloat0_
 		assertCollection:	result
 		equals:
 		{
-			1.5. 2.5. 3.5. 4.5.
+			1.5.
+			2.5.
+			3.5.
+			4.5
 		}.
 ]

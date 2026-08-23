@@ -19,31 +19,26 @@ PlatformOpenCLRudesheim class >> clPlatforms [
 		super
 			onDo:
 			[ :expectedAmount :actualIDs :actualAmount |
-
 				functions tfRunner
 					invokeFunction:	functions functionOfGetPlatformIDs
 					withArguments:
 					{
 						expectedAmount.
 						actualIDs.
-						actualAmount.
+						actualAmount
 					}.
-
 			].
 	]
-		on: PrimitiveErrorNativeOpenCLRudesheim
+		on:	PrimitiveErrorNativeOpenCLRudesheim
 		do:
 		[ :anError |
 			Rudesheim OpenCL Native Error PlatformEnumerationFailed
 				signalForCause:	anError.
 		].
-
-
 ]
 
 { #category : 'accessing' }
 PlatformOpenCLRudesheim >> clDevices [
-
 	^ self
 		clDevicesForType:
 		{
@@ -52,9 +47,8 @@ PlatformOpenCLRudesheim >> clDevices [
 ]
 
 { #category : 'accessing' }
-PlatformOpenCLRudesheim >> clDevicesForType:	aCLTDeviceDefineCollection [
-
+PlatformOpenCLRudesheim >> clDevicesForType: aCLTDeviceDefineCollection [
 	^ Rudesheim OpenCL Device
 		clDevicesForType:	aCLTDeviceDefineCollection
-		of:					self
+		of:	self.
 ]
