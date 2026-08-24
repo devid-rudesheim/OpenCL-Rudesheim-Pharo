@@ -28,13 +28,11 @@ Class {
 
 { #category : 'accessing' }
 BufferOpenCLRudesheimReadStabilityTest class >> targetClass [
-
 	^ BufferOpenCLRudesheim.
 ]
 
 { #category : 'accessing' }
 BufferOpenCLRudesheimReadStabilityTest >> clContext [
-
 	^ clContext
 		ifNil:
 		[
@@ -46,12 +44,10 @@ BufferOpenCLRudesheimReadStabilityTest >> clContext [
 							clContextFor:	Rudesheim OpenCL Platform clPlatforms first clDevices
 					).
 		].
-
 ]
 
 { #category : 'accessing' }
 BufferOpenCLRudesheimReadStabilityTest >> defaultBasicTarget [
-
 	^ self
 		trackForRelease:
 		(
@@ -59,14 +55,13 @@ BufferOpenCLRudesheimReadStabilityTest >> defaultBasicTarget [
 				newCLBufferForSize:	16r10
 				options:
 				{
-					Rudesheim OpenCL ReadWrite.
+					Rudesheim OpenCL ReadWrite
 				}
 		).
 ]
 
 { #category : 'accessing' }
 BufferOpenCLRudesheimReadStabilityTest >> clQueue [
-
 	^ self
 		trackForRelease:
 		(
@@ -81,7 +76,6 @@ BufferOpenCLRudesheimReadStabilityTest >> identityKernel [
 	-- deliberately not one of the production Conv2D/Gemv/etc. kernels, so
 	these tests stay independent of note/resnet50-onnx-support-plan.md's
 	kernel source and don't share a program/kernel cache entry with it."
-
 	^ self
 		trackForRelease:
 		(
@@ -90,14 +84,13 @@ BufferOpenCLRudesheimReadStabilityTest >> identityKernel [
 				withParameterTypes:
 				{
 					TFBasicType pointer.
-					TFBasicType pointer.
+					TFBasicType pointer
 				}
 		).
 ]
 
 { #category : 'accessing' }
 BufferOpenCLRudesheimReadStabilityTest >> identityKernelProgram [
-
 	^ self
 		trackForRelease:
 		(
@@ -131,23 +124,25 @@ BufferOpenCLRudesheimReadStabilityTest >> testPureHostReadsOfPersistentBufferAre
 
 	queue := self clQueue.
 	expectedValues := #( 1.0 2.0 3.0 4.0 5.0 6.0 7.0 8.0 ).
+
 	buffer :=
 		self clContext
 			newCLBufferWith:	expectedValues
 			elementType:	TFBasicType float.
 
-	50 timesRepeat:
-	[
-		self
-			assert:
-			(
-				queue
-					readFrom:	buffer
-					count:	8
-					elementType:	TFBasicType float
-			)
-			equals:	expectedValues.
-	].
+	50
+		timesRepeat:
+		[
+			self
+				assert:
+				(
+					queue
+						readFrom:	buffer
+						count:	8
+						elementType:	TFBasicType float
+				)
+				equals:	expectedValues.
+		].
 
 	buffer release.
 	queue release.
@@ -175,55 +170,64 @@ BufferOpenCLRudesheimReadStabilityTest >> testFreshBuffersRoundTripThroughIdenti
 	trialCount := 60.
 	failureCount := 0.
 
-	trialCount timesRepeat:
-	[
-		|
-			inputBuffer
-			outputBuffer
-			kernelEvent
-		|
+	trialCount
+		timesRepeat:
+		[
+			|
+				inputBuffer
+				outputBuffer
+				kernelEvent
+			|
 
-		inputBuffer :=
-			self clContext
-				newCLBufferWith:	expectedValues
-				elementType:	TFBasicType float.
-		outputBuffer :=
-			self clContext
-				newCLBufferForElementCount:	8
-				elementType:	TFBasicType float.
+			inputBuffer :=
+				self clContext
+					newCLBufferWith:	expectedValues
+					elementType:	TFBasicType float.
 
-		kernelEvent :=
-			queue
-				enqueueKernel:	kernel
-				forNDRange:				{ { 8 } }
-				withArguments:			{ inputBuffer. outputBuffer }.
-		kernelEvent wait.
-		kernelEvent release.
+			outputBuffer :=
+				self clContext
+					newCLBufferForElementCount:	8
+					elementType:	TFBasicType float.
 
-		(
+			kernelEvent :=
+				queue
+					enqueueKernel:	kernel
+					forNDRange:
+					{
+						{
+							8
+						}
+					}
+					withArguments:
+					{
+						inputBuffer.
+						outputBuffer
+					}.
+
+			kernelEvent wait.
+			kernelEvent release.
+
 			(
 				queue
 					readFrom:	outputBuffer
 					count:	8
 					elementType:	TFBasicType float
-			)
-				= expectedValues
-		)
-			ifFalse: [ failureCount := failureCount + 1 ].
+			) = expectedValues
+				ifFalse:
+				[
+					failureCount := failureCount + 1.
+				].
 
-		inputBuffer release.
-		outputBuffer release.
-	].
+			inputBuffer release.
+			outputBuffer release.
+		].
 
 	"A tiny nonzero baseline (observed ~0.3%, i.e. roughly 1 in 300) is
 	tolerated here -- see note/pharo-ops.md 34節 -- but a fresh-buffer-per-
 	trial pattern should stay overwhelmingly reliable."
 	self
 		assert:	failureCount <= 2
-		description:
-			'fresh-buffer round trip failed ', failureCount printString,
-			'/', trialCount printString,
-			' times -- see note/pharo-ops.md 34節'.
+		description:	'fresh-buffer round trip failed ' , failureCount printString , '/' , trialCount printString , ' times -- see note/pharo-ops.md 34節'.
 
 	kernel release.
 	queue release.
@@ -242,13 +246,11 @@ BufferOpenCLRudesheimReadStabilityTest >> testRepeatedKernelReadsOfPersistentBuf
 	actual defect. A buffer that is uploaded ONCE and then read by many separate kernel
 	launches (never recreated in between) must return the same, correct content every time,
 	same as the fresh-buffer-per-trial pattern in testFreshBuffersRoundTripThroughIdentityKernelReliably."
-
 	self runRepeatedKernelReadsOfPersistentBufferDiagnostic.
 ]
 
 { #category : 'private' }
 BufferOpenCLRudesheimReadStabilityTest >> runRepeatedKernelReadsOfPersistentBufferDiagnostic [
-
 	|
 		queue
 		expectedValues
@@ -261,52 +263,63 @@ BufferOpenCLRudesheimReadStabilityTest >> runRepeatedKernelReadsOfPersistentBuff
 	queue := self clQueue.
 	expectedValues := #( 1.0 2.0 3.0 4.0 5.0 6.0 7.0 8.0 ).
 	kernel := self identityKernel.
+
 	inputBuffer :=
 		self clContext
 			newCLBufferWith:	expectedValues
 			elementType:	TFBasicType float.
+
 	trialCount := 300.
 	failureCount := 0.
 
-	trialCount timesRepeat:
-	[
-		|
-			outputBuffer
-			kernelEvent
-		|
+	trialCount
+		timesRepeat:
+		[
+			|
+				outputBuffer
+				kernelEvent
+			|
 
-		outputBuffer :=
-			self clContext
-				newCLBufferForElementCount:	8
-				elementType:	TFBasicType float.
-		kernelEvent :=
-			queue
-				enqueueKernel:	kernel
-				forNDRange:				{ { 8 } }
-				withArguments:			{ inputBuffer. outputBuffer }.
-		kernelEvent wait.
-		kernelEvent release.
+			outputBuffer :=
+				self clContext
+					newCLBufferForElementCount:	8
+					elementType:	TFBasicType float.
 
-		(
+			kernelEvent :=
+				queue
+					enqueueKernel:	kernel
+					forNDRange:
+					{
+						{
+							8
+						}
+					}
+					withArguments:
+					{
+						inputBuffer.
+						outputBuffer
+					}.
+
+			kernelEvent wait.
+			kernelEvent release.
+
 			(
 				queue
 					readFrom:	outputBuffer
 					count:	8
 					elementType:	TFBasicType float
-			)
-				= expectedValues
-		)
-			ifFalse: [ failureCount := failureCount + 1 ].
+			) = expectedValues
+				ifFalse:
+				[
+					failureCount := failureCount + 1.
+				].
 
-		outputBuffer release.
-	].
+			outputBuffer release.
+		].
 
 	self
 		assert:	failureCount = 0
-		description:
-			'repeated-kernel-read-of-persistent-buffer failed ', failureCount printString,
-			'/', trialCount printString,
-			' times -- see note/pharo-ops.md 34節'.
+		description:	'repeated-kernel-read-of-persistent-buffer failed ' , failureCount printString , '/' , trialCount printString , ' times -- see note/pharo-ops.md 34節'.
 
 	inputBuffer release.
 	kernel release.

@@ -10,29 +10,27 @@ Class {
 }
 
 { #category : 'invoking' }
-MacOSOpenCLRudesheim class >> invokeCompileProgram:	aProgramOpenCLRudesheim
-for:					aCLDevicesCollection
-withOptions:			anOptionsString
-headers:				aHeaderAssociationsCollection
-of:						aCLContext [
-
+MacOSOpenCLRudesheim class >> invokeCompileProgram: aProgramOpenCLRudesheim
+for: aCLDevicesCollection
+withOptions: anOptionsString
+headers: aHeaderAssociationsCollection
+of: aCLContext [
 	^ Rudesheim OpenCL Native Error ProgramCompileNotSupported
 		signalForProgram:	aProgramOpenCLRudesheim
-		devices:			aCLDevicesCollection
-		options:			anOptionsString
-		headers:			aHeaderAssociationsCollection.
+		devices:	aCLDevicesCollection
+		options:	anOptionsString
+		headers:	aHeaderAssociationsCollection.
 ]
 
 { #category : 'invoking' }
-MacOSOpenCLRudesheim class >> invokeLinkProgramFor:	aCLContext
-devices:				aCLDevicesCollection
-programs:				aProgramsCollection
-options:				anOptionsString
-errorOutput:			errorOutput [
-
+MacOSOpenCLRudesheim class >> invokeLinkProgramFor: aCLContext
+devices: aCLDevicesCollection
+programs: aProgramsCollection
+options: anOptionsString
+errorOutput: errorOutput [
 	^ Rudesheim OpenCL Native Error ProgramLinkNotSupported
 		signalForContext:	aCLContext
-		devices:			aCLDevicesCollection
-		programs:			aProgramsCollection
-		options:			anOptionsString.
+		devices:	aCLDevicesCollection
+		programs:	aProgramsCollection
+		options:	anOptionsString.
 ]

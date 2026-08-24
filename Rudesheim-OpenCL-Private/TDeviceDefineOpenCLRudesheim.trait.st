@@ -20,6 +20,5 @@ TDeviceDefineOpenCLRudesheim classSide >> offsetOfCLDeviceType [
 
 { #category : 'accessing' }
 TDeviceDefineOpenCLRudesheim >> clDeviceType [
-
 	^ self class clDeviceType.
 ]

@@ -32,132 +32,113 @@ Class {
 
 { #category : 'accessing' }
 FunctionsNativeOpenCLRudesheim class >> defaultTFRunner [
-
 	^ TFWorker
-		named: 'OpenCL'.
+		named:	'OpenCL'.
 ]
 
 { #category : 'accessing - function' }
 FunctionsNativeOpenCLRudesheim class >> functionOfBuildProgram [
-
-	^ functionOfBuildProgram
+	^ functionOfBuildProgram.
 ]
 
 { #category : 'accessing - function' }
 FunctionsNativeOpenCLRudesheim class >> functionOfCompileProgram [
-	^ functionOfCompileProgram
+	^ functionOfCompileProgram.
 ]
 
 { #category : 'accessing' }
 FunctionsNativeOpenCLRudesheim class >> functionOfEnqueueCopyBuffer [
-
-	^ functionOfEnqueueCopyBuffer
+	^ functionOfEnqueueCopyBuffer.
 ]
 
 { #category : 'accessing' }
 FunctionsNativeOpenCLRudesheim class >> functionOfEnqueueFillBuffer [
-
-	^ functionOfEnqueueFillBuffer
+	^ functionOfEnqueueFillBuffer.
 ]
 
 { #category : 'accessing - function' }
 FunctionsNativeOpenCLRudesheim class >> functionOfEnqueueNDRangeKernel [
-
-	^ functionOfEnqueueNDRangeKernel
+	^ functionOfEnqueueNDRangeKernel.
 ]
 
 { #category : 'accessing - function' }
 FunctionsNativeOpenCLRudesheim class >> functionOfFinish [
-
-	^ functionOfFinish
+	^ functionOfFinish.
 ]
 
 { #category : 'accessing - function' }
 FunctionsNativeOpenCLRudesheim class >> functionOfFlush [
-
-	^ functionOfFlush
+	^ functionOfFlush.
 ]
 
 { #category : 'accessing - function' }
 FunctionsNativeOpenCLRudesheim class >> functionOfGetDeviceIDs [
-
-	^ functionOfGetDeviceIDs
+	^ functionOfGetDeviceIDs.
 ]
 
 { #category : 'accessing - function' }
 FunctionsNativeOpenCLRudesheim class >> functionOfGetPlatformIDs [
-
-	^ functionOfGetPlatformIDs
+	^ functionOfGetPlatformIDs.
 ]
 
 { #category : 'accessing - function' }
 FunctionsNativeOpenCLRudesheim class >> functionOfGetProgramBuildInfo [
-	^ functionOfGetProgramBuildInfo
+	^ functionOfGetProgramBuildInfo.
 ]
 
 { #category : 'accessing - function' }
 FunctionsNativeOpenCLRudesheim class >> functionOfLinkProgram [
-	^ functionOfLinkProgram
+	^ functionOfLinkProgram.
 ]
 
 { #category : 'accessing - function' }
 FunctionsNativeOpenCLRudesheim class >> functionOfSetUserEventStatus [
-
-	^ functionOfSetUserEventStatus
+	^ functionOfSetUserEventStatus.
 ]
 
 { #category : 'accessing - function' }
 FunctionsNativeOpenCLRudesheim class >> functionOfWaitForEvents [
-
-	^ functionOfWaitForEvents
+	^ functionOfWaitForEvents.
 ]
 
 { #category : 'accessing - function' }
 FunctionsNativeOpenCLRudesheim class >> functionsOfBuffer [
-
-	^ functionsOfBuffer
+	^ functionsOfBuffer.
 ]
 
 { #category : 'accessing - function' }
 FunctionsNativeOpenCLRudesheim class >> functionsOfCommandQueue [
-
-	^ functionsOfCommandQueue
+	^ functionsOfCommandQueue.
 ]
 
 { #category : 'accessing - function' }
 FunctionsNativeOpenCLRudesheim class >> functionsOfContext [
-
-	^ functionsOfContext
+	^ functionsOfContext.
 ]
 
 { #category : 'accessing' }
 FunctionsNativeOpenCLRudesheim class >> functionsOfEnqueueMap [
-
-	^ functionsOfEnqueueMap
+	^ functionsOfEnqueueMap.
 ]
 
 { #category : 'accessing' }
 FunctionsNativeOpenCLRudesheim class >> functionsOfEvent [
-
-	^ functionsOfEvent
+	^ functionsOfEvent.
 ]
 
 { #category : 'accessing - function' }
 FunctionsNativeOpenCLRudesheim class >> functionsOfKernel [
-
-	^ functionsOfKernel
+	^ functionsOfKernel.
 ]
 
 { #category : 'accessing - function' }
 FunctionsNativeOpenCLRudesheim class >> functionsOfProgram [
-
-	^ functionsOfProgram
+	^ functionsOfProgram.
 ]
 
 { #category : 'accessing - function' }
 FunctionsNativeOpenCLRudesheim class >> functionsOfSetKernelArg [
-
-	^ functionsOfSetKernelArg
+	^ functionsOfSetKernelArg.
 ]
 
 { #category : 'class initialization' }
@@ -173,18 +154,17 @@ FunctionsNativeOpenCLRudesheim class >> initialize [
 	|
 
 	moduleName := LibraryNativeOpenCLRudesheim uniqueInstance libraryName.
-
 	pointer := TFBasicType pointer.
 	uint64 := TFBasicType uint64.
 	uint32 := TFBasicType uint32.
 	sint32 := TFBasicType sint32.
 	uint8 := TFBasicType uint8.
-	sizeT :=TFBasicType sizeT.
+	sizeT := TFBasicType sizeT.
 
 	functionOfGetPlatformIDs :=
 		TFExternalFunction
-			name:		'clGetPlatformIDs'
-			moduleName: moduleName
+			name:	'clGetPlatformIDs'
+			moduleName:	moduleName
 			definition:
 			(
 				TFFunctionDefinition
@@ -192,15 +172,15 @@ FunctionsNativeOpenCLRudesheim class >> initialize [
 					{
 						uint32.
 						pointer.
-						pointer.
+						pointer
 					}
-					returnType: sint32
+					returnType:	sint32
 			).
 
 	functionOfGetDeviceIDs :=
 		TFExternalFunction
-			name:		'clGetDeviceIDs'
-			moduleName: moduleName
+			name:	'clGetDeviceIDs'
+			moduleName:	moduleName
 			definition:
 			(
 				TFFunctionDefinition
@@ -210,29 +190,28 @@ FunctionsNativeOpenCLRudesheim class >> initialize [
 						uint64.
 						uint32.
 						pointer.
-						pointer.
+						pointer
 					}
-					returnType: sint32
+					returnType:	sint32
 			).
 
 	functionsOfContext :=
 	{
 		TFExternalFunction
-			name:		'clReleaseContext'
-			moduleName: moduleName
+			name:	'clReleaseContext'
+			moduleName:	moduleName
 			definition:
 			(
 				TFFunctionDefinition
 					parameterTypes:
 					{
-						pointer.
+						pointer
 					}
-					returnType: sint32
+					returnType:	sint32
 			).
-
 		TFExternalFunction
-			name:		'clCreateContext'
-			moduleName: moduleName
+			name:	'clCreateContext'
+			moduleName:	moduleName
 			definition:
 			(
 				TFFunctionDefinition
@@ -243,30 +222,29 @@ FunctionsNativeOpenCLRudesheim class >> initialize [
 						pointer.
 						pointer.
 						pointer.
-						pointer.
+						pointer
 					}
-					returnType: pointer
-			).
+					returnType:	pointer
+			)
 	}.
 
 	functionsOfProgram :=
 	{
 		TFExternalFunction
-			name:		'clReleaseProgram'
-			moduleName: moduleName
+			name:	'clReleaseProgram'
+			moduleName:	moduleName
 			definition:
 			(
 				TFFunctionDefinition
 					parameterTypes:
 					{
-						pointer.
+						pointer
 					}
-					returnType: sint32
+					returnType:	sint32
 			).
-
 		TFExternalFunction
-			name:		'clCreateProgramWithSource'
-			moduleName: moduleName
+			name:	'clCreateProgramWithSource'
+			moduleName:	moduleName
 			definition:
 			(
 				TFFunctionDefinition
@@ -276,16 +254,16 @@ FunctionsNativeOpenCLRudesheim class >> initialize [
 						uint32.
 						pointer.
 						pointer.
-						pointer.
+						pointer
 					}
-					returnType: pointer
-			).
+					returnType:	pointer
+			)
 	}.
 
 	functionOfBuildProgram :=
 		TFExternalFunction
-			name:		'clBuildProgram'
-			moduleName: moduleName
+			name:	'clBuildProgram'
+			moduleName:	moduleName
 			definition:
 			(
 				TFFunctionDefinition
@@ -296,15 +274,15 @@ FunctionsNativeOpenCLRudesheim class >> initialize [
 						pointer.
 						pointer.
 						pointer.
-						pointer.
+						pointer
 					}
-					returnType: sint32
+					returnType:	sint32
 			).
 
 	functionOfCompileProgram :=
 		TFExternalFunction
-			name:		'clCompileProgram'
-			moduleName: moduleName
+			name:	'clCompileProgram'
+			moduleName:	moduleName
 			definition:
 			(
 				TFFunctionDefinition
@@ -318,15 +296,15 @@ FunctionsNativeOpenCLRudesheim class >> initialize [
 						pointer.
 						pointer.
 						pointer.
-						pointer.
+						pointer
 					}
-					returnType: sint32
+					returnType:	sint32
 			).
 
 	functionOfLinkProgram :=
 		TFExternalFunction
-			name:		'clLinkProgram'
-			moduleName: moduleName
+			name:	'clLinkProgram'
+			moduleName:	moduleName
 			definition:
 			(
 				TFFunctionDefinition
@@ -340,15 +318,15 @@ FunctionsNativeOpenCLRudesheim class >> initialize [
 						pointer.
 						pointer.
 						pointer.
-						pointer.
+						pointer
 					}
-					returnType: pointer
+					returnType:	pointer
 			).
 
 	functionOfGetProgramBuildInfo :=
 		TFExternalFunction
-			name:		'clGetProgramBuildInfo'
-			moduleName: moduleName
+			name:	'clGetProgramBuildInfo'
+			moduleName:	moduleName
 			definition:
 			(
 				TFFunctionDefinition
@@ -359,29 +337,28 @@ FunctionsNativeOpenCLRudesheim class >> initialize [
 						uint32.
 						sizeT.
 						pointer.
-						pointer.
+						pointer
 					}
-					returnType: sint32
+					returnType:	sint32
 			).
 
 	functionsOfBuffer :=
 	{
 		TFExternalFunction
-			name:		'clReleaseMemObject'
-			moduleName: moduleName
+			name:	'clReleaseMemObject'
+			moduleName:	moduleName
 			definition:
 			(
 				TFFunctionDefinition
 					parameterTypes:
 					{
-						pointer.
+						pointer
 					}
-					returnType: sint32
+					returnType:	sint32
 			).
-
 		TFExternalFunction
-			name:		'clCreateBuffer'
-			moduleName: moduleName
+			name:	'clCreateBuffer'
+			moduleName:	moduleName
 			definition:
 			(
 				TFFunctionDefinition
@@ -391,30 +368,29 @@ FunctionsNativeOpenCLRudesheim class >> initialize [
 						uint64.
 						sizeT.
 						pointer.
-						pointer.
+						pointer
 					}
-					returnType: pointer
-			).
+					returnType:	pointer
+			)
 	}.
 
 	functionsOfKernel :=
 	{
 		TFExternalFunction
-			name:		'clReleaseKernel'
-			moduleName: moduleName
+			name:	'clReleaseKernel'
+			moduleName:	moduleName
 			definition:
 			(
 				TFFunctionDefinition
 					parameterTypes:
 					{
-						pointer.
+						pointer
 					}
-					returnType: sint32
+					returnType:	sint32
 			).
-
 		TFExternalFunction
-			name:		'clCreateKernel'
-			moduleName: moduleName
+			name:	'clCreateKernel'
+			moduleName:	moduleName
 			definition:
 			(
 				TFFunctionDefinition
@@ -422,16 +398,16 @@ FunctionsNativeOpenCLRudesheim class >> initialize [
 					{
 						pointer.
 						pointer.
-						pointer.
+						pointer
 					}
-					returnType: pointer
-			).
+					returnType:	pointer
+			)
 	}.
 
 	functionsOfSetKernelArg :=
 		TFExternalFunction
-			name:		'clSetKernelArg'
-			moduleName: moduleName
+			name:	'clSetKernelArg'
+			moduleName:	moduleName
 			definition:
 			(
 				TFFunctionDefinition
@@ -440,29 +416,28 @@ FunctionsNativeOpenCLRudesheim class >> initialize [
 						pointer.
 						uint32.
 						sizeT.
-						pointer.
+						pointer
 					}
-					returnType: sint32
+					returnType:	sint32
 			).
 
 	functionsOfCommandQueue :=
 	{
 		TFExternalFunction
-			name:		'clReleaseCommandQueue'
-			moduleName: moduleName
+			name:	'clReleaseCommandQueue'
+			moduleName:	moduleName
 			definition:
 			(
 				TFFunctionDefinition
 					parameterTypes:
 					{
-						pointer.
+						pointer
 					}
-					returnType: sint32
+					returnType:	sint32
 			).
-
 		TFExternalFunction
-			name:		'clCreateCommandQueue'
-			moduleName: moduleName
+			name:	'clCreateCommandQueue'
+			moduleName:	moduleName
 			definition:
 			(
 				TFFunctionDefinition
@@ -471,44 +446,44 @@ FunctionsNativeOpenCLRudesheim class >> initialize [
 						pointer.
 						pointer.
 						pointer.
-						pointer.
+						pointer
 					}
-					returnType: pointer
-			).
+					returnType:	pointer
+			)
 	}.
 
 	functionOfFlush :=
 		TFExternalFunction
-			name:		'clFlush'
-			moduleName: moduleName
+			name:	'clFlush'
+			moduleName:	moduleName
 			definition:
 			(
 				TFFunctionDefinition
 					parameterTypes:
 					{
-						pointer.
+						pointer
 					}
-					returnType: sint32
+					returnType:	sint32
 			).
 
 	functionOfFinish :=
 		TFExternalFunction
-			name:		'clFinish'
-			moduleName: moduleName
+			name:	'clFinish'
+			moduleName:	moduleName
 			definition:
 			(
 				TFFunctionDefinition
 					parameterTypes:
 					{
-						pointer.
+						pointer
 					}
-					returnType: sint32
+					returnType:	sint32
 			).
 
 	functionOfEnqueueNDRangeKernel :=
 		TFExternalFunction
-			name:		'clEnqueueNDRangeKernel'
-			moduleName: moduleName
+			name:	'clEnqueueNDRangeKernel'
+			moduleName:	moduleName
 			definition:
 			(
 				TFFunctionDefinition
@@ -522,15 +497,15 @@ FunctionsNativeOpenCLRudesheim class >> initialize [
 						pointer.
 						uint32.
 						pointer.
-						pointer.
+						pointer
 					}
-					returnType: sint32
+					returnType:	sint32
 			).
 
 	functionOfEnqueueCopyBuffer :=
 		TFExternalFunction
-			name:		'clEnqueueCopyBuffer'
-			moduleName: moduleName
+			name:	'clEnqueueCopyBuffer'
+			moduleName:	moduleName
 			definition:
 			(
 				TFFunctionDefinition
@@ -544,15 +519,15 @@ FunctionsNativeOpenCLRudesheim class >> initialize [
 						sizeT.
 						uint32.
 						pointer.
-						pointer.
+						pointer
 					}
-					returnType: sint32
+					returnType:	sint32
 			).
 
 	functionOfEnqueueFillBuffer :=
 		TFExternalFunction
-			name:		'clEnqueueFillBuffer'
-			moduleName: moduleName
+			name:	'clEnqueueFillBuffer'
+			moduleName:	moduleName
 			definition:
 			(
 				TFFunctionDefinition
@@ -566,16 +541,16 @@ FunctionsNativeOpenCLRudesheim class >> initialize [
 						sizeT.
 						uint32.
 						pointer.
-						pointer.
+						pointer
 					}
-					returnType: sint32
+					returnType:	sint32
 			).
 
 	functionsOfEnqueueMap :=
 	{
 		TFExternalFunction
-			name:		'clEnqueueMapBuffer'
-			moduleName: moduleName
+			name:	'clEnqueueMapBuffer'
+			moduleName:	moduleName
 			definition:
 			(
 				TFFunctionDefinition
@@ -590,13 +565,13 @@ FunctionsNativeOpenCLRudesheim class >> initialize [
 						uint32.
 						pointer.
 						pointer.
-						pointer.
+						pointer
 					}
-					returnType: pointer
+					returnType:	pointer
 			).
 		TFExternalFunction
-			name:		'clEnqueueUnmapMemObject'
-			moduleName: moduleName
+			name:	'clEnqueueUnmapMemObject'
+			moduleName:	moduleName
 			definition:
 			(
 				TFFunctionDefinition
@@ -607,76 +582,74 @@ FunctionsNativeOpenCLRudesheim class >> initialize [
 						pointer.
 						uint32.
 						pointer.
-						pointer.
+						pointer
 					}
-					returnType: sint32
-			).
+					returnType:	sint32
+			)
 	}.
 
 	functionsOfEvent :=
 	{
 		TFExternalFunction
-			name:		'clReleaseEvent'
-			moduleName: moduleName
+			name:	'clReleaseEvent'
+			moduleName:	moduleName
 			definition:
 			(
 				TFFunctionDefinition
 					parameterTypes:
 					{
-						pointer.
+						pointer
 					}
-					returnType: sint32
+					returnType:	sint32
 			).
-
 		TFExternalFunction
-			name:		'clCreateUserEvent'
-			moduleName: moduleName
+			name:	'clCreateUserEvent'
+			moduleName:	moduleName
 			definition:
 			(
 				TFFunctionDefinition
 					parameterTypes:
 					{
 						pointer.
-						pointer.
+						pointer
 					}
-					returnType: pointer
-			).
+					returnType:	pointer
+			)
 	}.
 
 	functionOfSetUserEventStatus :=
 		TFExternalFunction
-			name:		'clSetUserEventStatus'
-			moduleName: moduleName
+			name:	'clSetUserEventStatus'
+			moduleName:	moduleName
 			definition:
 			(
 				TFFunctionDefinition
 					parameterTypes:
 					{
 						pointer.
-						sint32.
+						sint32
 					}
-					returnType: sint32
+					returnType:	sint32
 			).
 
 	functionOfWaitForEvents :=
 		TFExternalFunction
-			name:		'clWaitForEvents'
-			moduleName: moduleName
+			name:	'clWaitForEvents'
+			moduleName:	moduleName
 			definition:
 			(
 				TFFunctionDefinition
 					parameterTypes:
 					{
 						uint32.
-						pointer.
+						pointer
 					}
-					returnType: sint32
+					returnType:	sint32
 			).
 ]
 
 { #category : 'accessing' }
 FunctionsNativeOpenCLRudesheim class >> tfRunner [
-
 	^ tfRunner
 		ifNil:
 		[

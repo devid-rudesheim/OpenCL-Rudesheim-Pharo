@@ -14,13 +14,12 @@ Class {
 }
 
 { #category : 'asserting' }
-MacOSAsserterOpenCLRudesheimTest class >> for:			aTestCase
-should:				aBlock
-raiseCompileOrLinkError:	aNotSupportedExceptionClass [
-
+MacOSAsserterOpenCLRudesheimTest class >> for: aTestCase
+should: aBlock
+raiseCompileOrLinkError: aNotSupportedExceptionClass [
 	aTestCase
-		should:			aBlock
-		raise:			aNotSupportedExceptionClass
+		should:	aBlock
+		raise:	aNotSupportedExceptionClass
 		whoseDescriptionIncludes:	'not supported on this platform'
-		description:	aNotSupportedExceptionClass name, ' with ''not supported on this platform'' in its message'.
+		description:	aNotSupportedExceptionClass name , ' with ''not supported on this platform'' in its message'.
 ]

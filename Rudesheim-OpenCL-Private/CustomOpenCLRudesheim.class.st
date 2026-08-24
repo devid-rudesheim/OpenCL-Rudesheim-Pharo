@@ -10,6 +10,5 @@ Class {
 
 { #category : 'accessing' }
 CustomOpenCLRudesheim class >> offsetOfCLDeviceType [
-
-	^ 4
+	^ 4.
 ]

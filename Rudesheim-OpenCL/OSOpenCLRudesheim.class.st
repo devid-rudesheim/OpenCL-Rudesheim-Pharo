@@ -15,11 +15,11 @@ OSOpenCLRudesheim class >> Mac [
 ]
 
 { #category : 'invoking' }
-OSOpenCLRudesheim class >> invokeCompileProgram:	aProgramOpenCLRudesheim
-for:					aCLDevicesCollection
-withOptions:			anOptionsString
-headers:				aHeaderAssociationsCollection
-of:						aCLContext [
+OSOpenCLRudesheim class >> invokeCompileProgram: aProgramOpenCLRudesheim
+for: aCLDevicesCollection
+withOptions: anOptionsString
+headers: aHeaderAssociationsCollection
+of: aCLContext [
 	|
 		functions
 		pointer
@@ -33,14 +33,14 @@ of:						aCLContext [
 
 	deviceIDs :=
 		ExternalAddress
-			gcallocate: pointer byteSize * aCLDevicesCollection size.
+			gcallocate:	pointer byteSize * aCLDevicesCollection size.
 
 	aCLDevicesCollection
 		withIndexDo:
 		[ :each :index |
 			deviceIDs
 				pointerAt:	index
-				put: 		each idPointer tfPointerAddress.
+				put:	each idPointer tfPointerAddress.
 		].
 
 	inputHeaders :=
@@ -51,17 +51,22 @@ of:						aCLContext [
 			]
 			ifNotEmpty:
 			[
-				| addresses |
+				|
+					addresses
+				|
+
 				addresses :=
 					ExternalAddress
-						gcallocate: pointer byteSize * aHeaderAssociationsCollection size.
+						gcallocate:	pointer byteSize * aHeaderAssociationsCollection size.
+
 				aHeaderAssociationsCollection
 					withIndexDo:
 					[ :each :index |
 						addresses
 							pointerAt:	index
-							put: 		each value handlePointer tfPointerAddress.
+							put:	each value handlePointer tfPointerAddress.
 					].
+
 				addresses.
 			].
 
@@ -73,17 +78,22 @@ of:						aCLContext [
 			]
 			ifNotEmpty:
 			[
-				| addresses |
+				|
+					addresses
+				|
+
 				addresses :=
 					ExternalAddress
-						gcallocate: pointer byteSize * aHeaderAssociationsCollection size.
+						gcallocate:	pointer byteSize * aHeaderAssociationsCollection size.
+
 				aHeaderAssociationsCollection
 					withIndexDo:
 					[ :each :index |
 						addresses
 							pointerAt:	index
-							put: 		each key utf8Encoded tfPointerAddress.
+							put:	each key utf8Encoded tfPointerAddress.
 					].
+
 				addresses.
 			].
 
@@ -99,16 +109,16 @@ of:						aCLContext [
 			inputHeaders.
 			headerIncludeNames.
 			ExternalAddress null.
-			ExternalAddress null.
+			ExternalAddress null
 		}.
 ]
 
 { #category : 'invoking' }
-OSOpenCLRudesheim class >> invokeLinkProgramFor:	aCLContext
-devices:				aCLDevicesCollection
-programs:				aProgramsCollection
-options:				anOptionsString
-errorOutput:			errorOutput [
+OSOpenCLRudesheim class >> invokeLinkProgramFor: aCLContext
+devices: aCLDevicesCollection
+programs: aProgramsCollection
+options: anOptionsString
+errorOutput: errorOutput [
 	|
 		functions
 		pointer
@@ -121,26 +131,26 @@ errorOutput:			errorOutput [
 
 	deviceIDs :=
 		ExternalAddress
-			gcallocate: pointer byteSize * aCLDevicesCollection size.
+			gcallocate:	pointer byteSize * aCLDevicesCollection size.
 
 	aCLDevicesCollection
 		withIndexDo:
 		[ :each :index |
 			deviceIDs
 				pointerAt:	index
-				put: 		each idPointer tfPointerAddress.
+				put:	each idPointer tfPointerAddress.
 		].
 
 	programHandles :=
 		ExternalAddress
-			gcallocate: pointer byteSize * aProgramsCollection size.
+			gcallocate:	pointer byteSize * aProgramsCollection size.
 
 	aProgramsCollection
 		withIndexDo:
 		[ :each :index |
 			programHandles
 				pointerAt:	index
-				put: 		each handlePointer tfPointerAddress.
+				put:	each handlePointer tfPointerAddress.
 		].
 
 	^ aCLContext tfRunner
@@ -155,6 +165,6 @@ errorOutput:			errorOutput [
 			programHandles.
 			ExternalAddress null.
 			ExternalAddress null.
-			errorOutput.
+			errorOutput
 		}.
 ]

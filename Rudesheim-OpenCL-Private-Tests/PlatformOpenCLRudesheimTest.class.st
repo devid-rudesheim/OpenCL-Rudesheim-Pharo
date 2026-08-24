@@ -11,19 +11,16 @@ Class {
 
 { #category : 'accessing' }
 PlatformOpenCLRudesheimTest class >> targetClass [
-
 	^ PlatformOpenCLRudesheim.
 ]
 
 { #category : 'accessing' }
 PlatformOpenCLRudesheimTest >> defaultBasicTarget [
-
 	^ self targetClass clPlatforms first.
 ]
 
 { #category : 'tests' }
 PlatformOpenCLRudesheimTest >> runCLDevices0 [
-	
 	self
 		assert:
 		[
@@ -33,7 +30,6 @@ PlatformOpenCLRudesheimTest >> runCLDevices0 [
 
 { #category : 'tests' }
 PlatformOpenCLRudesheimTest >> runCLDevicesForType0 [
-	
 	self
 		assert:
 		[
@@ -43,13 +39,11 @@ PlatformOpenCLRudesheimTest >> runCLDevicesForType0 [
 
 { #category : 'tests' }
 PlatformOpenCLRudesheimTest >> runCLPlatforms0 [
-
 	self
 		assert:
 		[
 			0 < self targetClass clPlatforms size.
 		].
-
 ]
 
 { #category : 'tests' }
@@ -59,6 +53,7 @@ PlatformOpenCLRudesheimTest >> testAdhoc [
 	|
 
 	cl := Rudesheim OpenCL.
+
 	self targetClass clPlatforms
 		do:
 		[ :each0 |
@@ -71,24 +66,26 @@ PlatformOpenCLRudesheimTest >> testAdhoc [
 				filled
 				ouput
 			|
-			
+
 			devices := each0 clDevices.
 
 			context :=
-				self trackForRelease:
-				(
-					cl Context
-						clContextFor:	devices
-				).
+				self
+					trackForRelease:
+					(
+						cl Context
+							clContextFor:	devices
+					).
 
 			program :=
-				self trackForRelease:
-				(
-					context
-						buildCLProgramFor:	devices
-						fromSources:
-						{
-							'
+				self
+					trackForRelease:
+					(
+						context
+							buildCLProgramFor:	devices
+							fromSources:
+							{
+								'
 kernel void Increment( global unsigned int *input_output )
 {
 	++input_output[ get_global_id( 0 ) ];
@@ -99,45 +96,47 @@ kernel void Fill( global unsigned int *output )
 	output[ get_global_id( 0 ) ] = get_global_id( 0 );
 }
 							'
-						}
-						withOptions:	self defaultCLStdOption
-				).
+							}
+							withOptions:	self defaultCLStdOption
+					).
 
 			increment :=
-				self trackForRelease:
-				(
-					program
-						newCLKernelAt: 'Increment'
-						withParameterTypes:
-						{
-							TFBasicType pointer
-						}
-				).
+				self
+					trackForRelease:
+					(
+						program
+							newCLKernelAt:	'Increment'
+							withParameterTypes:
+							{
+								TFBasicType pointer
+							}
+					).
 
 			fill :=
-				self trackForRelease:
-				(
-					program
-						newCLKernelAt:	'Fill'
-						withParameterTypes:
-						{
-							TFBasicType pointer
-						}
-				).
+				self
+					trackForRelease:
+					(
+						program
+							newCLKernelAt:	'Fill'
+							withParameterTypes:
+							{
+								TFBasicType pointer
+							}
+					).
 
 			ouput :=
 				IntegerArray
-					new: 16r10.
+					new:	16r10.
 
 			filled :=
-				self trackForRelease:
-				(
-					context
-						newCLBufferWith:	ouput
-				).
+				self
+					trackForRelease:
+					(
+						context
+							newCLBufferWith:	ouput
+					).
 
 			"event wait."
-
 			devices
 				do:
 				[ :each1 |
@@ -148,51 +147,53 @@ kernel void Fill( global unsigned int *output )
 					|
 
 					event1 :=
-						self trackForRelease:
-						(
-							context newCLEvent
-								status: 0
-						).
+						self
+							trackForRelease:
+							(
+								context newCLEvent
+									status:	0
+							).
 
 					queue :=
-						self trackForRelease:
-						(
-							context
-								newCLCommandQueueFor: each1
-						).
+						self
+							trackForRelease:
+							(
+								context
+									newCLCommandQueueFor:	each1
+							).
 
 					event2 :=
-						self trackForRelease:
-						(
-							queue
-								enqueueKernel: fill
-								forNDRange:
-								{
+						self
+							trackForRelease:
+							(
+								queue
+									enqueueKernel:	fill
+									forNDRange:
 									{
-										ouput size.
-										2.
-									}.
-								}
-								withArguments:
-								{
-									filled
-								}
-								forWait:
-								{
-									event1
-								}
-						).
-					
+										{
+											ouput size.
+											2
+										}
+									}
+									withArguments:
+									{
+										filled
+									}
+									forWait:
+									{
+										event1
+									}
+							).
+
 					Processor yield.
-					
 					event2 wait.
-					
+
 					queue
-						enqueueKernel: increment
+						enqueueKernel:	increment
 						forNDRange:
 						{
 							{
-								ouput size.
+								ouput size
 							}
 						}
 						withArguments:
@@ -204,7 +205,7 @@ kernel void Fill( global unsigned int *output )
 						flush;
 						finish.
 				].
-					
+
 			ouput inspect.
 			"
 			1
@@ -225,55 +226,39 @@ kernel void Fill( global unsigned int *output )
 				].
 			"
 		].
-
 ]
 
 { #category : 'tests' }
 PlatformOpenCLRudesheimTest >> testCLDevices [
-
-	self
-		testCLDevices0_0.
-
+	self testCLDevices0_0.
 ]
 
 { #category : 'tests' }
 PlatformOpenCLRudesheimTest >> testCLDevices0_0 [
-
-	self
-		runCLDevices0.
-
+	self runCLDevices0.
 ]
 
 { #category : 'tests' }
 PlatformOpenCLRudesheimTest >> testCLDevicesForType [
-
-	self
-		testCLDevicesForType0_0.
+	self testCLDevicesForType0_0.
 ]
 
 { #category : 'tests' }
 PlatformOpenCLRudesheimTest >> testCLDevicesForType0_0 [
-	
 	self
 		sourceValue:
-		(
-			{
-				Rudesheim OpenCL All
-			}
-		);
+		{
+			Rudesheim OpenCL All
+		};
 		runCLDevicesForType0.
 ]
 
 { #category : 'tests' }
 PlatformOpenCLRudesheimTest >> testCLPlatforms [
-
-	self
-		testCLPlatforms0_0.
+	self testCLPlatforms0_0.
 ]
 
 { #category : 'tests' }
 PlatformOpenCLRudesheimTest >> testCLPlatforms0_0 [
-
-	self
-		runCLPlatforms0.
+	self runCLPlatforms0.
 ]

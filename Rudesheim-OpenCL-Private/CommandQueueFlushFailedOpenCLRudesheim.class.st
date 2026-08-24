@@ -10,44 +10,34 @@ Class {
 }
 
 { #category : 'instance creation' }
-CommandQueueFlushFailedOpenCLRudesheim class >> signalForCause:	aPrimitiveErrorNativeOpenCLRudesheim
-commandQueue:		aCommandQueueOpenCLRudesheim [
-
+CommandQueueFlushFailedOpenCLRudesheim class >> signalForCause: aPrimitiveErrorNativeOpenCLRudesheim
+commandQueue: aCommandQueueOpenCLRudesheim [
 	^ self basicNew
 		signalForCause:	aPrimitiveErrorNativeOpenCLRudesheim
-		commandQueue:		aCommandQueueOpenCLRudesheim.
-
+		commandQueue:	aCommandQueueOpenCLRudesheim.
 ]
 
 { #category : 'accessing' }
 CommandQueueFlushFailedOpenCLRudesheim >> commandQueue [
-
 	^ commandQueue.
-
 ]
 
 { #category : 'accessing' }
 CommandQueueFlushFailedOpenCLRudesheim >> commandQueue: aCommandQueueOpenCLRudesheim [
-
 	commandQueue := aCommandQueueOpenCLRudesheim.
-
 ]
 
 { #category : 'accessing' }
 CommandQueueFlushFailedOpenCLRudesheim >> contextDescription [
-
-	^ 'flushing ', self commandQueue printString.
-
+	^ 'flushing ' , self commandQueue printString.
 ]
 
 { #category : 'signaling' }
-CommandQueueFlushFailedOpenCLRudesheim >> signalForCause:	aPrimitiveErrorNativeOpenCLRudesheim
-commandQueue:		aCommandQueueOpenCLRudesheim [
-
+CommandQueueFlushFailedOpenCLRudesheim >> signalForCause: aPrimitiveErrorNativeOpenCLRudesheim
+commandQueue: aCommandQueueOpenCLRudesheim [
 	self
-		cause:				aPrimitiveErrorNativeOpenCLRudesheim;
-		commandQueue:		aCommandQueueOpenCLRudesheim.
+		cause:	aPrimitiveErrorNativeOpenCLRudesheim;
+		commandQueue:	aCommandQueueOpenCLRudesheim.
 
 	^ super signal.
-
 ]

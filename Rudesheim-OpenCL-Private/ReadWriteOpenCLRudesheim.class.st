@@ -10,6 +10,5 @@ Class {
 
 { #category : 'accessing' }
 ReadWriteOpenCLRudesheim class >> offsetOfCLBufferType [
-
 	^ 0.
 ]

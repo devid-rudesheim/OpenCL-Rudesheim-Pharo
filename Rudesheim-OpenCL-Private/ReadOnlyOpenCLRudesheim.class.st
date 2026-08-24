@@ -10,12 +10,10 @@ Class {
 
 { #category : 'accessing' }
 ReadOnlyOpenCLRudesheim class >> offsetOfCLBufferType [
-
-	^ 2
+	^ 2.
 ]
 
 { #category : 'accessing' }
 ReadOnlyOpenCLRudesheim class >> offsetOfCLMapType [
-
-	^ 0
+	^ 0.
 ]

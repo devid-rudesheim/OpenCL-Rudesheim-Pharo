@@ -8,24 +8,24 @@ Class {
 
 { #category : 'accessing' }
 DeviceOpenCLRudesheimTest class >> targetClass [
-
 	^ DeviceOpenCLRudesheim.
 ]
 
 { #category : 'accessing' }
 DeviceOpenCLRudesheimTest >> defaultBasicTarget [
-
 	^
 	(
 		self targetClass
-			clDevicesForType:	{ Rudesheim OpenCL All }
-			of:					Rudesheim OpenCL Platform clPlatforms first
+			clDevicesForType:
+			{
+				Rudesheim OpenCL All
+			}
+			of:	Rudesheim OpenCL Platform clPlatforms first
 	) first.
 ]
 
 { #category : 'tests' }
 DeviceOpenCLRudesheimTest >> runCLDevicesForTypeOf0 [
-	
 	self
 		assert:
 		[
@@ -33,27 +33,22 @@ DeviceOpenCLRudesheimTest >> runCLDevicesForTypeOf0 [
 			(
 				self targetClass
 					clDevicesForType:	self sourceValue
-					of:					Rudesheim OpenCL Platform clPlatforms first
+					of:	Rudesheim OpenCL Platform clPlatforms first
 			) size.
 		].
 ]
 
 { #category : 'tests' }
 DeviceOpenCLRudesheimTest >> testCLDevicesForTypeOf [
-	
-	self
-		testCLDevicesForTypeOf0_0.
+	self testCLDevicesForTypeOf0_0.
 ]
 
 { #category : 'tests' }
 DeviceOpenCLRudesheimTest >> testCLDevicesForTypeOf0_0 [
-	
 	self
 		sourceValue:
-		(
-			{
-				Rudesheim OpenCL All
-			}
-		);
+		{
+			Rudesheim OpenCL All
+		};
 		runCLDevicesForTypeOf0.
 ]

@@ -10,29 +10,25 @@ Class {
 
 { #category : 'accessing' }
 SInt8ElementTypeOpenCLRudesheim class >> byteSize [
-
 	^ 1.
 ]
 
 { #category : 'accessing' }
 SInt8ElementTypeOpenCLRudesheim class >> signed [
-
 	^ true.
 ]
 
 { #category : 'reading' }
-SInt8ElementTypeOpenCLRudesheim class >> readValue:	aByteArrayOrExternalAddress
-atOffset:	anInteger [
-
+SInt8ElementTypeOpenCLRudesheim class >> readValue: aByteArrayOrExternalAddress
+atOffset: anInteger [
 	^ aByteArrayOrExternalAddress
 		int8AtOffset:	anInteger.
 ]
 
 { #category : 'writing' }
-SInt8ElementTypeOpenCLRudesheim class >> writeValue:	aNumber
-intoByteArray:	aByteArray
-atOffset:	anInteger [
-
+SInt8ElementTypeOpenCLRudesheim class >> writeValue: aNumber
+intoByteArray: aByteArray
+atOffset: anInteger [
 	^ aByteArray
 		int8AtOffset:	anInteger
 		put:	aNumber asInteger.

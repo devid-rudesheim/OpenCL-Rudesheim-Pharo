@@ -11,35 +11,25 @@ Class {
 
 { #category : 'accessing' }
 DetailedPrimitiveErrorNativeOpenCLRudesheim >> cause [
-
 	^ cause.
-
 ]
 
 { #category : 'accessing' }
 DetailedPrimitiveErrorNativeOpenCLRudesheim >> cause: aPrimitiveErrorNativeOpenCLRudesheim [
-
 	cause := aPrimitiveErrorNativeOpenCLRudesheim.
-
 ]
 
 { #category : 'accessing' }
 DetailedPrimitiveErrorNativeOpenCLRudesheim >> contextDescription [
-
 	^ self subclassResponsibility.
-
 ]
 
 { #category : 'accessing' }
 DetailedPrimitiveErrorNativeOpenCLRudesheim >> errorCode [
-
 	^ self cause errorCode.
-
 ]
 
 { #category : 'accessing' }
 DetailedPrimitiveErrorNativeOpenCLRudesheim >> messageText [
-
-	^ self contextDescription, ' failed: ', self cause messageText.
-
+	^ self contextDescription , ' failed: ' , self cause messageText.
 ]

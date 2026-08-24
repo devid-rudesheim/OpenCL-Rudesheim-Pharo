@@ -15,11 +15,10 @@ Class {
 }
 
 { #category : 'instance creation' }
-BufferOpenCLRudesheim class >> clBufferForSize:	aSizeInteger
-hostPointer:		aHostPointerExternalAddress
-options:			aCLTBufferDefineCollection
-of:					aCLContext [
-
+BufferOpenCLRudesheim class >> clBufferForSize: aSizeInteger
+hostPointer: aHostPointerExternalAddress
+options: aCLTBufferDefineCollection
+of: aCLContext [
 	^
 	[
 		super
@@ -30,28 +29,27 @@ of:					aCLContext [
 					inject:	0
 					into:
 					[ :value :each |
-						value | each clBufferType
+						value | each clBufferType.
 					].
 				aSizeInteger.
-				aHostPointerExternalAddress.
-			}
+				aHostPointerExternalAddress
+			}.
 	]
-		on: PrimitiveErrorNativeOpenCLRudesheim
+		on:	PrimitiveErrorNativeOpenCLRudesheim
 		do:
 		[ :anError |
 			Rudesheim OpenCL Native Error BufferCreationFailed
 				signalForCause:	anError
-				context:			aCLContext
-				options:			aCLTBufferDefineCollection
-				sizeInBytes:		aSizeInteger.
+				context:	aCLContext
+				options:	aCLTBufferDefineCollection
+				sizeInBytes:	aSizeInteger.
 		].
 ]
 
 { #category : 'instance creation' }
-BufferOpenCLRudesheim class >> clBufferForSize:	aSizeInteger
-options:			aCLTBufferDefineCollection
-of:					aCLContext [
-
+BufferOpenCLRudesheim class >> clBufferForSize: aSizeInteger
+options: aCLTBufferDefineCollection
+of: aCLContext [
 	^
 	[
 		super
@@ -62,28 +60,27 @@ of:					aCLContext [
 					inject:	0
 					into:
 					[ :value :each |
-						value | each clBufferType
+						value | each clBufferType.
 					].
 				aSizeInteger.
-				ExternalAddress null.
-			}
+				ExternalAddress null
+			}.
 	]
-		on: PrimitiveErrorNativeOpenCLRudesheim
+		on:	PrimitiveErrorNativeOpenCLRudesheim
 		do:
 		[ :anError |
 			Rudesheim OpenCL Native Error BufferCreationFailed
 				signalForCause:	anError
-				context:			aCLContext
-				options:			aCLTBufferDefineCollection
-				sizeInBytes:		aSizeInteger.
+				context:	aCLContext
+				options:	aCLTBufferDefineCollection
+				sizeInBytes:	aSizeInteger.
 		].
-
 ]
 
 { #category : 'instance creation' }
-BufferOpenCLRudesheim class >> clBufferWith:	aByteArray
-options:		aCLTBufferDefineCollection
-of:				aCLContext [
+BufferOpenCLRudesheim class >> clBufferWith: aByteArray
+options: aCLTBufferDefineCollection
+of: aCLContext [
 	"aByteArray tfPointerAddress pins it (permanently -- see Object>>pinInMemory) so the driver's
 	raw pointer into it stays valid across GC compaction, but pinning alone does not keep the
 	ByteArray reachable: an unreferenced pinned object is still ordinary garbage and its memory is
@@ -93,7 +90,6 @@ of:				aCLContext [
 	Smalltalk reference to its host memory corrupted at the same ~50% rate whether that memory came
 	from ExternalAddress class>>gcallocate: or from an otherwise-unreferenced pinned ByteArray; see
 	note/pharo-ops.md 34節 for both reproductions)."
-
 	^
 	(
 		[
@@ -105,36 +101,33 @@ of:				aCLContext [
 						inject:	0
 						into:
 						[ :value :each |
-							value | each clBufferType
+							value | each clBufferType.
 						].
 					aByteArray byteSize.
-					aByteArray tfPointerAddress.
-				}
+					aByteArray tfPointerAddress
+				}.
 		]
-			on: PrimitiveErrorNativeOpenCLRudesheim
+			on:	PrimitiveErrorNativeOpenCLRudesheim
 			do:
 			[ :anError |
 				Rudesheim OpenCL Native Error BufferCreationFailed
 					signalForCause:	anError
-					context:			aCLContext
-					options:			aCLTBufferDefineCollection
-					sizeInBytes:		aByteArray byteSize.
+					context:	aCLContext
+					options:	aCLTBufferDefineCollection
+					sizeInBytes:	aByteArray byteSize.
 			]
 	)
 		hostByteArray:	aByteArray;
 		yourself.
-
 ]
 
 { #category : 'accessing' }
 BufferOpenCLRudesheim class >> functionsOfCreationAndRelease [
-
 	^ Rudesheim OpenCL Native Functions functionsOfBuffer.
 ]
 
 { #category : 'instance creation' }
-BufferOpenCLRudesheim class >> newWithArguments:	aArgumentsSequencialCollection [
-	
+BufferOpenCLRudesheim class >> newWithArguments: aArgumentsSequencialCollection [
 	^ self shouldNotImplement.
 ]
 
@@ -146,7 +139,6 @@ BufferOpenCLRudesheim >> asArray [
 	for the ownership rules that decide who does. This buffer does not itself carry an
 	elementType (only count/queue/context) -- asArray has always assumed float content,
 	same as before newCLBufferWith:elementType: existed."
-
 	^ self queue
 		readFrom:	self
 		count:	self count
@@ -158,13 +150,11 @@ BufferOpenCLRudesheim >> asOpenCLBufferRudesheim: aContextOpenCLRudesheim [
 	"Already an OpenCL buffer -- no upload needed. This assumes a single
 	shared context/device, which is all this codebase currently has; a
 	genuinely different context would need real conversion here."
-
-	^ self
+	^ self.
 ]
 
 { #category : 'converting' }
 BufferOpenCLRudesheim >> asValueForCL [
-
 	^ self handlePointer.
 ]
 
@@ -179,7 +169,6 @@ BufferOpenCLRudesheim >> rudesheimConcatenatedWith: anotherValue [
 	in, but anotherValue itself (if it was already a buffer) is left for its
 	caller to release, same ownership rule as asArray/asOpenCLBufferRudesheim:.
 	See note/opencl-layer-buffer-passthrough-design.md, 'AddLayerの分岐合流'."
-
 	|
 		anotherBuffer
 		combinedBuffer
@@ -187,15 +176,20 @@ BufferOpenCLRudesheim >> rudesheimConcatenatedWith: anotherValue [
 		copyEvent
 	|
 
-	anotherBuffer := anotherValue asOpenCLBufferRudesheim: self context.
+	anotherBuffer :=
+		anotherValue
+			asOpenCLBufferRudesheim:	self context.
+
 	combinedCount := self count + anotherBuffer count.
+
 	combinedBuffer :=
 		self context
 			newCLBufferForElementCount:	combinedCount
 			elementType:	TFBasicType float.
+
 	combinedBuffer
-		count:		combinedCount;
-		queue:		self queue;
+		count:	combinedCount;
+		queue:	self queue;
 		context:	self context.
 
 	"Each enqueueCopyFrom: returns a fresh Event that waiting on alone does
@@ -205,33 +199,45 @@ BufferOpenCLRudesheim >> rudesheimConcatenatedWith: anotherValue [
 	copyEvent :=
 		self queue
 			enqueueCopyFrom:	self
-			offset:				0
-			to:					combinedBuffer
-			forRange:			(1 to: self count)
-			as:					TFBasicType float.
+			offset:	0
+			to:	combinedBuffer
+			forRange:
+			(
+				1
+					to:	self count
+			)
+			as:	TFBasicType float.
+
 	copyEvent wait.
 	copyEvent release.
 
 	copyEvent :=
 		self queue
 			enqueueCopyFrom:	anotherBuffer
-			offset:				0
-			to:					combinedBuffer
-			forRange:			(self count + 1 to: combinedCount)
-			as:					TFBasicType float.
+			offset:	0
+			to:	combinedBuffer
+			forRange:
+			(
+				self count + 1
+					to:	combinedCount
+			)
+			as:	TFBasicType float.
+
 	copyEvent wait.
 	copyEvent release.
 
 	anotherBuffer == anotherValue
-		ifFalse: [ anotherBuffer release ].
+		ifFalse:
+		[
+			anotherBuffer release.
+		].
 
-	^ combinedBuffer
+	^ combinedBuffer.
 ]
 
 { #category : 'accessing' }
 BufferOpenCLRudesheim >> context [
-
-	^ context
+	^ context.
 ]
 
 { #category : 'accessing' }
@@ -240,14 +246,12 @@ BufferOpenCLRudesheim >> context: aContextOpenCLRudesheim [
 	rudesheimConcatenatedWith: can allocate a same-context destination buffer
 	without a caller having to pass one in explicitly. See the comment on
 	count:/queue: for the same self-describing-buffer rationale."
-
-	context := aContextOpenCLRudesheim
+	context := aContextOpenCLRudesheim.
 ]
 
 { #category : 'accessing' }
 BufferOpenCLRudesheim >> count [
-
-	^ count
+	^ count.
 ]
 
 { #category : 'accessing' }
@@ -256,14 +260,12 @@ BufferOpenCLRudesheim >> count: anInteger [
 	has no self-describing size, so a Layer that creates a buffer as its
 	forward: output must set this (and queue:) before returning it, so a
 	later asArray knows how much to download."
-
-	count := anInteger
+	count := anInteger.
 ]
 
 { #category : 'accessing' }
 BufferOpenCLRudesheim >> hostByteArray [
-
-	^ hostByteArray
+	^ hostByteArray.
 ]
 
 { #category : 'accessing' }
@@ -275,19 +277,16 @@ BufferOpenCLRudesheim >> hostByteArray: aByteArray [
 	nowhere garbage; being pinned (Object>>pinInMemory, done by ByteArray>>tfPointerAddress) only
 	stops it from being *moved*, not from being *collected*. Holding the reference here keeps it
 	alive for exactly the buffer's own lifetime."
-
-	hostByteArray := aByteArray
+	hostByteArray := aByteArray.
 ]
 
 { #category : 'accessing' }
 BufferOpenCLRudesheim >> queue [
-
-	^ queue
+	^ queue.
 ]
 
 { #category : 'accessing' }
 BufferOpenCLRudesheim >> queue: aCommandQueueOpenCLRudesheim [
 	"See the comment on count:."
-
-	queue := aCommandQueueOpenCLRudesheim
+	queue := aCommandQueueOpenCLRudesheim.
 ]

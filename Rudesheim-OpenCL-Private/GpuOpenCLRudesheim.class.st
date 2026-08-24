@@ -10,6 +10,5 @@ Class {
 
 { #category : 'accessing' }
 GpuOpenCLRudesheim class >> offsetOfCLDeviceType [
-
-	^ 2
+	^ 2.
 ]
