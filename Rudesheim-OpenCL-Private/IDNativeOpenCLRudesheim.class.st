@@ -12,7 +12,7 @@ Class {
 }
 
 { #category : 'enumerating' }
-IDNativeOpenCLRudesheim class >> onDo:	aBlock [
+IDNativeOpenCLRudesheim class >> onDo: aBlock [
 	|
 		pointer
 		uint32
@@ -23,16 +23,15 @@ IDNativeOpenCLRudesheim class >> onDo:	aBlock [
 
 	pointer := TFBasicType pointer.
 	uint32 := TFBasicType uint32.
-
 	expectedAmount := 16r100.
 
 	actualAmount :=
 		ExternalAddress
-			gcallocate: uint32 byteSize.
+			gcallocate:	uint32 byteSize.
 
 	actualIDs :=
 		ExternalAddress
-			gcallocate: pointer byteSize * expectedAmount.
+			gcallocate:	pointer byteSize * expectedAmount.
 
 	Rudesheim OpenCL Native Error Primitive
 		shouldZero:
@@ -49,34 +48,33 @@ IDNativeOpenCLRudesheim class >> onDo:	aBlock [
 			to:
 			(
 				uint32
-					readValue: actualAmount
+					readValue:	actualAmount
 			)
 	)
 		collect:
 		[ :each |
-
 			super new
 				setID:
 				(
 					pointer
 						readValue:	actualIDs
-						offset:		1 + ( ( each - 1 ) * pointer byteSize )
+						offset:
+							1 +
+							(
+								( ( each - 1 ) ) * pointer byteSize
+							)
 				);
 				yourself.
-
 		].
-
 ]
 
 { #category : 'accessing' }
 IDNativeOpenCLRudesheim >> idPointer [
-
-	^ idPointer
+	^ idPointer.
 ]
 
 { #category : 'initialization' }
 IDNativeOpenCLRudesheim >> setID: aPointer [
 	super initialize.
-	
 	idPointer := aPointer.
 ]

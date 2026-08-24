@@ -29,25 +29,21 @@ BasicOpenCLRudesheimTest class >> isAbstract [
 
 { #category : 'accessing' }
 BasicOpenCLRudesheimTest >> defaultCLStdOption [
-
-	^ '-cl-std=CL3.0'
+	^ '-cl-std=CL3.0'.
 ]
 
 { #category : 'accessing' }
 BasicOpenCLRudesheimTest >> defaultResourcesForRelease [
-
 	^ OrderedCollection new.
 ]
 
 { #category : 'accessing' }
 BasicOpenCLRudesheimTest >> resourcesForRelease [
-
 	^ resourcesForRelease
 		ifNil:
 		[
 			resourcesForRelease := self defaultResourcesForRelease.
 		].
-
 ]
 
 { #category : 'releasing' }
@@ -56,15 +52,14 @@ BasicOpenCLRudesheimTest >> trackForRelease: aHandleNativeOpenCLRudesheim [
 	deterministically, instead of leaving its native release to GC
 	finalization. Returns aHandleNativeOpenCLRudesheim, so creation call sites
 	can wrap the creation expression inline."
-
-	self resourcesForRelease add: aHandleNativeOpenCLRudesheim.
+	self resourcesForRelease
+		add:	aHandleNativeOpenCLRudesheim.
 
 	^ aHandleNativeOpenCLRudesheim.
 ]
 
 { #category : 'running' }
 BasicOpenCLRudesheimTest >> tearDown [
-
 	self resourcesForRelease
 		do:
 		[ :each |

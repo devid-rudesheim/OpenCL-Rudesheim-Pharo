@@ -10,6 +10,5 @@ Class {
 
 { #category : 'accessing' }
 CpuOpenCLRudesheim class >> offsetOfCLDeviceType [
-
 	^ 1.
 ]

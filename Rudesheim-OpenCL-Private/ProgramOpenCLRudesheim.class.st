@@ -7,10 +7,10 @@ Class {
 }
 
 { #category : 'instance creation' }
-ProgramOpenCLRudesheim class >> buildCLProgramFor:	aCLDevicesCollection
-fromSources:		aStringCollection
-withOptions:		anOptionsString
-of:					aCLContext [
+ProgramOpenCLRudesheim class >> buildCLProgramFor: aCLDevicesCollection
+fromSources: aStringCollection
+withOptions: anOptionsString
+of: aCLContext [
 	|
 		cl
 		object
@@ -26,51 +26,50 @@ of:					aCLContext [
 
 	strings :=
 		ExternalAddress
-			gcallocate: pointer byteSize * aStringCollection size.
+			gcallocate:	pointer byteSize * aStringCollection size.
 
 	aStringCollection
 		withIndexDo:
 		[ :each :index |
 			strings
-				pointerAt: 	index
-				put: 		each utf8Encoded tfPointerAddress.
+				pointerAt:	index
+				put:	each utf8Encoded tfPointerAddress.
 		].
 
 	object :=
-		[
-			super
-				newWithArguments:
-				{
-					aCLContext handlePointer.
-					aStringCollection size.
-					strings.
-					ExternalAddress null.
-				}
-		]
-			on: PrimitiveErrorNativeOpenCLRudesheim
-			do:
-			[ :anError |
-				Rudesheim OpenCL Native Error ProgramCreationFailed
-					signalForCause:	anError
-					context:			aCLContext
-					sources:			aStringCollection.
-			].
+	[
+		super
+			newWithArguments:
+			{
+				aCLContext handlePointer.
+				aStringCollection size.
+				strings.
+				ExternalAddress null
+			}.
+	]
+		on:	PrimitiveErrorNativeOpenCLRudesheim
+		do:
+		[ :anError |
+			Rudesheim OpenCL Native Error ProgramCreationFailed
+				signalForCause:	anError
+				context:	aCLContext
+				sources:	aStringCollection.
+		].
 
 	deviceIDs :=
 		ExternalAddress
-			gcallocate: pointer byteSize * aCLDevicesCollection size.
+			gcallocate:	pointer byteSize * aCLDevicesCollection size.
 
 	aCLDevicesCollection
 		withIndexDo:
 		[ :each :index |
 			deviceIDs
 				pointerAt:	index
-				put: 		each idPointer tfPointerAddress.
+				put:	each idPointer tfPointerAddress.
 		].
 
 	cl := Rudesheim OpenCL.
 	functions := cl Native Functions.
-
 	[
 		cl Native Error Primitive
 			shouldZero:
@@ -84,59 +83,62 @@ of:					aCLContext [
 						deviceIDs.
 						anOptionsString utf8Encoded tfPointerAddress.
 						ExternalAddress null.
-						ExternalAddress null.
+						ExternalAddress null
 					}.
 			].
 	]
-		on: PrimitiveErrorNativeOpenCLRudesheim
+		on:	PrimitiveErrorNativeOpenCLRudesheim
 		do:
 		[ :anError |
 			Rudesheim OpenCL Native Error ProgramBuildFailed
 				signalForCause:	anError
-				program:			object
-				devices:			aCLDevicesCollection
-				options:			anOptionsString
-				buildLog:		(object buildLogFor: aCLDevicesCollection first).
+				program:	object
+				devices:	aCLDevicesCollection
+				options:	anOptionsString
+				buildLog:
+				(
+					object
+						buildLogFor:	aCLDevicesCollection first
+				).
 		].
 
 	^ object.
 ]
 
 { #category : 'instance creation' }
-ProgramOpenCLRudesheim class >> clProgramByLinking:	aProgramsCollection
-for:					aCLDevicesCollection
-withOptions:			anOptionsString
-of:						aCLContext [
-
+ProgramOpenCLRudesheim class >> clProgramByLinking: aProgramsCollection
+for: aCLDevicesCollection
+withOptions: anOptionsString
+of: aCLContext [
 	^
 	[
 		self
 			onDo:
 			[ :errorOutput |
-				( Smalltalk os rudesheim openCL )
+				Smalltalk os rudesheim openCL
 					invokeLinkProgramFor:	aCLContext
-					devices:				aCLDevicesCollection
-					programs:				aProgramsCollection
-					options:				anOptionsString
-					errorOutput:			errorOutput.
+					devices:	aCLDevicesCollection
+					programs:	aProgramsCollection
+					options:	anOptionsString
+					errorOutput:	errorOutput.
 			].
 	]
-		on: PrimitiveErrorNativeOpenCLRudesheim
+		on:	PrimitiveErrorNativeOpenCLRudesheim
 		do:
 		[ :anError |
 			Rudesheim OpenCL Native Error ProgramLinkFailed
 				signalForCause:	anError
-				context:			aCLContext
-				devices:			aCLDevicesCollection
-				programs:		aProgramsCollection
-				options:			anOptionsString
-				buildLog:		'(link failed; no build log available)'.
+				context:	aCLContext
+				devices:	aCLDevicesCollection
+				programs:	aProgramsCollection
+				options:	anOptionsString
+				buildLog:	'(link failed; no build log available)'.
 		].
 ]
 
 { #category : 'instance creation' }
-ProgramOpenCLRudesheim class >> clProgramWithSources:	aStringCollection
-of:						aCLContext [
+ProgramOpenCLRudesheim class >> clProgramWithSources: aStringCollection
+of: aCLContext [
 	|
 		strings
 		pointer
@@ -148,14 +150,14 @@ of:						aCLContext [
 
 	strings :=
 		ExternalAddress
-			gcallocate: pointer byteSize * aStringCollection size.
+			gcallocate:	pointer byteSize * aStringCollection size.
 
 	aStringCollection
 		withIndexDo:
 		[ :each :index |
 			strings
-				pointerAt: 	index
-				put: 		each utf8Encoded tfPointerAddress.
+				pointerAt:	index
+				put:	each utf8Encoded tfPointerAddress.
 		].
 
 	^
@@ -166,26 +168,25 @@ of:						aCLContext [
 				aCLContext handlePointer.
 				aStringCollection size.
 				strings.
-				ExternalAddress null.
-			}
+				ExternalAddress null
+			}.
 	]
-		on: PrimitiveErrorNativeOpenCLRudesheim
+		on:	PrimitiveErrorNativeOpenCLRudesheim
 		do:
 		[ :anError |
 			Rudesheim OpenCL Native Error ProgramCreationFailed
 				signalForCause:	anError
-				context:			aCLContext
-				sources:			aStringCollection.
+				context:	aCLContext
+				sources:	aStringCollection.
 		].
-
 ]
 
 { #category : 'instance creation' }
-ProgramOpenCLRudesheim class >> compileCLProgramFor:	aCLDevicesCollection
-fromSources:		aStringCollection
-withOptions:		anOptionsString
-headers:			aHeaderAssociationsCollection
-of:					aCLContext [
+ProgramOpenCLRudesheim class >> compileCLProgramFor: aCLDevicesCollection
+fromSources: aStringCollection
+withOptions: anOptionsString
+headers: aHeaderAssociationsCollection
+of: aCLContext [
 	|
 		cl
 		object
@@ -197,60 +198,63 @@ of:					aCLContext [
 
 	strings :=
 		ExternalAddress
-			gcallocate: pointer byteSize * aStringCollection size.
+			gcallocate:	pointer byteSize * aStringCollection size.
 
 	aStringCollection
 		withIndexDo:
 		[ :each :index |
 			strings
-				pointerAt: 	index
-				put: 		each utf8Encoded tfPointerAddress.
+				pointerAt:	index
+				put:	each utf8Encoded tfPointerAddress.
 		].
 
 	object :=
-		[
-			super
-				newWithArguments:
-				{
-					aCLContext handlePointer.
-					aStringCollection size.
-					strings.
-					ExternalAddress null.
-				}
-		]
-			on: PrimitiveErrorNativeOpenCLRudesheim
-			do:
-			[ :anError |
-				Rudesheim OpenCL Native Error ProgramCreationFailed
-					signalForCause:	anError
-					context:			aCLContext
-					sources:			aStringCollection.
-			].
+	[
+		super
+			newWithArguments:
+			{
+				aCLContext handlePointer.
+				aStringCollection size.
+				strings.
+				ExternalAddress null
+			}.
+	]
+		on:	PrimitiveErrorNativeOpenCLRudesheim
+		do:
+		[ :anError |
+			Rudesheim OpenCL Native Error ProgramCreationFailed
+				signalForCause:	anError
+				context:	aCLContext
+				sources:	aStringCollection.
+		].
 
 	cl := Rudesheim OpenCL.
-
 	[
 		cl Native Error Primitive
 			shouldZero:
 			[
-				( Smalltalk os rudesheim openCL )
+				Smalltalk os rudesheim openCL
 					invokeCompileProgram:	object
-					for:					aCLDevicesCollection
-					withOptions:			anOptionsString
-					headers:				aHeaderAssociationsCollection
-					of:						aCLContext.
+					for:	aCLDevicesCollection
+					withOptions:	anOptionsString
+					headers:	aHeaderAssociationsCollection
+					of:	aCLContext.
 			].
 	]
-		on: PrimitiveErrorNativeOpenCLRudesheim
+		on:	PrimitiveErrorNativeOpenCLRudesheim
 		do:
 		[ :anError |
 			Rudesheim OpenCL Native Error ProgramCompileFailed
 				signalForCause:	anError
-				program:			object
-				devices:			aCLDevicesCollection
-				options:			anOptionsString
-				headers:			aHeaderAssociationsCollection
-				buildLog:		(object buildLogFor: aCLDevicesCollection first).
+				program:	object
+				devices:	aCLDevicesCollection
+				options:	anOptionsString
+				headers:	aHeaderAssociationsCollection
+				buildLog:
+				(
+					object
+						buildLogFor:	aCLDevicesCollection first
+				).
 		].
 
 	^ object.
@@ -258,18 +262,16 @@ of:					aCLContext [
 
 { #category : 'accessing' }
 ProgramOpenCLRudesheim class >> functionsOfCreationAndRelease [
-
 	^ Rudesheim OpenCL Native Functions functionsOfProgram.
 ]
 
 { #category : 'instance creation' }
-ProgramOpenCLRudesheim class >> newWithArguments:	aArgumentsSequencialCollection [
-	
+ProgramOpenCLRudesheim class >> newWithArguments: aArgumentsSequencialCollection [
 	^ self shouldNotImplement.
 ]
 
 { #category : 'accessing' }
-ProgramOpenCLRudesheim >> buildLogFor:	aCLDevice [
+ProgramOpenCLRudesheim >> buildLogFor: aCLDevice [
 	|
 		functions
 		sizeT
@@ -280,7 +282,10 @@ ProgramOpenCLRudesheim >> buildLogFor:	aCLDevice [
 
 	functions := Rudesheim OpenCL Native Functions.
 	sizeT := TFBasicType sizeT.
-	sizeOutput := ExternalAddress gcallocate: sizeT byteSize.
+
+	sizeOutput :=
+		ExternalAddress
+			gcallocate:	sizeT byteSize.
 
 	^
 	[
@@ -293,11 +298,16 @@ ProgramOpenCLRudesheim >> buildLogFor:	aCLDevice [
 				Rudesheim OpenCL BuildLog clProgramBuildInfo.
 				0.
 				ExternalAddress null.
-				sizeOutput.
+				sizeOutput
 			}.
 
-		logSize := sizeT readValue: sizeOutput.
-		logBuffer := ExternalAddress gcallocate: logSize.
+		logSize :=
+			sizeT
+				readValue:	sizeOutput.
+
+		logBuffer :=
+			ExternalAddress
+				gcallocate:	logSize.
 
 		functions tfRunner
 			invokeFunction:	functions functionOfGetProgramBuildInfo
@@ -308,24 +318,23 @@ ProgramOpenCLRudesheim >> buildLogFor:	aCLDevice [
 				Rudesheim OpenCL BuildLog clProgramBuildInfo.
 				logSize.
 				logBuffer.
-				ExternalAddress null.
+				ExternalAddress null
 			}.
 
 		logBuffer utf8StringFromCString.
 	]
-		on: Error
+		on:	Error
 		do:
 		[ :anError |
-			'(build log unavailable: ', anError messageText, ')'.
+			'(build log unavailable: ' , anError messageText , ')'.
 		].
 ]
 
 { #category : 'instance creation' }
-ProgramOpenCLRudesheim >> newCLKernelAt:			aNameString
-withParameterTypes:	aCTypeSequencialCollection [
-
+ProgramOpenCLRudesheim >> newCLKernelAt: aNameString
+withParameterTypes: aCTypeSequencialCollection [
 	^ Rudesheim OpenCL Kernel
-		clKernelAt:				aNameString
-		withParameterTypes: 	aCTypeSequencialCollection
-		of: 					self.
+		clKernelAt:	aNameString
+		withParameterTypes:	aCTypeSequencialCollection
+		of:	self.
 ]

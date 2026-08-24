@@ -10,23 +10,20 @@ Class {
 
 { #category : 'accessing' }
 FloatElementTypeOpenCLRudesheim class >> byteSize [
-
 	^ 4.
 ]
 
 { #category : 'reading' }
-FloatElementTypeOpenCLRudesheim class >> readValue:	aByteArrayOrExternalAddress
-atOffset:	anInteger [
-
+FloatElementTypeOpenCLRudesheim class >> readValue: aByteArrayOrExternalAddress
+atOffset: anInteger [
 	^ aByteArrayOrExternalAddress
 		float32AtOffset:	anInteger.
 ]
 
 { #category : 'writing' }
-FloatElementTypeOpenCLRudesheim class >> writeValue:	aNumber
-intoByteArray:	aByteArray
-atOffset:	anInteger [
-
+FloatElementTypeOpenCLRudesheim class >> writeValue: aNumber
+intoByteArray: aByteArray
+atOffset: anInteger [
 	^ aByteArray
 		float32AtOffset:	anInteger
 		put:	aNumber asFloat.

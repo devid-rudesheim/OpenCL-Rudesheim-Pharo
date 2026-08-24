@@ -8,19 +8,16 @@ Class {
 
 { #category : 'namespace' }
 OpenCLRudesheim class >> Accelerator [
-
 	^ AcceleratorOpenCLRudesheim.
 ]
 
 { #category : 'namespace' }
 OpenCLRudesheim class >> All [
-
-	^ AllOpenCLRudesheim
+	^ AllOpenCLRudesheim.
 ]
 
 { #category : 'namespace' }
 OpenCLRudesheim class >> Buffer [
-
 	^ BufferOpenCLRudesheim.
 ]
 
@@ -31,73 +28,61 @@ OpenCLRudesheim class >> BuildLog [
 
 { #category : 'namespace' }
 OpenCLRudesheim class >> CommandQueue [
-
 	^ CommandQueueOpenCLRudesheim.
 ]
 
 { #category : 'namespace' }
 OpenCLRudesheim class >> Context [
-
 	^ ContextOpenCLRudesheim.
 ]
 
 { #category : 'namespace' }
 OpenCLRudesheim class >> Cpu [
-
-	^ CpuOpenCLRudesheim
+	^ CpuOpenCLRudesheim.
 ]
 
 { #category : 'namespace' }
 OpenCLRudesheim class >> Custom [
-
-	^ CustomOpenCLRudesheim
+	^ CustomOpenCLRudesheim.
 ]
 
 { #category : 'namespace' }
 OpenCLRudesheim class >> Default [
-
-	^ DefaultOpenCLRudesheim
+	^ DefaultOpenCLRudesheim.
 ]
 
 { #category : 'namespace' }
 OpenCLRudesheim class >> Device [
-
-	^ DeviceOpenCLRudesheim
+	^ DeviceOpenCLRudesheim.
 ]
 
 { #category : 'namespace' }
 OpenCLRudesheim class >> ElementType [
-
-	^ ElementTypeOpenCLRudesheim
+	^ ElementTypeOpenCLRudesheim.
 ]
 
 { #category : 'namespace' }
 OpenCLRudesheim class >> Event [
-
 	^ EventOpenCLRudesheim.
 ]
 
 { #category : 'namespace' }
 OpenCLRudesheim class >> Gpu [
-
-	^ GpuOpenCLRudesheim
+	^ GpuOpenCLRudesheim.
 ]
 
 { #category : 'namespace' }
 OpenCLRudesheim class >> HostPtr [
-
 	^ HostPtrOpenCLRudesheim.
 ]
 
 { #category : 'namespace' }
 OpenCLRudesheim class >> Kernel [
-
 	^ KernelOpenCLRudesheim.
 ]
 
 { #category : 'namespace' }
 OpenCLRudesheim class >> Native [
-
 	^ NativeOpenCLRudesheim.
 ]
 
@@ -108,30 +93,25 @@ OpenCLRudesheim class >> OS [
 
 { #category : 'namespace' }
 OpenCLRudesheim class >> Platform [
-
-	^ PlatformOpenCLRudesheim
+	^ PlatformOpenCLRudesheim.
 ]
 
 { #category : 'namespace' }
 OpenCLRudesheim class >> Program [
-
 	^ ProgramOpenCLRudesheim.
 ]
 
 { #category : 'namespace' }
 OpenCLRudesheim class >> ReadOnly [
-
 	^ ReadOnlyOpenCLRudesheim.
 ]
 
 { #category : 'namespace' }
 OpenCLRudesheim class >> ReadWrite [
-
-	^ ReadWriteOpenCLRudesheim
+	^ ReadWriteOpenCLRudesheim.
 ]
 
 { #category : 'namespace' }
 OpenCLRudesheim class >> WriteOnly [
-
 	^ WriteOnlyOpenCLRudesheim.
 ]
