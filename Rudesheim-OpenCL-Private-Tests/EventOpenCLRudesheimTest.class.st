@@ -11,20 +11,19 @@ Class {
 
 { #category : 'accessing' }
 EventOpenCLRudesheimTest class >> targetClass [
-
 	^ EventOpenCLRudesheim.
 ]
 
 { #category : 'tests' }
 EventOpenCLRudesheimTest >> testBasicInstanceCreation [
-
-	self skip: 'Event handles are returned by native OpenCL calls; #new is intentionally unavailable.'.
+	self
+		skip:	'Event handles are returned by native OpenCL calls; #new is intentionally unavailable.'.
 ]
 
 { #category : 'tests' }
 EventOpenCLRudesheimTest >> testBasicInstanceCreation0 [
-
-	self skip: 'Event handles are returned by native OpenCL calls; #new is intentionally unavailable.'.
+	self
+		skip:	'Event handles are returned by native OpenCL calls; #new is intentionally unavailable.'.
 ]
 
 { #category : 'tests' }
@@ -44,10 +43,16 @@ EventOpenCLRudesheimTest >> runWait0 [
 	|
 
 	slowEventDone := Semaphore new.
-
 	cl := Rudesheim OpenCL.
 	devices := cl Platform clPlatforms first clDevices.
-	context := self trackForRelease: (cl Context clContextFor: devices).
+
+	context :=
+		self
+			trackForRelease:
+			(
+				cl Context
+					clContextFor:	devices
+			).
 
 	program :=
 		self
@@ -82,7 +87,7 @@ kernel void SlowLoopRudesheim( global unsigned int *output, unsigned int iterati
 			(
 				cl CommandQueue
 					clCommandQueueFor:	devices first
-					of:					context
+					of:	context
 			).
 
 	outputBuffer :=
@@ -102,7 +107,7 @@ kernel void SlowLoopRudesheim( global unsigned int *output, unsigned int iterati
 					withParameterTypes:
 					{
 						TFBasicType pointer.
-						TFBasicType uint.
+						TFBasicType uint
 					}
 			).
 
@@ -114,29 +119,36 @@ kernel void SlowLoopRudesheim( global unsigned int *output, unsigned int iterati
 					enqueueKernel:	kernel
 					forNDRange:
 					{
-						{ 16r1. 16r1. 16r1. }
+						{
+							16r1.
+							16r1.
+							16r1
+						}
 					}
 					withArguments:
 					{
 						outputBuffer.
-						16r5F5E100.
+						16r5F5E100
 					}
-					forWait:
-					{
-					}
+					forWait:	{}
 			).
-
 	[
 		slowEvent wait.
-
 		slowEventDone signal.
-	]
-		fork.
+	] fork.
 
-	( Delay forMilliseconds: 16r0C8 ) wait.
+	(
+		Delay
+			forMilliseconds:	16r0C8
+	) wait.
 
 	otherContext :=
-		self trackForRelease: (cl Context clContextFor: devices).
+		self
+			trackForRelease:
+			(
+				cl Context
+					clContextFor:	devices
+			).
 
 	otherQueue :=
 		self
@@ -144,11 +156,10 @@ kernel void SlowLoopRudesheim( global unsigned int *output, unsigned int iterati
 			(
 				cl CommandQueue
 					clCommandQueueFor:	devices first
-					of:					otherContext
+					of:	otherContext
 			).
 
 	otherQueue finish.
-
 	"Wait for the forked slowEvent wait to actually complete before
 	returning, so #tearDown never releases slowEvent/kernel/queue/context
 	while the forked process might still be waiting on them -- see
@@ -156,21 +167,16 @@ kernel void SlowLoopRudesheim( global unsigned int *output, unsigned int iterati
 	for the same fix and note/opencl-commandqueue-crash-investigation.md for
 	why this matters."
 	slowEventDone wait.
-
 ]
 
 { #category : 'tests' }
 EventOpenCLRudesheimTest >> testWait [
-
-	self
-		testWait0_0.
+	self testWait0_0.
 ]
 
 { #category : 'tests' }
 EventOpenCLRudesheimTest >> testWait0_0 [
-
 	self
-		timeLimit: 5 seconds;
+		timeLimit:	5 seconds;
 		runWait0.
-
 ]

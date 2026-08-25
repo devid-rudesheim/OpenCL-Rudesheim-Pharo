@@ -13,21 +13,20 @@ Class {
 }
 
 { #category : 'instance creation' }
-ProgramCompileNotSupportedOpenCLRudesheim class >> signalForProgram:	aProgramOpenCLRudesheim
-devices:		aCLDevicesCollection
-options:		anOptionsString
-headers:		aHeaderAssociationsCollection [
-
+ProgramCompileNotSupportedOpenCLRudesheim class >> signalForProgram: aProgramOpenCLRudesheim
+devices: aCLDevicesCollection
+options: anOptionsString
+headers: aHeaderAssociationsCollection [
 	^ self basicNew
 		signalForProgram:	aProgramOpenCLRudesheim
-		devices:		aCLDevicesCollection
-		options:		anOptionsString
-		headers:		aHeaderAssociationsCollection.
+		devices:	aCLDevicesCollection
+		options:	anOptionsString
+		headers:	aHeaderAssociationsCollection.
 ]
 
 { #category : 'accessing' }
 ProgramCompileNotSupportedOpenCLRudesheim >> contextDescription [
-	^ 'compiling ', self program printString, ' for devices ', self devices printString, ' with options ''', self options, '''', ' and headers ', self headers printString, ' is not supported on this platform (this Mac''s OpenCL implementation crashes in clCompileProgram - a known limitation of Apple''s incomplete separate-compilation support)'.
+	^ 'compiling ' , self program printString , ' for devices ' , self devices printString , ' with options ''' , self options , '''' , ' and headers ' , self headers printString , ' is not supported on this platform (this Mac''s OpenCL implementation crashes in clCompileProgram - a known limitation of Apple''s incomplete separate-compilation support)'.
 ]
 
 { #category : 'accessing' }
@@ -71,11 +70,10 @@ ProgramCompileNotSupportedOpenCLRudesheim >> program: aProgramOpenCLRudesheim [
 ]
 
 { #category : 'signaling' }
-ProgramCompileNotSupportedOpenCLRudesheim >> signalForProgram:	aProgramOpenCLRudesheim
-devices:		aCLDevicesCollection
-options:		anOptionsString
-headers:		aHeaderAssociationsCollection [
-
+ProgramCompileNotSupportedOpenCLRudesheim >> signalForProgram: aProgramOpenCLRudesheim
+devices: aCLDevicesCollection
+options: anOptionsString
+headers: aHeaderAssociationsCollection [
 	self
 		program:	aProgramOpenCLRudesheim;
 		devices:	aCLDevicesCollection;

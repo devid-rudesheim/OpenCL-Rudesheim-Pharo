@@ -13,16 +13,15 @@ Class {
 }
 
 { #category : 'instance creation' }
-ProgramLinkNotSupportedOpenCLRudesheim class >> signalForContext:	aCLContext
-devices:		aCLDevicesCollection
-programs:		aProgramsCollection
-options:		anOptionsString [
-
+ProgramLinkNotSupportedOpenCLRudesheim class >> signalForContext: aCLContext
+devices: aCLDevicesCollection
+programs: aProgramsCollection
+options: anOptionsString [
 	^ self basicNew
 		signalForContext:	aCLContext
-		devices:		aCLDevicesCollection
-		programs:		aProgramsCollection
-		options:		anOptionsString.
+		devices:	aCLDevicesCollection
+		programs:	aProgramsCollection
+		options:	anOptionsString.
 ]
 
 { #category : 'accessing' }
@@ -37,7 +36,7 @@ ProgramLinkNotSupportedOpenCLRudesheim >> context: aCLContext [
 
 { #category : 'accessing' }
 ProgramLinkNotSupportedOpenCLRudesheim >> contextDescription [
-	^ 'linking ', self programs printString, ' for devices ', self devices printString, ' with options ''', self options, '''', ' on ', self context printString, ' is not supported on this platform (this Mac''s OpenCL implementation reports success from clLinkProgram but returns a null program handle - a known limitation of Apple''s incomplete separate-compilation support)'.
+	^ 'linking ' , self programs printString , ' for devices ' , self devices printString , ' with options ''' , self options , '''' , ' on ' , self context printString , ' is not supported on this platform (this Mac''s OpenCL implementation reports success from clLinkProgram but returns a null program handle - a known limitation of Apple''s incomplete separate-compilation support)'.
 ]
 
 { #category : 'accessing' }
@@ -71,11 +70,10 @@ ProgramLinkNotSupportedOpenCLRudesheim >> programs: aProgramsCollection [
 ]
 
 { #category : 'signaling' }
-ProgramLinkNotSupportedOpenCLRudesheim >> signalForContext:	aCLContext
-devices:		aCLDevicesCollection
-programs:		aProgramsCollection
-options:		anOptionsString [
-
+ProgramLinkNotSupportedOpenCLRudesheim >> signalForContext: aCLContext
+devices: aCLDevicesCollection
+programs: aProgramsCollection
+options: anOptionsString [
 	self
 		context:	aCLContext;
 		devices:	aCLDevicesCollection;

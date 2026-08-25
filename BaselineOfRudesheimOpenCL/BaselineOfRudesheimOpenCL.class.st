@@ -10,64 +10,58 @@ BaselineOfRudesheimOpenCL >> baseline: spec [
 	<baseline>
 
 	spec
-		for: #common
+		for:	#common
 		do:
 		[
 			spec
-				baseline: 'RudesheimKernel'
-				with:
-				[
-					spec repository: 'github://devid-rudesheim/Kernel-Rudesheim-Pharo:main'
-				];
-
-				baseline: 'RudesheimUtility'
-				with:
-				[
-					spec repository: 'github://devid-rudesheim/Utility-Rudesheim-Pharo:main'
-				];
-
-				project: 'RudesheimUtilityTests'
-				copyFrom: 'RudesheimUtility'
-				with:
-				[
-					spec loads: #( 'tests' )
-				];
-
-				package: 'Rudesheim-OpenCL-Private'
+				baseline:	'RudesheimKernel'
 				with:
 				[
 					spec
-						requires: #( 'RudesheimKernel' 'RudesheimUtility' )
+						repository:	'github://devid-rudesheim/Kernel-Rudesheim-Pharo:develop'.
 				];
-
-				package: 'Rudesheim-OpenCL'
+				baseline:	'RudesheimUtility'
 				with:
 				[
 					spec
-						requires: #( 'Rudesheim-OpenCL-Private' )
+						repository:	'github://devid-rudesheim/Utility-Rudesheim-Pharo:develop'.
 				];
-
-				package: 'Rudesheim-OpenCL-Private-Tests'
+				project:	'RudesheimUtilityTests'
+				copyFrom:	'RudesheimUtility'
 				with:
 				[
 					spec
-						requires: #( 'Rudesheim-OpenCL' 'RudesheimUtilityTests' )
+						loads:	#( 'tests' ).
 				];
-
-				package: 'Rudesheim-OpenCL-Tests'
+				package:	'Rudesheim-OpenCL-Private'
 				with:
 				[
 					spec
-						requires: #( 'Rudesheim-OpenCL' 'RudesheimUtilityTests' )
+						requires:	#( 'RudesheimKernel' 'RudesheimUtility' ).
 				];
-
-				group:		#core
-				with:		#( 'Rudesheim-OpenCL-Private' 'Rudesheim-OpenCL' );
-
-				group:		#tests
-				with:		#( 'Rudesheim-OpenCL-Private-Tests' 'Rudesheim-OpenCL-Tests' );
-
-				group:		#default
-				with:		#( #core ).
-		]
+				package:	'Rudesheim-OpenCL'
+				with:
+				[
+					spec
+						requires:	#( 'Rudesheim-OpenCL-Private' ).
+				];
+				package:	'Rudesheim-OpenCL-Private-Tests'
+				with:
+				[
+					spec
+						requires:	#( 'Rudesheim-OpenCL' 'RudesheimUtilityTests' ).
+				];
+				package:	'Rudesheim-OpenCL-Tests'
+				with:
+				[
+					spec
+						requires:	#( 'Rudesheim-OpenCL' 'RudesheimUtilityTests' ).
+				];
+				group:	#core
+				with:	#( 'Rudesheim-OpenCL-Private' 'Rudesheim-OpenCL' );
+				group:	#tests
+				with:	#( 'Rudesheim-OpenCL-Private-Tests' 'Rudesheim-OpenCL-Tests' );
+				group:	#default
+				with:	#( #core ).
+		].
 ]

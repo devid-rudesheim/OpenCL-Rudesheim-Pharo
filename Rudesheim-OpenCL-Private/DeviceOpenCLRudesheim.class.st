@@ -7,8 +7,8 @@ Class {
 }
 
 { #category : 'instance creation' }
-DeviceOpenCLRudesheim class >> clDevicesForType:	aCLTDeviceDefineCollection
-of:					aCLPlatform [
+DeviceOpenCLRudesheim class >> clDevicesForType: aCLTDeviceDefineCollection
+of: aCLPlatform [
 	|
 		functions
 	|
@@ -20,32 +20,29 @@ of:					aCLPlatform [
 		super
 			onDo:
 			[ :expectedAmount :actualIDs :actualAmount |
-
 				functions tfRunner
 					invokeFunction:	functions functionOfGetDeviceIDs
 					withArguments:
 					{
 						aCLPlatform idPointer.
 						aCLTDeviceDefineCollection
-							inject: 0
+							inject:	0
 							into:
 							[ :value :each |
-								value | each  clDeviceType.
+								value | each clDeviceType.
 							].
 						expectedAmount.
 						actualIDs.
-						actualAmount.
+						actualAmount
 					}.
-
 			].
 	]
-		on: PrimitiveErrorNativeOpenCLRudesheim
+		on:	PrimitiveErrorNativeOpenCLRudesheim
 		do:
 		[ :anError |
 			Rudesheim OpenCL Native Error DeviceEnumerationFailed
 				signalForCause:	anError
-				platform:			aCLPlatform
-				deviceTypes:		aCLTDeviceDefineCollection.
+				platform:	aCLPlatform
+				deviceTypes:	aCLTDeviceDefineCollection.
 		].
-
 ]

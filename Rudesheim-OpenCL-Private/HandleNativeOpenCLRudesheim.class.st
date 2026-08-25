@@ -12,8 +12,7 @@ Class {
 }
 
 { #category : 'finalization' }
-HandleNativeOpenCLRudesheim class >> finalizeResourceData: aCollection [ 
-
+HandleNativeOpenCLRudesheim class >> finalizeResourceData: aCollection [
 	Rudesheim OpenCL Native Functions tfRunner
 		invokeFunction:	self functionsOfCreationAndRelease first
 		withArguments:
@@ -24,30 +23,26 @@ HandleNativeOpenCLRudesheim class >> finalizeResourceData: aCollection [
 
 { #category : 'accessing' }
 HandleNativeOpenCLRudesheim class >> functionsOfCreationAndRelease [
-
 	^ self subclassResponsibility.
 ]
 
 { #category : 'instance creation' }
-HandleNativeOpenCLRudesheim class >> newWithArguments:	anArgumentsSequencialCollection [
-
+HandleNativeOpenCLRudesheim class >> newWithArguments: anArgumentsSequencialCollection [
 	^ self
 		onDo:
 		[ :errorOutput |
-			
 			Rudesheim OpenCL Native Functions tfRunner
 				invokeFunction:	self functionsOfCreationAndRelease last
 				withArguments:
 				(
 					anArgumentsSequencialCollection
 						copyWith:	errorOutput
-				)
-
+				).
 		].
 ]
 
 { #category : 'enumerating' }
-HandleNativeOpenCLRudesheim class >> onDo:	aBlock [
+HandleNativeOpenCLRudesheim class >> onDo: aBlock [
 	|
 		handle
 		errorOutput
@@ -55,14 +50,15 @@ HandleNativeOpenCLRudesheim class >> onDo:	aBlock [
 	|
 
 	sint32 := TFBasicType sint32.
+
 	errorOutput :=
 		ExternalAddress
-			gcallocate: sint32 byteSize.
-	
+			gcallocate:	sint32 byteSize.
+
 	sint32
-		write: 	0
-		into: 	errorOutput.
-	
+		write:	0
+		into:	errorOutput.
+
 	handle :=
 		aBlock
 			value:	errorOutput.
@@ -71,41 +67,48 @@ HandleNativeOpenCLRudesheim class >> onDo:	aBlock [
 		shouldZero:
 		[
 			sint32
-				readValue: errorOutput
+				readValue:	errorOutput.
 		].
 
 	^ super new
-		setHandle: 	handle;
+		setHandle:	handle;
 		yourself.
 ]
 
 { #category : 'finalization' }
 HandleNativeOpenCLRudesheim >> finalize [
-
 	self
-		traceCr: 'One'.
+		traceCr:	'One'.
 ]
 
 { #category : 'finalization' }
 HandleNativeOpenCLRudesheim >> finalizeResourceData [
-
 	self
-		traceCr: 'Three'.
+		traceCr:	'Three'.
 ]
 
 { #category : 'accessing' }
 HandleNativeOpenCLRudesheim >> handlePointer [
-
-	^ handlePointer
+	^ handlePointer.
 ]
 
 { #category : 'releasing' }
 HandleNativeOpenCLRudesheim >> release [
+	handlePointer
+		ifNil:
+		[
+			^ self.
+		].
 
-	handlePointer ifNil: [ ^ self ].
+	self class
+		finalizeResourceData:
+		{
+			handlePointer
+		}.
 
-	self class finalizeResourceData: { handlePointer }.
-	FFIExternalResourceManager uniqueInstance removeResource: self.
+	FFIExternalResourceManager uniqueInstance
+		removeResource:	self.
+
 	handlePointer := nil.
 ]
 
@@ -115,13 +118,11 @@ HandleNativeOpenCLRudesheim >> releaseRudesheim [
 	no-op there) -- lets code that may be holding either a plain Array or any
 	HandleNativeOpenCLRudesheim subclass (CommandQueue/Context/Program/Kernel/
 	Event/Buffer) release unconditionally without a kind check."
-
 	self release.
 ]
 
 { #category : 'finalization' }
 HandleNativeOpenCLRudesheim >> resourceData [
-
 	^
 	{
 		handlePointer
@@ -130,18 +131,17 @@ HandleNativeOpenCLRudesheim >> resourceData [
 
 { #category : 'initialization' }
 HandleNativeOpenCLRudesheim >> setHandle: aPointer [
-
 	super initialize.
-"
+	"
 	self class finalizationRegistry
 		add: self.
 "
 	handlePointer := aPointer.
+
 	FFIExternalResourceManager
 		addResource:	self
 		data:
 		{
 			handlePointer
 		}.
-
 ]

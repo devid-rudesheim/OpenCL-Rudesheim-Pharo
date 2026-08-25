@@ -10,6 +10,5 @@ Class {
 
 { #category : 'accessing' }
 UseHostPtrOpenCLRudesheim class >> offsetOfCLBufferType [
-
-	^ 3
+	^ 3.
 ]

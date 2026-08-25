@@ -21,20 +21,19 @@ Class {
 }
 
 { #category : 'instance creation' }
-ProgramLinkFailedOpenCLRudesheim class >> signalForCause:	aPrimitiveErrorNativeOpenCLRudesheim
-context:		aCLContext
-devices:		aCLDevicesCollection
-programs:		aProgramsCollection
-options:		anOptionsString
-buildLog:		aBuildLogString [
-
+ProgramLinkFailedOpenCLRudesheim class >> signalForCause: aPrimitiveErrorNativeOpenCLRudesheim
+context: aCLContext
+devices: aCLDevicesCollection
+programs: aProgramsCollection
+options: anOptionsString
+buildLog: aBuildLogString [
 	^ self basicNew
 		signalForCause:	aPrimitiveErrorNativeOpenCLRudesheim
-		context:		aCLContext
-		devices:		aCLDevicesCollection
-		programs:		aProgramsCollection
-		options:		anOptionsString
-		buildLog:		aBuildLogString.
+		context:	aCLContext
+		devices:	aCLDevicesCollection
+		programs:	aProgramsCollection
+		options:	anOptionsString
+		buildLog:	aBuildLogString.
 ]
 
 { #category : 'accessing' }
@@ -59,7 +58,7 @@ ProgramLinkFailedOpenCLRudesheim >> context: aCLContext [
 
 { #category : 'accessing' }
 ProgramLinkFailedOpenCLRudesheim >> contextDescription [
-	^ 'linking ', self programs printString, ' for devices ', self devices printString, ' with options ''', self options, '''', ' on ', self context printString, ' - build log: ', self buildLog.
+	^ 'linking ' , self programs printString , ' for devices ' , self devices printString , ' with options ''' , self options , '''' , ' on ' , self context printString , ' - build log: ' , self buildLog.
 ]
 
 { #category : 'accessing' }
@@ -93,15 +92,14 @@ ProgramLinkFailedOpenCLRudesheim >> programs: aProgramsCollection [
 ]
 
 { #category : 'signaling' }
-ProgramLinkFailedOpenCLRudesheim >> signalForCause:	aPrimitiveErrorNativeOpenCLRudesheim
-context:		aCLContext
-devices:		aCLDevicesCollection
-programs:		aProgramsCollection
-options:		anOptionsString
-buildLog:		aBuildLogString [
-
+ProgramLinkFailedOpenCLRudesheim >> signalForCause: aPrimitiveErrorNativeOpenCLRudesheim
+context: aCLContext
+devices: aCLDevicesCollection
+programs: aProgramsCollection
+options: anOptionsString
+buildLog: aBuildLogString [
 	self
-		cause:		aPrimitiveErrorNativeOpenCLRudesheim;
+		cause:	aPrimitiveErrorNativeOpenCLRudesheim;
 		context:	aCLContext;
 		devices:	aCLDevicesCollection;
 		programs:	aProgramsCollection;

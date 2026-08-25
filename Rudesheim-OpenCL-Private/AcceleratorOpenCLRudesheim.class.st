@@ -10,6 +10,5 @@ Class {
 
 { #category : 'accessing' }
 AcceleratorOpenCLRudesheim class >> offsetOfCLDeviceType [
-
 	^ 3.
 ]

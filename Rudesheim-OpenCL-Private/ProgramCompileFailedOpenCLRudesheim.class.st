@@ -21,20 +21,19 @@ Class {
 }
 
 { #category : 'instance creation' }
-ProgramCompileFailedOpenCLRudesheim class >> signalForCause:	aPrimitiveErrorNativeOpenCLRudesheim
-program:		aProgramOpenCLRudesheim
-devices:		aCLDevicesCollection
-options:		anOptionsString
-headers:		aHeaderAssociationsCollection
-buildLog:		aBuildLogString [
-
+ProgramCompileFailedOpenCLRudesheim class >> signalForCause: aPrimitiveErrorNativeOpenCLRudesheim
+program: aProgramOpenCLRudesheim
+devices: aCLDevicesCollection
+options: anOptionsString
+headers: aHeaderAssociationsCollection
+buildLog: aBuildLogString [
 	^ self basicNew
 		signalForCause:	aPrimitiveErrorNativeOpenCLRudesheim
-		program:		aProgramOpenCLRudesheim
-		devices:		aCLDevicesCollection
-		options:		anOptionsString
-		headers:		aHeaderAssociationsCollection
-		buildLog:		aBuildLogString.
+		program:	aProgramOpenCLRudesheim
+		devices:	aCLDevicesCollection
+		options:	anOptionsString
+		headers:	aHeaderAssociationsCollection
+		buildLog:	aBuildLogString.
 ]
 
 { #category : 'accessing' }
@@ -49,7 +48,7 @@ ProgramCompileFailedOpenCLRudesheim >> buildLog: aBuildLogString [
 
 { #category : 'accessing' }
 ProgramCompileFailedOpenCLRudesheim >> contextDescription [
-	^ 'compiling ', self program printString, ' for devices ', self devices printString, ' with options ''', self options, '''', ' and headers ', self headers printString, ' - build log: ', self buildLog.
+	^ 'compiling ' , self program printString , ' for devices ' , self devices printString , ' with options ''' , self options , '''' , ' and headers ' , self headers printString , ' - build log: ' , self buildLog.
 ]
 
 { #category : 'accessing' }
@@ -93,15 +92,14 @@ ProgramCompileFailedOpenCLRudesheim >> program: aProgramOpenCLRudesheim [
 ]
 
 { #category : 'signaling' }
-ProgramCompileFailedOpenCLRudesheim >> signalForCause:	aPrimitiveErrorNativeOpenCLRudesheim
-program:		aProgramOpenCLRudesheim
-devices:		aCLDevicesCollection
-options:		anOptionsString
-headers:		aHeaderAssociationsCollection
-buildLog:		aBuildLogString [
-
+ProgramCompileFailedOpenCLRudesheim >> signalForCause: aPrimitiveErrorNativeOpenCLRudesheim
+program: aProgramOpenCLRudesheim
+devices: aCLDevicesCollection
+options: anOptionsString
+headers: aHeaderAssociationsCollection
+buildLog: aBuildLogString [
 	self
-		cause:		aPrimitiveErrorNativeOpenCLRudesheim;
+		cause:	aPrimitiveErrorNativeOpenCLRudesheim;
 		program:	aProgramOpenCLRudesheim;
 		devices:	aCLDevicesCollection;
 		options:	anOptionsString;

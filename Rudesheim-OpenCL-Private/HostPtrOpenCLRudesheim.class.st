@@ -8,18 +8,15 @@ Class {
 
 { #category : 'namespace' }
 HostPtrOpenCLRudesheim class >> Alloc [
-
 	^ AllocHostPtrOpenCLRudesheim.
 ]
 
 { #category : 'namespace' }
 HostPtrOpenCLRudesheim class >> Copy [
-
 	^ CopyHostPtrOpenCLRudesheim.
 ]
 
 { #category : 'namespace' }
 HostPtrOpenCLRudesheim class >> Use [
-
 	^ UseHostPtrOpenCLRudesheim.
 ]

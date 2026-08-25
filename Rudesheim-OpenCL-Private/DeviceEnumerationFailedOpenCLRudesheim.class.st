@@ -11,62 +11,48 @@ Class {
 }
 
 { #category : 'instance creation' }
-DeviceEnumerationFailedOpenCLRudesheim class >> signalForCause:	aPrimitiveErrorNativeOpenCLRudesheim
-platform:				aCLPlatform
-deviceTypes:			aCLTDeviceDefineCollection [
-
+DeviceEnumerationFailedOpenCLRudesheim class >> signalForCause: aPrimitiveErrorNativeOpenCLRudesheim
+platform: aCLPlatform
+deviceTypes: aCLTDeviceDefineCollection [
 	^ self basicNew
 		signalForCause:	aPrimitiveErrorNativeOpenCLRudesheim
-		platform:				aCLPlatform
-		deviceTypes:			aCLTDeviceDefineCollection.
-
+		platform:	aCLPlatform
+		deviceTypes:	aCLTDeviceDefineCollection.
 ]
 
 { #category : 'accessing' }
 DeviceEnumerationFailedOpenCLRudesheim >> contextDescription [
-
-	^ 'enumerating devices of type ', self deviceTypes printString, ' on ', self platform printString.
-
+	^ 'enumerating devices of type ' , self deviceTypes printString , ' on ' , self platform printString.
 ]
 
 { #category : 'accessing' }
 DeviceEnumerationFailedOpenCLRudesheim >> deviceTypes [
-
 	^ deviceTypes.
-
 ]
 
 { #category : 'accessing' }
 DeviceEnumerationFailedOpenCLRudesheim >> deviceTypes: aCLTDeviceDefineCollection [
-
 	deviceTypes := aCLTDeviceDefineCollection.
-
 ]
 
 { #category : 'accessing' }
 DeviceEnumerationFailedOpenCLRudesheim >> platform [
-
 	^ platform.
-
 ]
 
 { #category : 'accessing' }
 DeviceEnumerationFailedOpenCLRudesheim >> platform: aCLPlatform [
-
 	platform := aCLPlatform.
-
 ]
 
 { #category : 'signaling' }
-DeviceEnumerationFailedOpenCLRudesheim >> signalForCause:	aPrimitiveErrorNativeOpenCLRudesheim
-platform:				aCLPlatform
-deviceTypes:			aCLTDeviceDefineCollection [
-
+DeviceEnumerationFailedOpenCLRudesheim >> signalForCause: aPrimitiveErrorNativeOpenCLRudesheim
+platform: aCLPlatform
+deviceTypes: aCLTDeviceDefineCollection [
 	self
-		cause:			aPrimitiveErrorNativeOpenCLRudesheim;
-		platform:		aCLPlatform;
+		cause:	aPrimitiveErrorNativeOpenCLRudesheim;
+		platform:	aCLPlatform;
 		deviceTypes:	aCLTDeviceDefineCollection.
 
 	^ super signal.
-
 ]
