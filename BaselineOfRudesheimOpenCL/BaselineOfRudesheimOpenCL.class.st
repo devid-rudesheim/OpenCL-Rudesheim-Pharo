@@ -20,14 +20,8 @@ BaselineOfRudesheimOpenCL >> baseline: spec [
 					spec
 						repository:	'github://devid-rudesheim/Kernel-Rudesheim-Pharo:develop'.
 				];
-				baseline:	'RudesheimUtility'
-				with:
-				[
-					spec
-						repository:	'github://devid-rudesheim/Utility-Rudesheim-Pharo:develop'.
-				];
-				project:	'RudesheimUtilityTests'
-				copyFrom:	'RudesheimUtility'
+				project:	'RudesheimKernelTests'
+				copyFrom:	'RudesheimKernel'
 				with:
 				[
 					spec
@@ -37,7 +31,7 @@ BaselineOfRudesheimOpenCL >> baseline: spec [
 				with:
 				[
 					spec
-						requires:	#( 'RudesheimKernel' 'RudesheimUtility' ).
+						requires:	#( 'RudesheimKernel' ).
 				];
 				package:	'Rudesheim-OpenCL'
 				with:
@@ -49,13 +43,13 @@ BaselineOfRudesheimOpenCL >> baseline: spec [
 				with:
 				[
 					spec
-						requires:	#( 'Rudesheim-OpenCL' 'RudesheimUtilityTests' ).
+						requires:	#( 'Rudesheim-OpenCL' 'RudesheimKernelTests' ).
 				];
 				package:	'Rudesheim-OpenCL-Tests'
 				with:
 				[
 					spec
-						requires:	#( 'Rudesheim-OpenCL' 'RudesheimUtilityTests' ).
+						requires:	#( 'Rudesheim-OpenCL' 'RudesheimKernelTests' ).
 				];
 				group:	#core
 				with:	#( 'Rudesheim-OpenCL-Private' 'Rudesheim-OpenCL' );
