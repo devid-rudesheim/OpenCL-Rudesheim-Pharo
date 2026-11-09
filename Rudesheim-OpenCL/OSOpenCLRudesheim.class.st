@@ -1,5 +1,5 @@
 "
-Default/base execution detail for the OpenCL two-stage compile/link API, reached as `Smalltalk os rudesheim openCL` or, for reflective discovery, `Rudesheim OpenCL OS`. Performs the real clCompileProgram/clLinkProgram FFI calls. MacOSOpenCLRudesheim overrides both to avoid ever calling the native functions on this platform (see its comment).
+Default/base execution detail for the OpenCL two-stage compile/link API, reached as `OSPlatform current rudesheim openCL` or, for reflective discovery, `Rudesheim OpenCL OS`. Performs the real clCompileProgram/clLinkProgram FFI calls. MacOSOpenCLRudesheim overrides both to avoid ever calling the native functions on this platform (see its comment).
 "
 Class {
 	#name : 'OSOpenCLRudesheim',
