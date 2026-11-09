@@ -1,6 +1,6 @@
 "
 Default/base OS-specific assertion for the ""...NotSupportedOnMac"" family of tests, reached as
-`Smalltalk os rudesheim openCLTestAsserter`. On every OS other than macOS, clCompileProgram/
+`OSPlatform current rudesheim openCLTestAsserter`. On every OS other than macOS, clCompileProgram/
 clLinkProgram aren't known to be unsupported - the underlying OpenCL implementation gets to
 decide for itself whether the operation succeeds or fails, and either outcome is acceptable
 here since this test isn't about *this* OS's behavior. MacOSAsserterOpenCLRudesheimTest

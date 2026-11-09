@@ -115,7 +115,7 @@ of: aCLContext [
 		self
 			onDo:
 			[ :errorOutput |
-				Smalltalk os rudesheim openCL
+				OSPlatform current rudesheim openCL
 					invokeLinkProgramFor:	aCLContext
 					devices:	aCLDevicesCollection
 					programs:	aProgramsCollection
@@ -233,7 +233,7 @@ of: aCLContext [
 		cl Native Error Primitive
 			shouldZero:
 			[
-				Smalltalk os rudesheim openCL
+				OSPlatform current rudesheim openCL
 					invokeCompileProgram:	object
 					for:	aCLDevicesCollection
 					withOptions:	anOptionsString

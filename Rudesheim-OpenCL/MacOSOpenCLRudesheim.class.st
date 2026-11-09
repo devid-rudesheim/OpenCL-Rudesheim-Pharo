@@ -1,5 +1,5 @@
 "
-Overrides OSOpenCLRudesheim (its superclass) to raise immediately, without ever calling the native clCompileProgram/clLinkProgram - this Mac''s OpenCL implementation crashes the whole process in clCompileProgram (confirmed: Abort trap 6 inside AppleMetalOpenGLRenderer gldDestroyComputeModule, even for trivial valid input) and silently returns a null handle from clLinkProgram despite reporting success. Both are known limitations of Apple''s incomplete OpenCL 1.2 separate-compilation support, not bugs in this code. Reached as `Smalltalk os rudesheim openCL` on a Mac, or `Rudesheim OpenCL OS Mac` for reflective discovery.
+Overrides OSOpenCLRudesheim (its superclass) to raise immediately, without ever calling the native clCompileProgram/clLinkProgram - this Mac''s OpenCL implementation crashes the whole process in clCompileProgram (confirmed: Abort trap 6 inside AppleMetalOpenGLRenderer gldDestroyComputeModule, even for trivial valid input) and silently returns a null handle from clLinkProgram despite reporting success. Both are known limitations of Apple''s incomplete OpenCL 1.2 separate-compilation support, not bugs in this code. Reached as `OSPlatform current rudesheim openCL` on a Mac, or `Rudesheim OpenCL OS Mac` for reflective discovery.
 "
 Class {
 	#name : 'MacOSOpenCLRudesheim',

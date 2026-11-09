@@ -1,6 +1,6 @@
 "
 macOS-specific assertion for the ""...NotSupportedOnMac"" family of tests, reached as
-`Smalltalk os rudesheim openCLTestAsserter` on a Mac. Overrides OSAsserterOpenCLRudesheimTest
+`OSPlatform current rudesheim openCLTestAsserter` on a Mac. Overrides OSAsserterOpenCLRudesheimTest
 (its superclass) to actually assert that the mac-specific NotSupported error is raised, with
 the standard 'not supported on this platform' message - see MacOSOpenCLRudesheim's comment for
 why compiling/linking are unsupported on this platform's OpenCL implementation.

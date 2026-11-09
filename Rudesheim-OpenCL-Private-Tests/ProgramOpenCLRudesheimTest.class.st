@@ -195,7 +195,7 @@ ProgramOpenCLRudesheimTest >> testCompileCLProgramForFromSourcesWithOptionsHeade
 					clContextFor:	devices
 			).
 
-	Smalltalk os rudesheim openCLTestAsserter
+	OSPlatform current rudesheim openCLTestAsserter
 		for:	self
 		should:
 		[
@@ -324,7 +324,7 @@ ProgramOpenCLRudesheimTest >> testNewCLProgramByLinkingForWithOptionsNotSupporte
 					withOptions:	self defaultCLStdOption
 			).
 
-	Smalltalk os rudesheim openCLTestAsserter
+	OSPlatform current rudesheim openCLTestAsserter
 		for:	self
 		should:
 		[
